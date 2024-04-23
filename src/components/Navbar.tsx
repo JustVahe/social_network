@@ -8,16 +8,16 @@ export default function Navbar() {
     <nav className="w-full px-[20px] p-[12px] flex justify-between shadow-zinc-300 shadow-sm items-center bg-white fixed z-20">
         <img src={logo} alt="Winku" className="w-[120px]"/>
         <div className="w-[460px] flex justify-between">
-            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold">
+            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                 Home <span className="text-sm-11"><FaChevronDown /></span>
             </a>
-            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold">
+            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                 Timeline <span className="text-sm-11"><FaChevronDown /></span>
             </a>
-            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold">
+            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                 Account Settings <span className="text-sm-11"><FaChevronDown /></span>
             </a>
-            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold">
+            <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                 More Pages <span className="text-sm-11"><FaChevronDown /></span>
             </a>
         </div>

@@ -1,12 +1,9 @@
-import MenuLeftButtons from "./components/MenuLeftButtons"
-import Navbar from "./components/Navbar"
+import Menu from "./components/Menu"
 
 function App() {
-
   return (
     <>
-      <Navbar />
-      <MenuLeftButtons />
+      <Menu />
     </>
   )
 }
