@@ -49,9 +49,10 @@ export default function LeftMenuButton({ icon } : {
   const [toggle, setToggle] = useState(false)
 
   return (
-    <div className="w-[30px] h-[30px] grid place-items-center relative"
-        onMouseEnter={() => setToggle(true)} onMouseLeave={() => setToggle(false)}>    
-        {icons.find(item => item.type === icon)?.element}     
+    <div className="w-[30px] h-[30px] grid place-items-center relative">    
+        <p onMouseEnter={() => setToggle(true)} onMouseLeave={() => setToggle(false)}>
+          {icons.find(item => item.type === icon)?.element} 
+        </p>    
         <div className={"bg-zinc-800 p-1 rounded-md  text-sm-13 absolute w-[120px] right-[-125px] text-white transition-all	" +
           (toggle ? "opacity-100" : "opacity-0")} >
           {icon} 

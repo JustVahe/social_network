@@ -4,10 +4,10 @@ import Navbar from "./Navbar";
 
 export default function Menu() {
   return (
-    <>
-        <Navbar />
-        <MenuLeftButtons />
-        <MenuRightFriends />
-    </>
+      <div className="fixed top-0">
+          <Navbar />
+          <MenuLeftButtons />
+          <MenuRightFriends />
+      </div>
   )
 }
