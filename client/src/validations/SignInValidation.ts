@@ -1,10 +1,5 @@
 import * as yup from "yup"
 
-export interface IValidationError {
-    type: string, 
-    message : string 
-}
-
 export const signInScheme = yup.object().shape({
     username : yup.string().test({
         name : "username",
