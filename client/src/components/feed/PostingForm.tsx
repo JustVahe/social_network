@@ -29,7 +29,6 @@ export default function PostingForm() {
             <button className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>
           </div>
         </div>
-        
     </div>
   )
 }

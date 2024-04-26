@@ -2,7 +2,7 @@ import { TfiClipboard, TfiCommentsSmiley, TfiImage, TfiUser } from "react-icons/
 
 export default function Shortcuts() {
   return (
-    <div className="w-full p-[20px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 rounded-md h-[240px]">
+    <div className=" w-full p-[20px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 rounded-md h-[240px]">
         <p className="text-md-16 font-semibold text-zinc-700 after:content-normal after:w-[58px] after:h-[2px] after:block after:bg-sky-600">Shortcuts</p>
         <div className="flex flex-col gap-[20px] mt-[30px]">
             <a href="#">

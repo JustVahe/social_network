@@ -10,9 +10,9 @@ import friend9 from "../../assets/friends/side-friend9.jpg"
 import friend10 from "../../assets/friends/side-friend10.jpg"
 import FriendLabel from "./FriendLabel"
 import { v4 } from "uuid"
-import { IFriend } from "../../types"
+import { IUser } from "../../types"
 
-const friends : IFriend[] = [
+const friends : IUser[] = [
   {
     imageSrc : friend1,
     status : "online",

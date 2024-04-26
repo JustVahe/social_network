@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.png"
 import { ChangeEvent, FormEvent, useState } from "react";
 import { signInScheme } from "../../validations/SignInValidation";
 import { ValidationError } from "yup";
 
 export default function SignIn() {
+
+    const navigate = useNavigate();
 
     const [usernameError, setUsernameError] = useState<ValidationError | undefined>();
     const [passwordError, setPasswordError] = useState<ValidationError | undefined>();
@@ -42,6 +44,8 @@ export default function SignIn() {
 
             }            
             
+        } finally {
+            navigate("/user1")
         }
 
     }

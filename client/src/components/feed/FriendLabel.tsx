@@ -1,7 +1,7 @@
-import { IFriend } from "../../types";
+import { IUser } from "../../types";
 import FriendButton from "../buttons/FriendButton";
 
-export default function FriendLabel({friend} : {friend : IFriend}) {
+export default function FriendLabel({friend} : {friend : IUser}) {
 
     const {name,surname,email,imageSrc,status} = friend;
 

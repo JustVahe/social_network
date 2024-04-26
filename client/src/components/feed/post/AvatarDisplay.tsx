@@ -1,6 +1,6 @@
 import admin from "../../../assets/admin.jpg"
 
-export default function AvatarDisplay() {
+export default function AvatarDisplay({user} : {user : IUser}) {
   return (
     <div className="w-full flex items-center gap-[10px]">
         <img src={admin} alt="admin" className="rounded-full"/>
