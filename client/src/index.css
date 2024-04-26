@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 @layer components {
+
   body {
     @apply font-roboto m-0 p-0 box-border bg-zinc-100;
+  }
+
+  body * {
+    @apply box-border;
   }
 
   .container {

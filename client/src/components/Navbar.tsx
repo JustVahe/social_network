@@ -1,12 +1,12 @@
-import logo from "../assets/logo.png"
 import admin from "../assets/admin.jpg"
 import { FaChevronDown, FaGlobeAmericas } from "react-icons/fa"
 import { TfiBell, TfiComment, TfiHome, TfiMenu, TfiSearch } from "react-icons/tfi"
+import Logo from "../assets/Logo"
 
 export default function Navbar() {
   return (
-    <nav className="w-full px-[20px] p-[12px] flex justify-between shadow-zinc-300 shadow-sm items-center bg-white fixed z-20">
-        <img src={logo} alt="Winku" className="w-[120px]"/>
+    <nav className="w-full px-[20px] p-[12px] flex justify-between shadow-zinc-300 shadow-sm items-center bg-white fixed z-50 top-0">
+        <Logo />
         <div className="w-[460px] flex justify-between">
             <a href="#" className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                 Home <span className="text-sm-11"><FaChevronDown /></span>
