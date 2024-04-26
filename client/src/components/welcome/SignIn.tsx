@@ -32,6 +32,8 @@ export default function SignIn() {
             setUsernameError(undefined);
             setPasswordError(undefined);
 
+            navigate("/user1")
+
         } catch (error : unknown) {
             
             const validationError : ValidationError = error as ValidationError;
@@ -44,8 +46,6 @@ export default function SignIn() {
 
             }            
             
-        } finally {
-            navigate("/user1")
         }
 
     }

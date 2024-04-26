@@ -12,7 +12,6 @@ function App() {
           <Route path="/user1" element={<MainPage />}></Route>
         </Routes>
       </Router>
-      {/*  */}
     </>
   )
 }

@@ -6,7 +6,7 @@ import Shortcuts from "./Shortcuts";
 export default function Feed() {
   return (
    <>
-      <div className="container">
+      <div className="container relative">
           <div className='grid grid-cols-4 gap-5 mt-[100px]'>
               <div className="grid w-[290px] gap-5">
                   <Shortcuts />
