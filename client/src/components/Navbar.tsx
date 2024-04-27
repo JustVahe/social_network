@@ -2,6 +2,7 @@ import admin from "../assets/admin.jpg"
 import { FaChevronDown, FaGlobeAmericas } from "react-icons/fa"
 import { TfiBell, TfiComment, TfiHome, TfiMenu, TfiSearch } from "react-icons/tfi"
 import Logo from "../assets/Logo"
+import { Link } from "react-router-dom"
 
 export default function Navbar() {
   return (
@@ -29,7 +30,9 @@ export default function Navbar() {
             <FaGlobeAmericas />
         </div>
         <div className="w-[100px] flex justify-between items-center">
-            <img src={admin} alt="admin" className="w-[45px] h-[45px] rounded-full" />
+            <Link to="/user1/userPage">
+                <img src={admin} alt="admin" className="w-[45px] h-[45px] rounded-full" />
+            </Link>
             <span className="text-xl text-zinc-700"><TfiMenu /></span>
         </div>
     </nav>
