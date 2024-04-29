@@ -3,8 +3,14 @@ import logo from "../../assets/logo.png"
 import { ChangeEvent, FormEvent, useState } from "react";
 import { signInScheme } from "../../validations/SignInValidation";
 import { ValidationError } from "yup";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
+import { selectUsers } from "../../redux/slices/userSlice";
+import { setUser } from "../../redux/slices/currentUserSlice";
 
 export default function SignIn() {
+
+    const users = useAppSelector(selectUsers);
+    const dispatch = useAppDispatch();
 
     const navigate = useNavigate();
 
@@ -24,15 +30,34 @@ export default function SignIn() {
         }
 
         try {
+
+            console.log(users);
+            
             
             const validation = await signInScheme.validate(formData, {
                 abortEarly : false
             })
 
-            setUsernameError(undefined);
-            setPasswordError(undefined);
-
-            navigate("/user1")
+            if (users) {
+                const isRightUsername = users.some(item => item.username === validation.username);
+                console.log(isRightUsername);
+                
+                if (isRightUsername) {
+                    const currentUser = users.find(item => item.password === validation.password);
+                    console.log(currentUser);
+                    
+                    if (currentUser) {
+                        dispatch(setUser(currentUser));
+                        navigate("/feed")
+                        setUsernameError(undefined);
+                        setPasswordError(undefined);  
+                    }else{
+                        throw new ValidationError("Incorrect Password");
+                    }
+                }else {
+                    throw new ValidationError("Incorrect Username");
+                }
+            }
 
         } catch (error : unknown) {
             

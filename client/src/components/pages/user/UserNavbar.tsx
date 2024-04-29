@@ -9,13 +9,13 @@ export default function UserNavbar() {
                 <p className="text-zinc-400 text-sm-14">Singer-songwriter</p>
             </div>
             <div className="flex gap-[40px]">
-                <Link to={"/user1/userPage"}>
+                <Link to={"/feed/userPage"}>
                     <p className="text-zinc-700 font-medium transition hover:text-sky-600">Timeline</p>
                 </Link>
-                <Link to={"/user1/photos"}>
+                <Link to={"/feed/photos"}>
                     <p className="text-zinc-700 font-medium transition hover:text-sky-600">Photos</p>
                 </Link>
-                <Link to={"/user1/friends"}>
+                <Link to={"/feed/friends"}>
                     <p className="text-zinc-700 font-medium transition hover:text-sky-600">Friends</p>
                 </Link>
             </div>

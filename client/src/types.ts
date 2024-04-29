@@ -1,28 +1,39 @@
 export type ID = string | number;
 
 export interface IUser {
-    name?: string,
-    surname: string,
-    email: string,
-    imageSrc: string,
-    status: string
+    id : ID,
+    name : string,
+    surname : string,
+    username : string,
+    avatar : string,
+    status : string,
+    password : string, 
+    posts : ID[],
+    isLoggedIn : boolean,
+    friends : ID[]
 }
+
 export interface IComment {
     id : ID,
-    message : string,
+    postId : ID,
+    replyTo : ID,
     from : ID,
-    replyedTo : string,
-    replies? : IComment[]
+    message : string
 }
 
 export interface IPost {
-    id : string,
-    user: IUser ,
-    message: string ,
+    id : ID,
+    userID: ID ,
+    message: string,
     date: number,
-    files : string[] ,
-    comments : IComment[] ,
+    files : string[],
     likes : number,
     watches: number,
-    dislikes : number,
-  }
+    dislikes : number
+}
+
+export interface IPhoto {
+    id : ID,
+    userId : ID,
+    src : string
+}
