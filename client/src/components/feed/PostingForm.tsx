@@ -3,11 +3,9 @@ import admin from "../../assets/admin.jpg"
 
 export default function PostingForm() {
   return (
-    <div className="max-w-[600px] h-[160px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] flex justify-between rounded-md">
-        <div className="w-[60px] h-[60px]">
+    <div className="2xl:max-w-[600px] xl:max-w-[480px] h-[160px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] flex gap-5 justify-between rounded-md">
           <img src={admin} alt="admin" className="w-[60px] h-[60px] rounded-full" />
-        </div>
-        <div className="w-[470px] h-[110px] bg-white border border-zinc-100 rounded-md p-[10px] relative">
+        <div className="w-full xl:max-w-[420px] h-[110px] bg-white border border-zinc-100 rounded-md p-[10px] relative">
           <textarea className="resize-none w-full outline-none" placeholder="write something" />
           <div className="w-[200px] flex justify-between absolute right-[10px] items-center">
             <label htmlFor="music" className="text-zinc-600 cursor-pointer">

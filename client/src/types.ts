@@ -18,10 +18,10 @@ export interface IComment {
 export interface IPost {
     id : string,
     user: IUser ,
-    message: string
+    message: string ,
     date: number,
-    files : string[]
-    comments : IComment[]
+    files : string[] ,
+    comments : IComment[] ,
     likes : number,
     watches: number,
     dislikes : number,

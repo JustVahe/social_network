@@ -2,6 +2,7 @@ import Navbar from "../Navbar";
 import UserFeed from "./user/UserFeed";
 import Footer from "../Footer";
 import UserNavbar from "./user/UserNavbar";
+import PhotoFeed from "./photos/PhotoFeed";
 
 
 export default function User({page} : {page : string}) {
@@ -16,7 +17,8 @@ export default function User({page} : {page : string}) {
         </section>
         <div className="container">
             {
-              page === "timeline" ? <UserFeed /> : ""
+              (page === "timeline") ? <UserFeed /> :
+              (page === "photos") ? <PhotoFeed /> : ""
             }
         </div>
         <Footer />

@@ -56,7 +56,7 @@ const friends = [
 
 export default function MenuRightFriends() {
   return (
-    <div className="w-[70px] h-svh bg-white fixed top-0 right-0 z-10 shadow-xl shadow-zinc-300 flex justify-center">
+    <div className="hidden w-[70px] h-svh bg-white fixed top-0 right-0 z-10 shadow-xl shadow-zinc-300 lg:flex justify-center">
         <div className="mt-[90px] h-[570px] overflow-y-scroll no-scrollbar flex flex-col justify-between">
           {
             friends && friends.map(item => {

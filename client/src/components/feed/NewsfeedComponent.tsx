@@ -2,6 +2,7 @@ import Post from "./post/Post";
 import admin from "../../assets/admin.jpg"
 import userPost from "../../assets/user-post.jpg"
 import { IPost } from "../../types";
+import { v4 } from "uuid";
 
 const postData : IPost = {
   id : "kovnOHUBC",
@@ -41,8 +42,8 @@ const postData : IPost = {
 
 export default function NewsfeedComponent() {
   return (
-    <div className="max-w-[600px] flex flex-col gap-[20px]">
-        <Post postData={postData}/>
+    <div className="2xl:max-w-[600px] xl:xl:max-w-[480px] flex flex-col gap-[20px]">
+        <Post postData={postData} key={v4()}/>
     </div>
   )
 }

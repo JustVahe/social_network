@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { IPost } from "../../../types";
 import AvatarDisplay from "./AvatarDisplay";
 import CommentList from "./CommentList";
@@ -11,7 +12,7 @@ export default function Post({postData} : {postData : IPost}) {
           postData.files.map(
             item => {
               if (item.endsWith("jpg") || item.endsWith("png") || item.endsWith("svg") || item.endsWith("webp")) {
-                return <img src={item}></img>
+                return <img key={v4()} src={item}></img>
               }
             }
           )

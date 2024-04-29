@@ -4,21 +4,22 @@ import PostingForm from "./PostingForm";
 import Shortcuts from "./Shortcuts";
 
 export default function Feed() {
+
   return (
    <>
-      <div className="container relative">
-          <div className='grid grid-cols-4 gap-5 mt-[100px]'>
-              <div className="grid w-[290px] gap-5">
-                  <Shortcuts />
-              </div>
-              <div className="grid col-span-2 w-[600px] gap-5 content-start">
-                  <PostingForm />
-                  <NewsfeedComponent />
-              </div>
-              <div className="grid w-[290px] gap-5">
-                  <Friends />
-              </div>
-          </div>
+      <div className="container relative mt-[100px]">
+        <div className="w-full grid gap-5 lg:grid-cols-1 xl:grid-cols-[[first]_140px_[line2]_150px_[line3]_auto_[col4-start]_150px_[five]_140px_[end]]">
+            <div className="xl:col-span-2 gap-5 sm:col-span-1">
+                <Shortcuts />
+            </div>
+            <div className="flex flex-col gap-5 sm:col-span-1">
+                <PostingForm />
+                <NewsfeedComponent />
+            </div>
+            <div className="xl:col-span-2 gap-5 sm:col-span-1">
+                <Friends />
+            </div>
+        </div>
       </div>
    </> 
     

@@ -13,7 +13,7 @@
   }
 
   .container {
-    @apply w-[1215px] mx-auto my-[30px];
+    @apply 2xl:w-[1215px] xl:w-[1120px] lg:w-[900px] md:w-[700px] w-full sm:mx-auto my-[30px];
   }
 }
 

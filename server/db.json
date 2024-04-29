@@ -1,0 +1,138 @@
+{
+    "users" : [
+        {
+            "id" : "hgbfdcxvbzsf",
+            "name" : "Janis",
+            "surname" : "Joplin",
+            "username" : "itsjoplin",
+            "avatar" : "/demo/janisJoplin/avatar.jpg",
+            "status" : "online",
+            "password" : "cGllY2VvZm15aGVhcnQ=", 
+            "posts" : [
+                "itsjoplin-post1"
+            ],
+            "isLoggedIn" : "false",
+            "friends" : [
+                "gghnhfghhnr",
+                "oiujkjhmg",
+                "bfvbfgdvbbfcfdv"
+            ]
+        },
+        {
+            "id" : "gghnhfghhnr",
+            "name" : "Amy",
+            "surname" : "Winehouse",
+            "username" : "winehouse",
+            "avatar" : "/demo/amyWinehouse/avatar.webp",
+            "status" : "online",
+            "password" : "gfgbgbhgfg=", 
+            "posts" : [],
+            "isLoggedIn" : "false",
+            "friends" : [
+                "hgbfdcxvbzsf",
+                "oiujkjhmg",
+                "bfvbfgdvbbfcfdv"
+            ]
+        },
+        {
+            "id" : "oiujkjhmg",
+            "name" : "Jimi",
+            "surname" : "Hendricks",
+            "username" : "jimishere",
+            "avatar" : "/demo/jimiHendrix/avatar.jpg",
+            "status" : "offline",
+            "password" : "hfgdfgdfsbgffh=", 
+            "posts" : [],
+            "isLoggedIn" : "false",
+            "friends" : [
+                "hgbfdcxvbzsf",
+                "gghnhfghhnr",
+                "bfvbfgdvbbfcfdv"
+            ]
+        },
+        {
+            "id" : "bfvbfgdvbbfcfdv",
+            "name" : "Ray",
+            "surname" : "Charles",
+            "username" : "raycharles",
+            "avatar" : "/demo/rayCharles/avatar.jpg",
+            "status" : "online",
+            "password" : "cGllY2VvZm15aGVhcnQ=", 
+            "posts" : [],
+            "isLoggedIn" : "false",
+            "friends" : [
+                "hgbfdcxvbzsf",
+                "gghnhfghhnr",
+                "oiujkjhmg"
+            ]
+        }
+    ],
+    "posts" : [
+        {
+            "id" : "itsjoplin-post1",
+            "userID": "hgbfdcxvbzsf" ,
+            "message": "The night in Woodstock was amazing!",
+            "date": "1714245536551",
+            "files" : [
+                "/demo/janisJoplin/post-images/post1.jpg"
+            ],
+            "likes" : "357000",
+            "watches": "24567800",
+            "dislikes" : "50"
+        }
+    ],
+    "comments" : [
+        {
+            "id" : "bfvbfgdvbbfcfdv",
+            "postId" : "itsjoplin-post1",
+            "replyTo" : "itsjoplin-post1",
+            "from" : "bvccvbfdsdfbdsbv",
+            "message" : "Let's go!!"
+        },{
+            "id" : "poljnmhvhhj",
+            "postId" : "itsjoplin-post1",
+            "replyTo" : "itsjoplin-post1",
+            "from" : "oiujkjhmg",
+            "message" : "Janis i love you. Please let's date."
+        },{
+            "id" : "aasxadsxxsdf",
+            "postId" : "itsjoplin-post1",
+            "replyTo" : "itsjoplin-post1",
+            "from" : "gghnhfghhnr",
+            "message" : "It's was nice to meet you!"
+        },{
+            "id" : "kogjfnbrinbib",
+            "postId" : "itsjoplin-post1",
+            "replyTo" : "aasxadsxxsdf",
+            "from" : "hgbfdcxvbzsf",
+            "message" : "Same!"
+        }
+    ],
+    "photos" : [
+        {
+            "id" : "rdgfbfdg",
+            "userId" : "hgbfdcxvbzsf",
+            "src" : "/demo/janisJoplin/userPhotoes/janis1.webp"
+        },{
+            "id" : "fvffvbfdfvbfdv",
+            "userId" : "hgbfdcxvbzsf",
+            "src" : "/demo/janisJoplin/userPhotoes/janis2.jpg"
+        },{
+            "id" : "kyukukjhgvbf",
+            "userId" : "hgbfdcxvbzsf",
+            "src" : "/demo/janisJoplin/userPhotoes/janis3.jpg"
+        },{
+            "id" : "fvffvbfdfvbfdv",
+            "userId" : "hgbfdcxvbzsf",
+            "src" : "/demo/janisJoplin/userPhotoes/janis4.webp"
+        },{
+            "id" : "tewghthbffd",
+            "userId" : "hgbfdcxvbzsf",
+            "src" : "/demo/janisJoplin/userPhotoes/janis5.jpg"
+        },{
+            "id" : "vzcxbvcv",
+            "userId" : "hgbfdcxvbzsf",
+            "src" : "/demo/janisJoplin/userPhotoes/janis6.avif"
+        }
+    ]
+}
