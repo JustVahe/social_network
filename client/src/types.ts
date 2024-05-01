@@ -5,12 +5,15 @@ export interface IUser {
     name : string,
     surname : string,
     username : string,
+    email: string,
     avatar : string,
+    headerImg : string,
     status : string,
     password : string, 
     posts : ID[],
     isLoggedIn : boolean,
-    friends : ID[]
+    friends : ID[],
+    requests : ID[]
 }
 
 export interface IComment {

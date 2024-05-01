@@ -1,9 +1,12 @@
-import Friends from "./Friends";
+import { useParams } from "react-router-dom";
+import Friends from "../friends/Friends";
 import NewsfeedComponent from "./NewsfeedComponent";
 import PostingForm from "./PostingForm";
 import Shortcuts from "./Shortcuts";
 
 export default function Feed() {
+
+  const {id} = useParams();
 
   return (
    <>
@@ -12,9 +15,11 @@ export default function Feed() {
             <div className="xl:col-span-2 gap-5 sm:col-span-1">
                 <Shortcuts />
             </div>
-            <div className="flex flex-col gap-5 sm:col-span-1">
+            <div className="grid sm:col-span-1 w-full gap-5 content-start">
                 <PostingForm />
-                <NewsfeedComponent />
+                {
+                  id && <NewsfeedComponent id={id}/>
+                }
             </div>
             <div className="xl:col-span-2 gap-5 sm:col-span-1">
                 <Friends />
