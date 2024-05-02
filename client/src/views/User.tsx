@@ -1,6 +1,6 @@
 import Navbar from "../components/menu/Navbar";
 import UserFeed from "../components/UserFeed";
-import Footer from "../components/menu/Footer";
+import Footer from "../components/Footer";
 import UserNavbar from "../components/UserNavbar";
 import PhotoFeed from "../components/photoPageComponents/PhotoFeed";
 import { useParams } from "react-router-dom";

@@ -1,15 +1,16 @@
 import { Link, useParams } from 'react-router-dom'
 import { useAppSelector } from '../redux/typedHooks';
-import { selectUsers } from '../redux/slices/userSlice';
 import { TfiMenu } from 'react-icons/tfi';
 import { useState } from 'react';
+import { selectUsers } from '../redux/slices/userSlice';
+import { selectCurrentUser } from '../redux/slices/currentUserSlice';
 
 export default function UserNavbar() {
 
     const {id} = useParams();
-
-    const users = useAppSelector(selectUsers);
-    const thisUser = users.find(item => item.id === id);
+    const user = useAppSelector(selectUsers);
+    const thisUser = user.find(item => item.id === id);
+    const currentUser = useAppSelector(selectCurrentUser);
     const [dropdownToggle, setDropdownToggle] = useState(false);
 
     return (
@@ -21,16 +22,16 @@ export default function UserNavbar() {
                       <p className="text-zinc-400 text-sm-14">Singer-songwriter</p>
                     </div>
                     <div className='hidden md:flex md:items-center md:gap-[20px]'>
-                        <Link to={"/"+thisUser?.id+"/userPage/"}>
+                        <Link to={"/"+id+"/userPage/"}>
                           <p className="text-zinc-700 font-medium transition hover:text-sky-600">Timeline</p>
                         </Link>
-                        <Link to={"/"+thisUser?.id+"/photos"}>
+                        <Link to={"/"+id+"/photos"}>
                             <p className="text-zinc-700 font-medium transition hover:text-sky-600">Photos</p>
                         </Link>
-                        <Link to={"/"+thisUser?.id+"/friends"}>
+                        <Link to={"/"+id+"/friends"}>
                             <p className="text-zinc-700 font-medium transition hover:text-sky-600">Friends</p>
                         </Link>
-                        <Link to={"/"+thisUser?.id+"/messages"}>
+                        <Link to={"/"+id+"/messages"}>
                             <p className="text-zinc-700 font-medium transition hover:text-sky-600">Messages</p>
                         </Link>
                     </div>
@@ -38,15 +39,21 @@ export default function UserNavbar() {
                             onClick={() => setDropdownToggle(prev => !prev)}>
                         <TfiMenu />
                         <div className={'absolute w-[100px] bg-sky-600 top-[60px] ' + (dropdownToggle ? "block" : "hidden")}>
-                            <Link to={"/feed/"+thisUser?.id}>
+                            <Link to={"/"+id+"/userPage/"}>
                               <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Timeline</p>
                             </Link>
-                            <Link to={"/feed/"+thisUser?.id+"/photos"}>
+                            <Link to={"/"+id+"/photos"}>
                                 <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Photos</p>
                             </Link>
-                            <Link to={"/feed/"+thisUser?.id+"/friends"}>
+                            <Link to={"/"+id+"/friends"}>
                                 <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Friends</p>
                             </Link>
+                            {
+                                currentUser && (currentUser.id === id ? 
+                                <Link to={"/"+id+"/messages"}>
+                                    <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Messages</p>
+                                </Link> : "")
+                            }
                         </div>
                     </button>
                 </div>

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import Footer from "../components/menu/Footer";
+import Footer from "../components/Footer";
 import Menu from "../components/menu/Menu";
 import Feed from "../components/feed/Feed";
 import { selectUsers } from "../redux/slices/userSlice";

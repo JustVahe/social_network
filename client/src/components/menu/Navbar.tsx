@@ -22,17 +22,17 @@ export default function Navbar() {
                         <img src="/logo.png"/>
                     </Link>
                     <div className="w-[300px] hidden justify-between lg:flex">
-                        <Link to={`/${currentUser?.id}/userPage`}>
+                        <Link to={`/${currentUser?.id}/photos`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
-                                Images <span className="text-sm-11"><FaChevronDown /></span>
+                                Photos <span className="text-sm-11"><FaChevronDown /></span>
                             </p>
                         </Link>
-                        <Link to={`/${currentUser?.id}/`}>
+                        <Link to={`/${currentUser?.id}/friends`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Friends <span className="text-sm-11"><FaChevronDown /></span>
                             </p>
                         </Link>
-                        <Link to="/feed/messages">
+                        <Link to={`/${currentUser?.id}/messages`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Messages <span className="text-sm-11"><FaChevronDown /></span>
                             </p>
@@ -58,9 +58,18 @@ export default function Navbar() {
                     </div>
                 </nav>
                 <div className={"lg:hidden fixed w-full bg-sky-600 top-[-132px] left-0 z-10 flex flex-col transition-all " + (dropdown ? "top-[69px]" : "")}>
-                    <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Images</button>
-                    <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Friends</button>
-                    <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Messages</button>
+                <Link to={`/${currentUser?.id}/userPage`}>
+                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Timeline</button>
+                    </Link>
+                    <Link to={`/${currentUser?.id}/photos`}>
+                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Photos</button>
+                    </Link>
+                    <Link to={`/${currentUser?.id}/friends`}>
+                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Friends</button>
+                    </Link>
+                    <Link to={`/${currentUser?.id}/messages`}>
+                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Messages</button>
+                    </Link>
                 </div>
                 </>
             }
