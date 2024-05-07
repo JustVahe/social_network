@@ -8,6 +8,7 @@ import { useAppSelector } from "../redux/typedHooks";
 import { selectUsers } from "../redux/slices/userSlice";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
+import UserEditButtons from "../components/buttons/UserEditButtons.tsx";
 
 
 export default function User({page} : {page : string}) {
@@ -20,8 +21,9 @@ export default function User({page} : {page : string}) {
   return (
     <>
         <Navbar />
-        <header className="w-full h-[530px] overflow-hidden">
+        <header className="w-full h-[530px] overflow-hidden relative">
             <img src={thisUser?.headerImg} className="object-cover w-full h-[530px] object-top"/>
+            <UserEditButtons />
         </header>
         {
           id && <>
