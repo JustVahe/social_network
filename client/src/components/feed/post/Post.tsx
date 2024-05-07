@@ -5,6 +5,7 @@ import CommentList from "./CommentList";
 import Likes from "./Likes";
 import { useAppSelector } from "../../../redux/typedHooks";
 import { selectComment } from "../../../redux/slices/commentSlice";
+import MessageSendingBar from "../../forms/MessageBar";
 
 export default function Post({postData, avatar} : {postData : IPost, avatar : string | undefined}) {
 
@@ -34,6 +35,7 @@ export default function Post({postData, avatar} : {postData : IPost, avatar : st
           {postData.message}
         </p>
         <CommentList comments={commentsOfThisPost} />
+        <MessageSendingBar type="comment" />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, NavLink, useParams } from 'react-router-dom'
 import { useAppSelector } from '../redux/typedHooks';
 import { TfiMenu } from 'react-icons/tfi';
 import { useState } from 'react';
@@ -22,18 +22,26 @@ export default function UserNavbar() {
                       <p className="text-zinc-400 text-sm-14">Singer-songwriter</p>
                     </div>
                     <div className='hidden md:flex md:items-center md:gap-[20px]'>
-                        <Link to={"/"+id+"/userPage/"}>
-                          <p className="text-zinc-700 font-medium transition hover:text-sky-600">Timeline</p>
-                        </Link>
-                        <Link to={"/"+id+"/photos"}>
-                            <p className="text-zinc-700 font-medium transition hover:text-sky-600">Photos</p>
-                        </Link>
-                        <Link to={"/"+id+"/friends"}>
-                            <p className="text-zinc-700 font-medium transition hover:text-sky-600">Friends</p>
-                        </Link>
-                        <Link to={"/"+id+"/messages"}>
-                            <p className="text-zinc-700 font-medium transition hover:text-sky-600">Messages</p>
-                        </Link>
+                        <NavLink to={"/"+id+"/userPage/"}>
+                            {({isActive}) => {
+                                return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Timeline</p>
+                            }}
+                        </NavLink>
+                        <NavLink to={"/"+id+"/photos"}>
+                            {({isActive}) => {
+                                return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Photos</p>
+                            }}
+                        </NavLink>
+                        <NavLink to={"/"+id+"/friends"}>
+                            {({isActive}) => {
+                                return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Friends</p>
+                            }}
+                        </NavLink>
+                        <NavLink to={"/"+id+"/messages"}>
+                            {({isActive}) => {
+                                return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Messages</p>
+                            }}
+                        </NavLink>
                     </div>
                     <button className='w-10 h-10 grid place-items-center md:hidden text-xl text-zinc-400 relative'
                             onClick={() => setDropdownToggle(prev => !prev)}>

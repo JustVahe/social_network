@@ -1,5 +1,5 @@
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import SignIn from "../components/forms/SignIn";
+import SignUp from "../components/forms/SignUp";
 
 const WelcomePage = ({type} : {type : string}) => {
 

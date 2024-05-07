@@ -1,14 +1,15 @@
-import { FaChevronDown} from "react-icons/fa"
 import { TfiHome, TfiMenu, TfiSearch} from "react-icons/tfi"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { useAppSelector } from "../../redux/typedHooks"
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice"
 import AdminDropdown from "../buttons/AdminDropdown"
+import Searchbar from "../forms/Searchbar"
 
 export default function Navbar() {
 
     const [dropdown, setDropdown] = useState<boolean>(false);
+    const [searchToggle, setSearchToggle] = useState<boolean>(false);
     const [userToggle, setUserToggle] = useState<boolean>(false);
 
     const currentUser = useAppSelector(selectCurrentUser);
@@ -24,27 +25,30 @@ export default function Navbar() {
                     <div className="w-[300px] hidden justify-between lg:flex">
                         <Link to={`/${currentUser?.id}/photos`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
-                                Photos <span className="text-sm-11"><FaChevronDown /></span>
+                                Photos
                             </p>
                         </Link>
                         <Link to={`/${currentUser?.id}/friends`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
-                                Friends <span className="text-sm-11"><FaChevronDown /></span>
+                                Friends
                             </p>
                         </Link>
                         <Link to={`/${currentUser?.id}/messages`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
-                                Messages <span className="text-sm-11"><FaChevronDown /></span>
+                                Messages
                             </p>
                         </Link>
                     </div>
                     <div className="w-[75px] flex justify-between text-lg">
-                        <button className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
+                        <button onClick={() => setSearchToggle(prev => !prev)} className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
                             <TfiSearch />
                         </button>
-                        <button className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
-                            <TfiHome />
-                        </button>
+                        <Searchbar searchToggle={searchToggle} />
+                        <Link to={`/${currentUser?.id}/feed`}>
+                            <p className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
+                                <TfiHome />
+                            </p>
+                        </Link>
                     </div>
                     <div className="w-[100px] flex justify-between items-center">
                         <button onClick={() => setUserToggle(prev => !prev)} className="relative">
@@ -59,16 +63,16 @@ export default function Navbar() {
                 </nav>
                 <div className={"lg:hidden fixed w-full bg-sky-600 top-[-132px] left-0 z-10 flex flex-col transition-all " + (dropdown ? "top-[69px]" : "")}>
                 <Link to={`/${currentUser?.id}/userPage`}>
-                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Timeline</button>
+                        <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Timeline</button>
                     </Link>
                     <Link to={`/${currentUser?.id}/photos`}>
-                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Photos</button>
+                        <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Photos</button>
                     </Link>
                     <Link to={`/${currentUser?.id}/friends`}>
-                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Friends</button>
+                        <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Friends</button>
                     </Link>
                     <Link to={`/${currentUser?.id}/messages`}>
-                        <button className="p-[10px] text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Messages</button>
+                        <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Messages</button>
                     </Link>
                 </div>
                 </>

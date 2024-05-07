@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom"
 import { ChangeEvent, FormEvent, useState } from "react";
-import { signInScheme } from "../validations/SignInValidation";
+import { signInScheme } from "../../validations/SignInValidation";
 import { ValidationError } from "yup";
-import { useAppDispatch, useAppSelector } from "../redux/typedHooks";
-import { selectUsers } from "../redux/slices/userSlice";
-import { setUser } from "../redux/slices/currentUserSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
+import { selectUsers } from "../../redux/slices/userSlice";
+import { setUser } from "../../redux/slices/currentUserSlice";
 
 export default function SignIn() {
 

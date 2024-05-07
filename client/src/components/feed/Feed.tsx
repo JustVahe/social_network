@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Friends from "../friends/Friends";
 import NewsfeedComponent from "./NewsfeedComponent";
-import PostingForm from "./PostingForm";
+import PostingForm from "../forms/PostingForm";
 import Shortcuts from "./Shortcuts";
 
 export default function Feed() {

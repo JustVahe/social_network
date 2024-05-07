@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { ChangeEvent, FormEvent, useState} from "react";
-import { signUpScheme } from "../validations/SignUpValidation";
+import { signUpScheme } from "../../validations/SignUpValidation";
 import { ValidationError } from "yup";
 
 export default function SignUp() {
