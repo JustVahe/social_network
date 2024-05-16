@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom"
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { signInScheme } from "../../validations/SignInValidation";
 import { ValidationError } from "yup";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectUsers } from "../../redux/slices/userSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
+import { setPost } from "../../redux/slices/postSlice";
 
 export default function SignIn() {
 
@@ -12,6 +13,14 @@ export default function SignIn() {
     const dispatch = useAppDispatch();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch("http://localhost:8000/api/posts")
+        .then((res) => res.json())
+            .then(data => {
+                dispatch(setPost(data));
+            })
+      }, [dispatch])
 
     const [usernameError, setUsernameError] = useState<{ message: string } | undefined>();
     const [passwordError, setPasswordError] = useState<{ message: string } | undefined>();
@@ -42,7 +51,7 @@ export default function SignIn() {
                     
                     if (currentUser) {
                         dispatch(setUser(currentUser));
-                        navigate("/"+currentUser.id+"/feed/");
+                        navigate("/redirect/");
                         setUsernameError(undefined);
                         setPasswordError(undefined);  
                     }else{

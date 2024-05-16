@@ -21,7 +21,8 @@ export interface IComment {
     postId : ID,
     replyTo : ID,
     from : ID,
-    message : string
+    message : string,
+    date: number
 }
 
 export interface IPost {
@@ -29,7 +30,7 @@ export interface IPost {
     userID: ID ,
     message: string,
     date: number,
-    files : string[],
+    files : ID[],
     likes : number,
     watches: number,
     dislikes : number
