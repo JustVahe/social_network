@@ -11,25 +11,23 @@ export interface IUser {
     status : string,
     password : string, 
     posts : ID[],
-    isLoggedIn : boolean,
     friends : ID[],
     requests : ID[]
 }
 
 export interface IComment {
     id : ID,
-    postId : ID,
     replyTo : ID,
     from : ID,
     message : string,
-    date: number
+    date: string
 }
 
 export interface IPost {
     id : ID,
-    userID: ID ,
+    from: ID ,
     message: string,
-    date: number,
+    date: string,
     files : ID[],
     likes : number,
     watches: number,
@@ -40,4 +38,12 @@ export interface IPhoto {
     id : ID,
     userId : ID,
     src : string
+}
+
+export interface IMessage{
+    id: ID,
+    from: ID,
+    to: ID,
+    message: string,
+    date: string
 }
