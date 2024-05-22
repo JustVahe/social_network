@@ -36,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {message: "Username is required"},
-        notEmpty: {message: "Username is required"}
-      }
+      allowNull: true,
+      // validate: {
+      //   notNull: {message: "Username is required"},
+      //   notEmpty: {message: "Username is required"}
+      // }
     },
     email: {
       type: DataTypes.STRING,
@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    tableName: "user",
+    tableName: "users",
     modelName: 'User',
   });
   return User;
