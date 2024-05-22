@@ -9,8 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({ File }) {
+      this.hasMany(File, { foreignKey: "user_id", as: "files" });
+    }
+
+    toJSON() {
+      return { ...this.get(), id: undefined }
     }
   }
   User.init({
@@ -22,42 +26,46 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: {message: "Name is required"},
-        notEmpty: {message: "Name is required"}
+        notNull: { message: "Name is required" },
+        notEmpty: { message: "Name is required" }
       }
     },
     surname: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: {message: "Surname is required"},
-        notEmpty: {message: "Surname is required"}
+        notNull: { message: "Surname is required" },
+        notEmpty: { message: "Surname is required" }
       }
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: true,
-      // validate: {
-      //   notNull: {message: "Username is required"},
-      //   notEmpty: {message: "Username is required"}
-      // }
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: {message: "Email is required"},
-        notEmpty: {message: "Email is required"},
-        isEmail: {message: "Email is not valid"}
+        notNull: { message: "Email is required" },
+        notEmpty: { message: "Email is required" },
+        isEmail: { message: "Email is not valid" }
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: {message: "Email is required"},
-        notEmpty: {message: "Email is required"},
+        notNull: { message: "Email is required" },
+        notEmpty: { message: "Email is required" },
       }
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      defaultValue: "./assets/defaultAvatar.jpg"
+    },
+    headerImg: {
+      type: DataTypes.STRING,
+      defaultValue: "./assets/defaultHeader.jpg"
     }
   }, {
     sequelize,
