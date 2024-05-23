@@ -5,12 +5,9 @@ module.exports = {
     await queryInterface.createTable('comments', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
-      },
-      comment_id: {
-        type: DataTypes.UUID
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       },
       user_id: {
         type: DataTypes.UUID,

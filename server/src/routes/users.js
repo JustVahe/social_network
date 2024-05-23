@@ -20,14 +20,15 @@ router.get("/", async (request, response) => {
 
 });
 
-router.get("/:user_id", async (request, response) => {
+router.get("/:id", async (request, response) => {
 
     try {
 
-        const { user_id } = request.params;
+        const { id } = request.params;
 
         const user = await User.findOne({
-            where: { user_id }
+            where: { id },
+            include: ["posts"]
         });
 
         return response.status(200).send(user);
@@ -41,18 +42,18 @@ router.get("/:user_id", async (request, response) => {
 
 });
 
-router.put("/:user_id", async (request, response) => {
+router.put("/:id", async (request, response) => {
 
     try {
 
-        const { user_id } = request.params;
+        const { id } = request.params;
 
         // const { name, surname, username, email, password, avatar, headerImg } = request.body;
 
         const body = request.body;
 
         const user = await User.findOne({
-            where: { user_id }
+            where: { id }
         });
 
         Object.keys(body).forEach(item => {
@@ -74,14 +75,14 @@ router.put("/:user_id", async (request, response) => {
 
 });
 
-router.delete("/:user_id", async (request, response) => {
+router.delete("/:id", async (request, response) => {
 
     try {
 
-        const { user_id } = request.params;
+        const { id } = request.params;
 
         const user = await User.findOne({
-            where: { user_id }
+            where: { id }
         });
 
         user.destroy();

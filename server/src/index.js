@@ -12,10 +12,10 @@ const PORT = process.env.PORT || 4000;
 // auth route
 
 app.use("/auth", require("./routes/auth"));
-app.use("/dashboard", require("./routes/dashboard"))
-app.use("/users", require("./routes/users"))
+app.use("/dashboard", require("./routes/dashboard"));
+app.use("/users", require("./routes/users"));
+app.use("/posts", require("./routes/posts"));
 
 app.listen( PORT ,() => {
     console.log(`Server is running on http://localhost:${PORT}`);
 })
-

@@ -8,8 +8,10 @@ router.get("/", authorization, async (request, response) => {
 
         const user = await User.findOne({
             where : {
-                user_id: request.userId
-            }
+                id: request.userId
+            },
+            attributes: {exclude: "id"},
+            include: ["posts", "files"]
         })
 
         return response.status(200).json(user);

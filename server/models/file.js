@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   File.init({
-    file_id: {
+    id: {
+      allowNull: false,
+      primaryKey: true,
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },

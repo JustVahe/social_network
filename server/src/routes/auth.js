@@ -26,10 +26,10 @@ router.post("/register", async (request, response) => {
         const encryptedPassword = await bcrypt.hash(password, salt);
 
         const newUser = await User.create({
-            name, surname, email, username: "@" + name.toLowerCase() , password: encryptedPassword
+            name, surname, email, username: "@" + name.toLowerCase(), password: encryptedPassword
         })
 
-        const token = jwtGenerator(newUser.user_id);
+        const token = jwtGenerator(newUser.id);
         response.json({ token });
 
     } catch (error) {
@@ -77,7 +77,7 @@ router.get("/login", async (request, response) => {
 router.get("/verify", authorization, (request, response) => {
 
     try {
-        response.json(true);    
+        response.json(true);
     } catch (error) {
         return response.status(500).json(error);
     }

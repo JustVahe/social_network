@@ -5,12 +5,9 @@ module.exports = {
     await queryInterface.createTable('replies', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
-      },
-      reply_id: {
-        type: DataTypes.UUID
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       },
       user_id: {
         type: DataTypes.UUID

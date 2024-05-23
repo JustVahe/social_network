@@ -14,12 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Friend.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
     user_id: {
       type: DataTypes.UUID,
       allowNull: false
-    },
-    friend_id: {
-      type: DataTypes.UUID,
     },
     status: {
       type: DataTypes.ENUM("pending","approved","rejected"),

@@ -5,11 +5,7 @@ module.exports = {
     await queryInterface.createTable('files', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
-      },
-      file_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4
       },

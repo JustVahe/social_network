@@ -10,16 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({ File, Post }) {
-      this.hasMany(File, { foreignKey: "id", as: "files" });
-      this.hasMany(Post, { foreignKey: "id", as: "posts" });
+      this.hasMany(File, { foreignKey: "user_id", as: "files" });
+      this.hasMany(Post, { foreignKey: "user_id", as: "posts" });
     }
 
-    toJSON() {
-      return { ...this.get(), id: undefined }
-    }
   }
   User.init({
-    user_id: {
+    id: {
+      allowNull: false,
+      primaryKey: true,
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
