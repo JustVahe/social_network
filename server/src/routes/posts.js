@@ -6,7 +6,7 @@ router.get("/", async (request, response) => {
     try {
 
         const posts = await Post.findAll({
-            include: ["user"]
+            include: ["user", "comments", "files"]
         })
 
         return response.status(200).json(posts);
@@ -28,7 +28,7 @@ router.get("/:id", async (request, response) => {
 
         const thisPost = await Post.findOne({
             where: { id },
-            include: ["user"]
+            include: ["user", "comments", "files"]
         });
 
         return response.status(200).json(thisPost);

@@ -6,7 +6,7 @@ router.get("/", async (request, response) => {
     try {
 
         const users = await User.findAll({
-            include: ["files", "posts"]
+            include: ["files", "posts", "comments"]
         });
 
         return response.status(200).send(users);
@@ -28,7 +28,7 @@ router.get("/:id", async (request, response) => {
 
         const user = await User.findOne({
             where: { id },
-            include: ["posts"]
+            include: ["files", "posts", "comments"]
         });
 
         return response.status(200).send(user);
@@ -47,8 +47,6 @@ router.put("/:id", async (request, response) => {
     try {
 
         const { id } = request.params;
-
-        // const { name, surname, username, email, password, avatar, headerImg } = request.body;
 
         const body = request.body;
 
