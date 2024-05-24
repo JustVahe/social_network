@@ -27,7 +27,7 @@ router.get("/:id", async (request, response) => {
 
         const comments = await Comment.findOne({
             include: ["replies", "user", "post"],
-            where: { id }
+            where: { post_id : id }
         });
 
     } catch (error) {
