@@ -5,6 +5,7 @@ import { useAppSelector } from "../../redux/typedHooks"
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice"
 import AdminDropdown from "../buttons/AdminDropdown"
 import Searchbar from "../forms/Searchbar"
+import { IUser } from "../../types"
 
 export default function Navbar() {
 
@@ -12,28 +13,28 @@ export default function Navbar() {
     const [searchToggle, setSearchToggle] = useState<boolean>(false);
     const [userToggle, setUserToggle] = useState<boolean>(false);
 
-    const currentUser = useAppSelector(selectCurrentUser);
-    
+    const currentUser : IUser | null = useAppSelector(selectCurrentUser);
+
     return (
         <>
             {
                 currentUser && <>
                     <nav className="w-full px-[20px] p-[12px] flex justify-between shadow-zinc-300 shadow-sm items-center bg-white fixed z-50 top-0">
-                    <Link to={`/${currentUser?.id}/feed`}>
+                    <Link to={`/dashboard`}>
                         <img src="/logo.png"/>
                     </Link>
                     <div className="w-[300px] hidden justify-between lg:flex">
-                        <Link to={`/${currentUser?.id}/photos`}>
+                        <Link to={`/${currentUser?.username}`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Photos
                             </p>
                         </Link>
-                        <Link to={`/${currentUser?.id}/friends`}>
+                        <Link to={`/${currentUser?.username}`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Friends
                             </p>
                         </Link>
-                        <Link to={`/${currentUser?.id}/messages`}>
+                        <Link to={`/${currentUser?.username}`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Messages
                             </p>
@@ -44,7 +45,7 @@ export default function Navbar() {
                             <TfiSearch />
                         </button>
                         <Searchbar searchToggle={searchToggle} />
-                        <Link to={`/${currentUser?.id}/feed`}>
+                        <Link to={`/dashboard`}>
                             <p className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
                                 <TfiHome />
                             </p>
@@ -62,16 +63,16 @@ export default function Navbar() {
                     </div>
                 </nav>
                 <div className={"lg:hidden fixed w-full bg-sky-600 top-[-132px] left-0 z-10 flex flex-col transition-all " + (dropdown ? "top-[69px]" : "")}>
-                <Link to={`/${currentUser?.id}/userPage`}>
+                <Link to={`/${currentUser?.username}`}>
                         <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Timeline</button>
                     </Link>
-                    <Link to={`/${currentUser?.id}/photos`}>
+                    <Link to={`/${currentUser?.username}/photos`}>
                         <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Photos</button>
                     </Link>
-                    <Link to={`/${currentUser?.id}/friends`}>
+                    <Link to={`/${currentUser?.username}/friends`}>
                         <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Friends</button>
                     </Link>
-                    <Link to={`/${currentUser?.id}/messages`}>
+                    <Link to={`/${currentUser?.username}/messages`}>
                         <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Messages</button>
                     </Link>
                 </div>

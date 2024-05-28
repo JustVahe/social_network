@@ -7,11 +7,12 @@ import { selectCurrentUser } from '../redux/slices/currentUserSlice';
 
 export default function UserNavbar() {
 
-    const {id} = useParams();
+    const {username} = useParams();
     const user = useAppSelector(selectUsers);
-    const thisUser = user.find(item => item.id === id);
-    const currentUser = useAppSelector(selectCurrentUser);
+    const thisUser = user.find(item => item.username === username);
     const [dropdownToggle, setDropdownToggle] = useState(false);
+    const currentUser = useAppSelector(selectCurrentUser);
+    
 
     return (
         <div className='relative'>
@@ -22,22 +23,22 @@ export default function UserNavbar() {
                       <p className="text-zinc-400 text-sm-14">Singer-songwriter</p>
                     </div>
                     <div className='hidden md:flex md:items-center md:gap-[20px]'>
-                        <NavLink to={"/"+id+"/userPage/"}>
+                        <NavLink to={"/"+username}>
                             {({isActive}) => {
                                 return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Timeline</p>
                             }}
                         </NavLink>
-                        <NavLink to={"/"+id+"/photos"}>
+                        <NavLink to={"/"+username+"/photos"}>
                             {({isActive}) => {
                                 return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Photos</p>
                             }}
                         </NavLink>
-                        <NavLink to={"/"+id+"/friends"}>
+                        <NavLink to={"/"+username+"/friends"}>
                             {({isActive}) => {
                                 return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Friends</p>
                             }}
                         </NavLink>
-                        <NavLink to={"/"+id+"/messages"}>
+                        <NavLink to={"/"+username+"/messages"}>
                             {({isActive}) => {
                                 return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Messages</p>
                             }}
@@ -47,18 +48,18 @@ export default function UserNavbar() {
                             onClick={() => setDropdownToggle(prev => !prev)}>
                         <TfiMenu />
                         <div className={'absolute w-[100px] bg-sky-600 top-[60px] ' + (dropdownToggle ? "block" : "hidden")}>
-                            <Link to={"/"+id+"/userPage/"}>
+                            <Link to={"/"+username+"/userPage/"}>
                               <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Timeline</p>
                             </Link>
-                            <Link to={"/"+id+"/photos"}>
+                            <Link to={"/"+username+"/photos"}>
                                 <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Photos</p>
                             </Link>
-                            <Link to={"/"+id+"/friends"}>
+                            <Link to={"/"+username+"/friends"}>
                                 <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Friends</p>
                             </Link>
                             {
-                                currentUser && (currentUser.id === id ? 
-                                <Link to={"/"+id+"/messages"}>
+                                currentUser && (currentUser.username === username ? 
+                                <Link to={"/"+username+"/messages"}>
                                     <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Messages</p>
                                 </Link> : "")
                             }

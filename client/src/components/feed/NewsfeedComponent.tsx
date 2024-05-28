@@ -15,7 +15,7 @@ export default function NewsfeedComponent({id} : {id?: ID}) {
   const currentUser = users.find(item => item.id === id);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/posts?userId="+id)
+    fetch("http://localhost:8246/posts?userId="+id)
     .then((res) => res.json())
         .then(data => {
             dispatch(setPost(data));

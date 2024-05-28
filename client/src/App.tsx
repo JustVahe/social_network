@@ -13,11 +13,11 @@ function App() {
           <Route path="/" element = {<WelcomePage type="signIn" />} />
           <Route path="/redirect" element = {<Redirect />} />
           <Route path="/signUp" element = {<WelcomePage type="signUp" />} />
-          <Route path="/:id/feed" element={<MainPage />}></Route>
-          <Route path="/:id/userPage" element={<User page="timeline" />}></Route>
-          <Route path="/:id/photos" element={<User page="photos" />}></Route>
-          <Route path="/:id/friends" element={<User page="friends"  />}></Route>
-          <Route path="/:id/messages" element={<User page="messages"  />}></Route>
+          <Route path="/dashboard" element={<MainPage />}></Route>
+          <Route path="/:username" element={<User page="timeline" />}></Route>
+          <Route path="/:username/photos" element={<User page="photos" />}></Route>
+          <Route path="/:username/friends" element={<User page="friends"  />}></Route>
+          <Route path="/:username/messages" element={<User page="messages"  />}></Route>
         </Routes>
       </Router>
     </>

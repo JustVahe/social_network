@@ -19,11 +19,11 @@ export const signUpScheme = yup.object().shape({
             return true;
         }
     }),
-    username : yup.string().test({
-        name : "username",
+    email : yup.string().test({
+        name : "email",
         test(value, context) {
             if (!value) {
-                return context.createError({type : "username", message : "Username is required"})
+                return context.createError({type : "email", message : "Email is required"})
             }
             return true;
         }

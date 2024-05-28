@@ -3,29 +3,26 @@ import UserFeed from "../components/UserFeed";
 import Footer from "../components/Footer";
 import UserNavbar from "../components/UserNavbar";
 import PhotoFeed from "../components/photoPageComponents/PhotoFeed";
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../redux/typedHooks";
-import { selectUsers, setUsers } from "../redux/slices/userSlice";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
 import UserEditButtons from "../components/buttons/UserEditButtons.tsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { IUser } from "../types.ts";
 
 export default function User({ page }: { page: string }) {
-  const { id } = useParams();
 
-  const users = useAppSelector(selectUsers);
-  const dispatch = useAppDispatch();
+  const {username} = useParams();
+  const [thisUser, setThisUser] = useState<IUser | null>();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/users")
+    fetch("http://localhost:8246/users/"+username)
       .then((res) => res.json())
       .then((data) => {
-        dispatch(setUsers(data));
+        setThisUser(data);
       });
-  }, [dispatch]);
+  }, [username]);
 
-  const thisUser = users.find((item) => item.id === id);
 
   return (
     <>
@@ -37,14 +34,14 @@ export default function User({ page }: { page: string }) {
         />
         <UserEditButtons />
       </header>
-      {id && (
+      {username && (
         <>
           <section>
             <UserNavbar />
           </section>
           <div className="container">
             {page === "timeline" ? (
-              <UserFeed id={id} />
+              <UserFeed id={username} />
             ) : page === "photos" ? (
               <PhotoFeed />
             ) : page === "friends" ? (

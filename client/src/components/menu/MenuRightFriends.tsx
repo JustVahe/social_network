@@ -13,7 +13,7 @@ export default function MenuRightFriends() {
   const {id} = useParams();
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/users")
+        fetch("http://localhost:8246/users")
         .then((res) =>{ 
           return res.json()
         })
