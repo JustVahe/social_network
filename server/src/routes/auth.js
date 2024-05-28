@@ -1,8 +1,11 @@
 const router = require("express").Router();
 const { sequelize, User } = require("../../models/index");
 const bcrypt = require("bcrypt");
-const jwtGenerator = require("../utils/jwtGenerator");
+const accessGenerator = require("../utils/accessGenerator");
+const refreshGenerator = require("../utils/refreshGenerator");
 const authorization = require("../middlewares/authorization");
+const jwt = require("jsonwebtoken");
+const {v4} = require("uuid");
 
 router.post("/register", async (request, response) => {
 
@@ -26,20 +29,23 @@ router.post("/register", async (request, response) => {
         const encryptedPassword = await bcrypt.hash(password, salt);
 
         const newUser = await User.create({
-            name, surname, email, username: "@" + name.toLowerCase(), password: encryptedPassword
-        })
+            name, surname, email, username: name.toLowerCase() + "-" + v4().slice(0,4), password: encryptedPassword
+        });
 
-        const token = jwtGenerator(newUser.id);
-        response.json({ token });
+        const accessToken = accessGenerator(newUser.id, "15m");
+        const refreshToken = refreshGenerator(newUser.id, "7d");
+
+        response
+            .json({ accessToken, refreshToken});
 
     } catch (error) {
-        console.log(error.message);
-        return response.status(500).json(error);
+        console.log(error);
+        return response.status(500).json({ error });
     }
 
 });
 
-router.get("/login", async (request, response) => {
+router.post("/login", async (request, response) => {
 
     try {
 
@@ -61,15 +67,17 @@ router.get("/login", async (request, response) => {
             return response.status(401).json({
                 type: "PasswordError",
                 message: "Password is incorrect"
-            });
+            }
+            );
 
-        const token = jwtGenerator(user.user_id);
+        const accessToken = accessGenerator(user.id, "15m");
+        const refreshToken = refreshGenerator(user.id, "7d");
 
-        response.json({ token });
-
+        response.json({ accessToken, refreshToken });
 
     } catch (error) {
-        return response.status(500).json(error);
+        console.log(error);
+        return response.status(500).json({ error });
     }
 
 });
@@ -79,7 +87,32 @@ router.get("/verify", authorization, (request, response) => {
     try {
         response.json(true);
     } catch (error) {
-        return response.status(500).json(error);
+        console.log(error);
+        return response.status(500).json({ error });
+    }
+
+});
+
+router.get("/refresh", async (request, response) => {
+
+    try {
+
+        const { refreshToken, id } = request.body;
+
+        if (!refreshToken)
+            return response.status(401).json("Not authorized");
+
+        const decoded = jwt.verify(refreshToken, process.env.refreshSecret);
+
+        if (!decoded)
+            return response.status(403).json("Refresh Token is not valid");
+
+        const accessToken = accessGenerator(id, "15m");
+
+        return response.status(200).json({accessToken});
+
+    } catch (error) {
+        return response.status(500).json({ error });
     }
 
 })

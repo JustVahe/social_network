@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
@@ -59,6 +59,10 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { message: "Email is required" },
         notEmpty: { message: "Email is required" },
       }
+    },
+    title: {
+      type: DataTypes.STRING,
+      defaultValue: "This user has no description yet"
     },
     avatar: {
       type: DataTypes.STRING,

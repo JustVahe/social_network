@@ -5,11 +5,11 @@ module.exports = async (request, response, next) => {
 
     try {
         
-        const jwtToken = request.header("token")
+        const accessToken = request.header("accessToken");
 
-        if (!jwtToken) return response.status(401).json("Not Authorized");
+        if (!accessToken) return response.status(401).json("Not Authorized");
 
-        const payload = jwt.verify(jwtToken, process.env.tokenSecret);
+        const payload = jwt.verify(accessToken, process.env.accessSecret);
 
         request.userId = payload.userId;
 
@@ -17,8 +17,8 @@ module.exports = async (request, response, next) => {
 
     } catch (error) {
 
-        console.error(error.message);
-        return response.status(401).json("Not Authorized")
+        console.error(error);
+        return response.status(500).json(error.message)
     
     }
 

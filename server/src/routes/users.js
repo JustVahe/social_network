@@ -20,14 +20,14 @@ router.get("/", async (request, response) => {
 
 });
 
-router.get("/:id", async (request, response) => {
+router.get("/:username", async (request, response) => {
 
     try {
 
-        const { id } = request.params;
+        const { username } = request.params;
 
         const user = await User.findOne({
-            where: { id },
+            where: { username },
             include: ["files", "posts", "comments"]
         });
 

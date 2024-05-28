@@ -10,7 +10,6 @@ router.get("/", authorization, async (request, response) => {
             where : {
                 id: request.userId
             },
-            attributes: {exclude: "id"},
             include: ["posts", "files"]
         })
 
