@@ -13,8 +13,12 @@ module.exports = {
         type: DataTypes.UUID,
         allowNull: false
       },
+      belongsTo_id: {
+        type: DataTypes.UUID,
+        allowNull: false
+      },
       status: {
-        type: DataTypes.ENUM("pending","approved","rejected"),
+        type: DataTypes.ENUM("pending", "approved", "rejected"),
       },
       createdAt: {
         allowNull: false,

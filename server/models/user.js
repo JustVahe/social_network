@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { message: "Email is required" },
       }
     },
-    title: {
+    description: {
       type: DataTypes.STRING,
       defaultValue: "This user has no description yet"
     },

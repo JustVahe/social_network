@@ -29,6 +29,9 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false
       },
+      description: {
+        type: DataTypes.STRING
+      },
       title: {
         type: DataTypes.STRING
       },
