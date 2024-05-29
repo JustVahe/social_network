@@ -7,7 +7,7 @@ module.exports = {
     await queryInterface.bulkInsert('users',
       [
         {
-          id: "9dc3c7d3-65ce-4494-ae44-314adb518c88",
+          id: "8312288c-535b-414b-b5fc-5cd35fd0c576",
           name: "Vazgen",
           surname: "Meliqyan",
           username: "vazgen_meliqyan_synopsys",

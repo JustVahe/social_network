@@ -5,11 +5,22 @@ router.get("/", async (request, response) => {
 
     try {
 
-        const posts = await Post.findAll({
-            include: ["user", "comments", "files"]
-        })
+        const { user_id } = request.query;
 
-        return response.status(200).json(posts);
+        let thisPost;
+
+        if (user_id) {
+            thisPost = await Post.findAll({
+                where: { user_id },
+                include: ["user", "comments", "files"]
+            });
+        } else {
+            thisPost = await Post.findAll({
+                include: ["user", "comments", "files"]
+            });
+        }
+
+        return response.status(200).json(thisPost);
 
     } catch (error) {
 

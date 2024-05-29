@@ -7,9 +7,11 @@ module.exports = async (request, response, next) => {
         
         const accessToken = request.header("accessToken");
 
-        if (!accessToken) return response.status(401).json("Not Authorized");
+        if (!accessToken) return response.status(401).json("Not Authorized: Invalid Access Token");
 
         const payload = jwt.verify(accessToken, process.env.accessSecret);
+
+        if (!payload) return response.status(401).json("Not Authorized: Invalid Access Token");
 
         request.userId = payload.userId;
 
@@ -18,7 +20,7 @@ module.exports = async (request, response, next) => {
     } catch (error) {
 
         console.error(error);
-        return response.status(500).json(error.message)
+        return response.status(500).json(error.message);
     
     }
 

@@ -85,7 +85,7 @@ router.post("/login", async (request, response) => {
 router.get("/verify", authorization, (request, response) => {
 
     try {
-        response.json(true);
+        return response.status(200).json(true);
     } catch (error) {
         console.log(error);
         return response.status(500).json({ error });

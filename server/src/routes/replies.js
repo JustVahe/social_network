@@ -1,14 +1,14 @@
 const router = require("express").Router();
-const { sequelize, Comment } = require("../../models/index");
+const { sequelize, Reply } = require("../../models/index");
 
 router.get("/", async (request, response) => {
 
     try {
 
-        const comments = await Comment.findAll({
-            include: ["replies", "user", "post"]
+        const replies = await Reply.findAll({
+            include: ["user", "comment"]
         });
-        return response.status(200).json(comments);
+        return response.status(200).json(replies);
 
     } catch (error) {
 
@@ -25,12 +25,12 @@ router.get("/:id", async (request, response) => {
 
         const { id } = request.params;
 
-        const comment = await Comment.findOne({
-            include: ["replies", "user", "post"],
+        const reply = await Reply.findOne({
+            include: ["user", "comment"],
             where: { id }
         });
 
-        return response.status(200).json(comment);
+        return response.status(200).json(reply);
 
     } catch (error) {
 
@@ -47,11 +47,11 @@ router.post("/", async (request, response) => {
 
         const { user_id, post_id, message } = request.body;
 
-        const newComment = await Comment.create({
+        const newReply = await Reply.create({
             user_id, post_id, message
         });
 
-        return response.status(200).send(newComment);
+        return response.status(200).send(newReply);
 
     } catch (error) {
 
@@ -70,15 +70,15 @@ router.put("/:id", async (request, response) => {
 
         const { message } = request.body;
 
-        const comment = await Comment.findOne({
+        const reply = await Reply.findOne({
             where: { id }
         });
 
-        comment.message = message;
+        reply.message = message;
 
-        await comment.save();
+        await reply.save();
 
-        return response.status(200).send(comment);
+        return response.status(200).send(reply);
 
     } catch (error) {
 
@@ -95,13 +95,13 @@ router.delete("/:id", async (request, response) => {
 
         const { id } = request.params;
 
-        const comment = await Comment.findOne({
+        const reply = await Reply.findOne({
             where: { id }
         });
 
-        comment.destroy();
+        reply.destroy();
 
-        return response.status(200).send("Comment is Destroyed")
+        return response.status(200).send("Reply is Destroyed")
 
     } catch (error) {
 

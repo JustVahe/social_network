@@ -28,10 +28,10 @@ router.get("/:username", async (request, response) => {
 
         const user = await User.findOne({
             where: { username },
-            include: ["files", "posts", "comments"]
+            include: ["files", "posts", "comments", "friends"]
         });
 
-        return response.status(200).send(user);
+        return response.status(200).json(user);
 
     } catch (error) {
 
