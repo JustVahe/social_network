@@ -11,15 +11,31 @@ export interface IUser {
     status : string,
     password : string, 
     posts : IPost[],
-    friends : [],
+    friends : IFriend[],
     requests : []
+}
+
+export interface IReply {
+    id : ID,
+    user_id : ID,
+    comment_id : ID,
+    message : string,
+    user: IUser,
+    comment: IComment,
+}
+
+export interface IFriend {
+    
 }
 
 export interface IComment {
     id : ID,
-    replyTo : ID,
-    from : ID,
+    user_id : ID,
+    post_id : ID,
     message : string,
+    user: IUser,
+    post: IPost,
+    replies: IReply[]
 }
 
 export interface IPost {
@@ -30,6 +46,8 @@ export interface IPost {
     likes : number,
     watches: number,
     dislikes : number
+    user: IUser,
+    comments: IComment[]
 }
 
 export interface IPhoto {

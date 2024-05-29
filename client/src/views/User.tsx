@@ -9,19 +9,24 @@ import UserEditButtons from "../components/buttons/UserEditButtons.tsx";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IUser } from "../types.ts";
+import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
+import { selectIsAuth } from "../redux/slices/isAuthSlice.ts";
 
 export default function User({ page }: { page: string }) {
 
-  const {username} = useParams();
-  const [thisUser, setThisUser] = useState<IUser | null>();
+  const { username } = useParams();
+  const [thisUser, setThisUser] = useState<IUser | undefined>();
+  const isAuth = useAppSelector(selectIsAuth);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetch("http://localhost:8246/users/"+username)
+    fetch("/api/users/" + username)
       .then((res) => res.json())
       .then((data) => {
         setThisUser(data);
       });
-  }, [username]);
+
+  }, [username, isAuth, dispatch]);
 
 
   return (
@@ -34,14 +39,14 @@ export default function User({ page }: { page: string }) {
         />
         <UserEditButtons />
       </header>
-      {username && (
+      {thisUser && (
         <>
           <section>
-            <UserNavbar />
+            <UserNavbar thisUser={thisUser} />
           </section>
           <div className="container">
             {page === "timeline" ? (
-              <UserFeed id={username} />
+              <UserFeed id={thisUser.id} />
             ) : page === "photos" ? (
               <PhotoFeed />
             ) : page === "friends" ? (

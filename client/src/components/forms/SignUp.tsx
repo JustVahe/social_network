@@ -44,7 +44,7 @@ export default function SignUp() {
                 setPasswordError(undefined);
                 setEmailError(undefined);
 
-                const response = await fetch("http://localhost:8246/auth/register", {
+                const response = await fetch("/api/auth/register", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
@@ -59,10 +59,10 @@ export default function SignUp() {
                 }
 
                 localStorage.setItem("accessToken", data.accessToken);
-                localStorage.setItem("refreshToken", data.refreshToken);
+                localStorage.setItem("refreshToken", data.refreshToken)
 
                 dispatch(setIsAuth(true));
-                navigate("/redirect");
+                navigate("/");
                 setGeneralError(null);
                 
             }
@@ -94,7 +94,7 @@ export default function SignUp() {
                 <p className='text-md text-zinc-500 mt-0 leading-[20px]'>Discover new and amazing expirience</p>
                 <p className="text-sm text-zinc-500 italic">
                     Already have an account?
-                    <Link to={"/"}><span className="text-sky-600 no-underline hover:underline"> Then sign in!</span></Link>
+                    <Link to={"/signIn"}><span className="text-sky-600 no-underline hover:underline"> Then sign in!</span></Link>
                 </p>
                 {
                     (generalError || nameError || emailError || passwordError || surnameError) &&

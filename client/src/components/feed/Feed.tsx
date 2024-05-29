@@ -1,12 +1,9 @@
-import { useParams } from "react-router-dom";
 import Friends from "../friends/Friends";
-import NewsfeedComponent from "./NewsfeedComponent";
 import PostingForm from "../forms/PostingForm";
 import Shortcuts from "./Shortcuts";
+import DashboardFeed from "./DashboardFeed";
 
 export default function Feed() {
-
-  const {id} = useParams();
 
   return (
    <>
@@ -17,9 +14,7 @@ export default function Feed() {
             </div>
             <div className="grid sm:col-span-1 w-full gap-5 content-start">
                 <PostingForm />
-                {
-                  id && <NewsfeedComponent id={id}/>
-                }
+                <DashboardFeed/>
             </div>
             <div className="xl:col-span-2 gap-5 sm:col-span-1">
                 <Friends />

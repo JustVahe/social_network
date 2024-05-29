@@ -2,14 +2,12 @@ import { Link, NavLink, useParams } from 'react-router-dom'
 import { useAppSelector } from '../redux/typedHooks';
 import { TfiMenu } from 'react-icons/tfi';
 import { useState } from 'react';
-import { selectUsers } from '../redux/slices/userSlice';
 import { selectCurrentUser } from '../redux/slices/currentUserSlice';
+import { IUser } from '../types';
 
-export default function UserNavbar() {
+export default function UserNavbar({thisUser} : {thisUser :IUser}) {
 
     const {username} = useParams();
-    const user = useAppSelector(selectUsers);
-    const thisUser = user.find(item => item.username === username);
     const [dropdownToggle, setDropdownToggle] = useState(false);
     const currentUser = useAppSelector(selectCurrentUser);
     

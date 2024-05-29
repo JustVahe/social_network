@@ -14,7 +14,7 @@ export default function FriendsComponent() {
     const [friendsToggle, setFriendsToggle] = useState("friends");
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/users")
+        fetch("/api/api/users")
         .then((res) =>{ 
           return res.json()
         })

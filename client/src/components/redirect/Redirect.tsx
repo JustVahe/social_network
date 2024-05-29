@@ -1,19 +1,39 @@
-
 import { VscLoading } from "react-icons/vsc";
-import { useAppSelector } from "../../redux/typedHooks";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectIsAuth } from "../../redux/slices/isAuthSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { selectCurrentUser, setUser } from "../../redux/slices/currentUserSlice";
 
 export default function Redirect() {
 
     const isAuth = useAppSelector(selectIsAuth);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();    
+
+    const currentUser = useAppSelector(selectCurrentUser);
 
     useEffect(() => {
-        if (!isAuth) navigate("/signIn");
-        else navigate("/dashboard")
-    }, [isAuth, navigate]);
+
+        async function loginRedirectHandle() {
+
+            if (!isAuth) navigate("/signIn");
+            else {
+                const loginResponse = await fetch("/api/dashboard", {
+                    method: "GET",
+                    headers: {
+                        "accessToken": localStorage.accessToken
+                    }
+                });
+                const data = await loginResponse.json();
+                dispatch(setUser(data));
+                navigate("/" + currentUser?.username);
+            }
+        }
+
+        loginRedirectHandle();
+
+    }, [isAuth, navigate, currentUser, dispatch]);
 
     return (
         <div className="w-full h-screen bg-sky-600 grid place-items-center">

@@ -41,7 +41,7 @@ export default function SignIn() {
                 setEmailError(undefined);
                 setPasswordError(undefined);
 
-                const response = await fetch("http://localhost:8246/auth/login", {
+                const response = await fetch("/api/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
@@ -59,7 +59,7 @@ export default function SignIn() {
                 localStorage.setItem("refreshToken", data.refreshToken);
 
                 dispatch(setIsAuth(true));
-                navigate("/redirect");
+                navigate("/");
                 setGeneralError(undefined);
 
             }

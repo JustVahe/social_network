@@ -21,7 +21,7 @@ export default function AdminDropdown({userToggle} : {userToggle : boolean}) {
                <p className="text-sm-13">Edit Profile</p>
             </h1>
          </Link>
-         <Link to={"/"}>
+         <Link to={"/signIn"}>
             <h1 className="w-full px-[15px] py-[10px] transition-all hover:bg-zinc-200 flex gap-[10px] items-center">
                <span className="text-sky-600"><TfiPowerOff /></span>
                <p className="text-sm-13">Log Out</p>

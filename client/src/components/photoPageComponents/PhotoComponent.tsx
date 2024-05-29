@@ -11,7 +11,7 @@ export default function PhotoComponent() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/photos")
+        fetch("/api/api/photos")
         .then((res) => res.json())
         .then(data => {
             dispatch(setPhoto(data)); 
