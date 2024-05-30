@@ -6,7 +6,7 @@ router.get("/", async (request, response) => {
     try {
 
         const friends = await Friend.findAll({
-            include: ["user", "belongsTo"]
+            include: ["user_a", "user_b"]
         });
         return response.status(200).json(friends);
 

@@ -6,7 +6,10 @@ router.get("/", async (request, response) => {
     try {
 
         const users = await User.findAll({
-            include: ["files", "posts", "comments"]
+            include: {
+                all: true,
+                nested: true
+            }
         });
 
         return response.status(200).send(users);
@@ -28,7 +31,10 @@ router.get("/:username", async (request, response) => {
 
         const user = await User.findOne({
             where: { username },
-            include: ["files", "posts", "comments", "friends"]
+            include: {
+                all: true,
+                nested: true
+            }
         });
 
         return response.status(200).json(user);

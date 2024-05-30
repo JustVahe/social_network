@@ -7,7 +7,7 @@ module.exports = async (request, response, next) => {
         
         const accessToken = request.header("accessToken");
 
-        if (!accessToken) return response.status(401).json("Not Authorized: Invalid Access Token");
+        if (!accessToken) return response.status(401).json("Not Authorized: Wasn't provided an Access Token");
 
         const payload = jwt.verify(accessToken, process.env.accessSecret);
 

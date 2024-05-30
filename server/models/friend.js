@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({User}) {
-      this.belongsTo(User, {foreignKey: "user_id", as: "user"});
-      this.belongsTo(User, {foreignKey: "belongsTo_id", as: "belongsTo"});
+    static associate({ User }) {
+      this.belongsTo(User, {foreignKey: "user_a_id", as: "user_a"});
+      this.belongsTo(User, {foreignKey: "user_b_id", as: "user_b"});
     }
   }
   Friend.init({
@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    user_id: {
+    user_a_id: {
       type: DataTypes.UUID,
       allowNull: false
     },
-    belongsTo_id: {
+    user_b_id: {
       type: DataTypes.UUID,
       allowNull: false
     },

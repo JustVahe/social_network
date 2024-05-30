@@ -9,11 +9,11 @@ module.exports = {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4
       },
-      user_id: {
+      user_a_id: {
         type: DataTypes.UUID,
         allowNull: false
       },
-      belongsTo_id: {
+      user_b_id: {
         type: DataTypes.UUID,
         allowNull: false
       },

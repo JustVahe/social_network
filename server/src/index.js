@@ -1,10 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
 
 app.use(express.json());
+app.use("/public",express.static(path.join(__dirname, "../public")));
 app.use(cors());
 
 const PORT = process.env.PORT || 4000;
@@ -18,7 +20,9 @@ app.use("/posts", require("./routes/posts"));
 app.use("/comments", require("./routes/comments"));
 app.use("/friends", require("./routes/friends"));
 app.use("/replies", require("./routes/replies"));
+app.use("/files", require("./routes/files"));
 
+console.log(path.join(__dirname, "../public"));
 
 
 app.listen(PORT, () => {
