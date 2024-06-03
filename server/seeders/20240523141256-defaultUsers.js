@@ -14,8 +14,8 @@ module.exports = {
           email: "vazgen.melikyan@synopsys.com",
           password: "$2a$12$q1d5iksVrUSkE0MvVxrjrerCLVfweQIfbxDFYn0rlef6tkwR254A2",
           description: "Director of Synopsys Education Department",
-          avatar: "./assets/defaultAvatar.jpg",
-          headerImg: "./assets/defaultHeader.jpg",
+          avatar: "/assets/defaultAvatar.jpg",
+          headerImg: "/assets/defaultHeader.jpg",
           createdAt : "2023-12-20T15:20:00+03:00",
           updatedAt: "2023-12-20T15:20:00+03:00"
         },{
@@ -26,8 +26,8 @@ module.exports = {
           email: "karen.melikyan@synopsys.com",
           password: "$2a$12$lN1dEdRoqxl8LGss2l149edC9Pkee2WYM.j3qsAu1NHvIgvelLEpC",
           description: "IC Engineer at Synopsys",
-          avatar: "./assets/defaultAvatar.jpg",
-          headerImg: "./assets/defaultHeader.jpg",
+          avatar: "/assets/defaultAvatar.jpg",
+          headerImg: "/assets/defaultHeader.jpg",
           createdAt : "2023-12-20T15:20:00+03:00",
           updatedAt: "2023-12-20T15:20:00+03:00"
         },{
@@ -38,8 +38,8 @@ module.exports = {
           email: "aram.vardanyan@synopsys.com",
           password: "$2a$12$lN1dEdRoqxl8LGss2l149edC9Pkee2WYM.j3qsAu1NHvIgvelLEpC",
           description: "EDA Software Engineer at Synopsys",
-          avatar: "./assets/defaultAvatar.jpg",
-          headerImg: "./assets/defaultHeader.jpg",
+          avatar: "/assets/defaultAvatar.jpg",
+          headerImg: "/assets/defaultHeader.jpg",
           createdAt : "2023-12-20T15:20:00+03:00",
           updatedAt: "2023-12-20T15:20:00+03:00"
         },
@@ -51,8 +51,8 @@ module.exports = {
           email: "zorayr_melkonyan@epam.com",
           password: "$2a$08$QI5q6wHqaTr2KW4eAQEez.9khj0OLRd0S6As8xVEZE0yczv.xc0IO",
           description: "Lead C++ Developer at Epam",
-          avatar: "./assets/defaultAvatar.jpg",
-          headerImg: "./assets/defaultHeader.jpg",
+          avatar: "/assets/defaultAvatar.jpg",
+          headerImg: "/assets/defaultHeader.jpg",
           createdAt : "2023-12-20T15:20:00+03:00",
           updatedAt: "2023-12-20T15:20:00+03:00"
         },
@@ -64,8 +64,8 @@ module.exports = {
           email: "naira_aharonyan@epam.com",
           password: "$2a$08$NGZpv2.1y0VDN33YTk2Dl.nXXKysRzWZ.cNk1Ao/HXyqQaj3X1Yz.",
           description: "Middle Frontent Dveloper At Epam",
-          avatar: "./assets/defaultAvatar.jpg",
-          headerImg: "./assets/defaultHeader.jpg",
+          avatar: "/assets/defaultAvatar.jpg",
+          headerImg: "/assets/defaultHeader.jpg",
           createdAt : "2023-12-20T15:20:00+03:00",
           updatedAt: "2023-12-20T15:20:00+03:00"
         },
@@ -76,8 +76,8 @@ module.exports = {
           username: "vardan_ghazaryan_iguan",
           email: "vardan_ghazaryan@iguan.com",
           password: "$2a$08$jGhPpcg43zSm0wj.Yz/NEeRq5Rp5w3c0yOZDF2cynURxQiz5UyxD6",
-          avatar: "./assets/defaultAvatar.jpg",
-          headerImg: "./assets/defaultHeader.jpg",
+          avatar: "/assets/defaultAvatar.jpg",
+          headerImg: "/assets/defaultHeader.jpg",
           createdAt : "2023-12-20T15:20:00+03:00",
           updatedAt: "2023-12-20T15:20:00+03:00"
         },

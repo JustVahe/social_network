@@ -51,7 +51,7 @@ router.post("/", async (request, response) => {
             user_id, post_id, message
         });
 
-        return response.status(200).send(newComment);
+        return response.status(200).json(newComment);
 
     } catch (error) {
 
@@ -78,7 +78,7 @@ router.put("/:id", async (request, response) => {
 
         await comment.save();
 
-        return response.status(200).send(comment);
+        return response.status(200).json(comment);
 
     } catch (error) {
 
@@ -101,7 +101,7 @@ router.delete("/:id", async (request, response) => {
 
         comment.destroy();
 
-        return response.status(200).send("Comment is Destroyed")
+        return response.status(200).json("Comment is Destroyed")
 
     } catch (error) {
 

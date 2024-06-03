@@ -1,25 +1,28 @@
 const router = require("express").Router();
-const { sequelize, User } = require("../../models/index");
-const authorization = require("../middlewares/authorization");
+const { User } = require("../../models/index");
+const checkToken = require("../middlewares/checkToken");
 
-router.get("/", authorization, async (request, response) => {
+
+router.get("/", checkToken, async (request, response) => {
 
     try {
 
         const user = await User.findOne({
-            where : {
+            where: {
                 id: request.userId
             },
-            include: ["posts", "files"]
+            include: {
+                all: true,
+                nested: true
+            }
         })
 
         return response.status(200).json(user);
-        
-    } catch (error) {
-        
-        console.log(error.message);
-        return response.status(500).json(error.message);
 
+    } catch (error) {
+
+        console.log(error);
+        return response.status(500).json(error);
     }
 
 })
