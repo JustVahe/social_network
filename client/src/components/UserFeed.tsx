@@ -3,8 +3,16 @@ import Friends from "./friends/Friends";
 import NewsfeedComponent from "./feed/NewsfeedComponent";
 import Shortcuts from "./feed/Shortcuts";
 import PostingForm from "./forms/PostingForm";
+import { useEffect } from "react";
+import { useCheck } from "../hooks/useCheck";
 
 export default function UserFeed({ id }: { id: ID }) {
+
+    const {checkAccessToken} = useCheck();
+
+    useEffect(() => {
+        checkAccessToken();
+    }, [checkAccessToken]);
 
     return (
         <>
@@ -18,7 +26,7 @@ export default function UserFeed({ id }: { id: ID }) {
                         <NewsfeedComponent id={id} />
                     </div>
                     <div className="xl:col-span-2 gap-5 sm:col-span-1">
-                        <Friends />
+                        <Friends id={id} />
                     </div>
                 </div>
             </div>

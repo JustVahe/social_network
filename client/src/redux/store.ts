@@ -7,6 +7,7 @@ import currentUserReducer from "./slices/currentUserSlice";
 import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import isAuthReducer from "./slices/isAuthSlice";
+import thisUserReducer from "./slices/thisUserSlice";
 
 const persistConfig = {
     key: "root",
@@ -20,10 +21,11 @@ const reducer = combineReducers({
     posts: postReducer,
     comments: commentReducer,
     photos: photoReducer,
-    isAuth: isAuthReducer
+    isAuth: isAuthReducer,
+    thisUser: thisUserReducer
 })
 
-const persistedReducer = persistReducer(persistConfig  , reducer);
+const persistedReducer = persistReducer(persistConfig, reducer);
 
 export const store = configureStore(
     {

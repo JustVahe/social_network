@@ -1,30 +1,33 @@
-import { v4 } from "uuid";
 import { selectPhoto, setPhoto } from "../../redux/slices/photoSlice"
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks"
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { ID } from "../../types";
 
-export default function PhotoComponent() {
+export default function PhotoComponent({id} : {id:ID}) {
 
-    const {id} = useParams();
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        fetch("/api/api/photos")
+        fetch("/api/files/"+id)
         .then((res) => res.json())
         .then(data => {
+            console.log(data);
             dispatch(setPhoto(data)); 
         })
-      }, [dispatch])
+      }, [dispatch, id])
 
     const photos = useAppSelector(selectPhoto);
 
     return (
         <div className="w-full grid grid-cols-3 gap-[15px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">
-            {(photos.length !== 0) && photos.filter(item => item.userId === id).map(item => {
-              return <img src={item.src} className="w-full h-full object-cover object-top" alt={"Janis Joplin-" + (item.id)} key={v4()}/>
-            })}
+            {!(photos.length === 0) ? photos.map(item => {
+              return <img src={"/api/public"+item.path} className="w-full h-full object-cover object-top" key={item.id}/>
+            }) : 
+                <div>
+                    <p className="text-lg text-zinc-700">This user has no Images</p>
+                </div>
+            }
         </div>
     )
 }

@@ -52,10 +52,10 @@ export default function Navbar() {
                         </Link>
                     </div>
                     <div className="w-[100px] flex justify-between items-center">
-                        <button onClick={() => setUserToggle(prev => !prev)} className="relative">
-                            <img src={currentUser?.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
+                        <div onClick={() => setUserToggle(prev => !prev)} className="relative">
+                            <img src={"/api/public/"+currentUser?.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
                             <AdminDropdown userToggle={userToggle} />
-                        </button>
+                        </div>
                         <button onClick={() => setDropdown(prev => !prev)}
                         className="w-[35px] h-[35px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45 text-xl text-zinc-700 lg:hidden">
                             <TfiMenu />

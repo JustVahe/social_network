@@ -1,8 +1,17 @@
 import Friends from "./Friends";
 import Shortcuts from "../feed/Shortcuts";
 import FriendsComponent from "./FriendsComponent";
+import { ID } from "../../types";
+import { useCheck } from "../../hooks/useCheck";
+import { useEffect } from "react";
 
-export default function FriendsFeed(){
+export default function FriendsFeed({id} : {id : ID}){
+
+    const {checkAccessToken} = useCheck();
+
+    useEffect(() => {
+        checkAccessToken();
+    }, [checkAccessToken]);
 
     return (
         <>
@@ -12,10 +21,10 @@ export default function FriendsFeed(){
                        <Shortcuts />
                    </div>
                    <div className="grid sm:col-span-1 w-full gap-5 content-start">
-                       <FriendsComponent/>
+                       <FriendsComponent id={id}/>
                    </div>
                    <div className="xl:col-span-2 gap-5 sm:col-span-1">
-                       <Friends />
+                       <Friends id={id}/>
                    </div>
                </div>
            </div>

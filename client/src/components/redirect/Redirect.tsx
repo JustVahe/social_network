@@ -9,7 +9,7 @@ export default function Redirect() {
 
     const isAuth = useAppSelector(selectIsAuth);
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();    
+    const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector(selectCurrentUser);
 
@@ -17,18 +17,34 @@ export default function Redirect() {
 
         async function loginRedirectHandle() {
 
-            if (!isAuth) navigate("/signIn");
-            else {
-                const loginResponse = await fetch("/api/dashboard", {
-                    method: "GET",
-                    headers: {
-                        "accessToken": localStorage.accessToken
-                    }
-                });
-                const data = await loginResponse.json();
-                dispatch(setUser(data));
-                navigate("/" + currentUser?.username);
+            try {
+                if (!isAuth) navigate("/signIn");
+                else {
+                    const loginResponse = await fetch("/api/dashboard", {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.authorization}`
+                        },
+                    });
+
+                    const data = await loginResponse.json();
+                    console.log(data);
+                    console.log(currentUser);
+                    console.log("/" + currentUser?.username);
+
+
+
+                    dispatch(setUser(data));
+                    navigate("/" + currentUser?.username);
+                }
+            } catch (error) {
+                console.log(error);
+                
             }
+
+            
+
+
         }
 
         loginRedirectHandle();

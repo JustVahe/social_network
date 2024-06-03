@@ -66,7 +66,7 @@ export default function UserNavbar({thisUser} : {thisUser :IUser}) {
                 </div>
             </div>
             <div className="shadow-sm shadow-zinc-300 w-[100px] h-[100px] md:w-[140px] md:h-[140px] lg:w-[190px] lg:h-[190px] bg-white rounded-full grid place-items-center absolute top-[-90px] left-[35%] sm:left-[40%] md:top-[-60px] md:left-[70px] lg:top-[-130px] lg:left-[150px]">
-                <img src={thisUser?.avatar} className="rounded-full object-cover object-top w-20 h-20 md:w-[120px] md:h-[120px] lg:w-[170px] lg:h-[170px]" alt="" />
+                <img src={"/api/public"+thisUser?.avatar} className="rounded-full object-cover object-top w-20 h-20 md:w-[120px] md:h-[120px] lg:w-[170px] lg:h-[170px]" alt="" />
             </div>
         </div>
     )

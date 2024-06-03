@@ -1,26 +1,19 @@
 import Footer from "../components/Footer";
 import Menu from "../components/menu/Menu";
 import Feed from "../components/feed/Feed";
-import { useAppDispatch,  } from "../redux/typedHooks";
 import { useEffect } from "react";
-import { setUsers } from "../redux/slices/userSlice";
+import { useCheck } from "../hooks/useCheck";
 
 const MainPage = () => {
 
-    const dispatch = useAppDispatch();
+    const {checkAccessToken} = useCheck();
 
     useEffect(() => {
 
-        async function loginRedirectHandle() {
+        checkAccessToken();
 
-            const usersResponse = await fetch("/api/users");
-            const data = await usersResponse.json();
-            dispatch(setUsers(data));
-        }
+    }, [checkAccessToken]);
 
-        loginRedirectHandle();
-
-    })
 
     return (
         <>

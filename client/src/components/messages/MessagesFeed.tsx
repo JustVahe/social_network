@@ -1,7 +1,15 @@
+import { useEffect } from "react";
+import { useCheck } from "../../hooks/useCheck";
 import Shortcuts from "../feed/Shortcuts";
 import MessagesComponent from "./MessagesComponent";
 
 export default function MessagesFeed() {
+
+    const {checkAccessToken} = useCheck();
+
+    useEffect(() => {
+        checkAccessToken();
+    }, [checkAccessToken]);
 
     return (
         <div className="container my-0">

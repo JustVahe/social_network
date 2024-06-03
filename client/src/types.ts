@@ -25,7 +25,12 @@ export interface IReply {
 }
 
 export interface IFriend {
-    
+    id: ID,
+    user_a_id: ID,
+    user_b_id: ID,
+    user_a: IUser,
+    user_b: IUser,
+    status: string
 }
 
 export interface IComment {
@@ -42,7 +47,7 @@ export interface IPost {
     id : ID,
     from: ID ,
     message: string,
-    files : ID[],
+    files : IPhoto[],
     likes : number,
     watches: number,
     dislikes : number
@@ -53,7 +58,9 @@ export interface IPost {
 export interface IPhoto {
     id : ID,
     userId : ID,
-    src : string
+    postId: ID,
+    type: string,
+    path : string
 }
 
 export interface IMessage{
@@ -62,4 +69,9 @@ export interface IMessage{
     to: ID,
     message: string,
     date: string
+}
+
+export interface ITokenBody {
+    accessToken: string | undefined,
+    refreshToken: string | undefined
 }

@@ -20,7 +20,7 @@ export default function Comment({ comment }: { comment: IComment}) {
         <>
             {
                 thisComment && <div className="w-full flex gap-[10px] items-start">
-                    <img src={thisComment.user.avatar} alt="user" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
+                    <img src={"/api/public/"+thisComment.user.avatar} alt="user" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">
                             <p className="text-sm-13 text-zinc-700 font-bold">{thisComment.user.username}</p>

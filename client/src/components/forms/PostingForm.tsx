@@ -8,7 +8,7 @@ export default function PostingForm() {
 
   return (
     <div className="w-full min-h-[160px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] flex gap-5 justify-between rounded-md">
-        <img src={currentUser?.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
+        <img src={"/api/public/"+currentUser?.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
         <div className="flex flex-grow w-full xl:max-w-[440px] lg:w-[85%] md:w-full min-h-[110px] bg-white border border-zinc-100 rounded-md p-[10px] relative">
           <textarea className="resize-none w-full outline-none" placeholder="write something" />
           <div className="w-[200px] flex justify-between absolute right-[10px] bottom-5 items-center">

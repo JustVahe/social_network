@@ -6,35 +6,34 @@ import PhotoFeed from "../components/photoPageComponents/PhotoFeed";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
 import UserEditButtons from "../components/buttons/UserEditButtons.tsx";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { IUser } from "../types.ts";
 import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
 import { selectIsAuth } from "../redux/slices/isAuthSlice.ts";
+import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
 
 export default function User({ page }: { page: string }) {
 
   const { username } = useParams();
-  const [thisUser, setThisUser] = useState<IUser | undefined>();
   const isAuth = useAppSelector(selectIsAuth);
+  const thisUser = useAppSelector(selectThisUser);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     fetch("/api/users/" + username)
       .then((res) => res.json())
       .then((data) => {
-        setThisUser(data);
+        dispatch(setThisUser(data));
       });
 
   }, [username, isAuth, dispatch]);
-
 
   return (
     <>
       <Navbar />
       <header className="w-full h-[530px] overflow-hidden relative">
         <img
-          src={thisUser?.headerImg}
+          src={"/api/public"+thisUser?.headerImg}
           className="object-cover w-full h-[530px] object-top"
         />
         <UserEditButtons />
@@ -48,9 +47,9 @@ export default function User({ page }: { page: string }) {
             {page === "timeline" ? (
               <UserFeed id={thisUser.id} />
             ) : page === "photos" ? (
-              <PhotoFeed />
+              <PhotoFeed id={thisUser.id} />
             ) : page === "friends" ? (
-              <FriendsFeed />
+              <FriendsFeed id={thisUser.id} />
             ) : page === "messages" ? (
               <MessagesFeed />
             ) : (

@@ -7,6 +7,8 @@ import { setIsAuth } from "../../redux/slices/isAuthSlice";
 
 export default function SignIn() {
 
+    localStorage.clear();
+
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
 
@@ -55,8 +57,7 @@ export default function SignIn() {
                     throw new Error(data.message);
                 }
 
-                localStorage.setItem("accessToken", data.accessToken);
-                localStorage.setItem("refreshToken", data.refreshToken);
+                localStorage.setItem("authorization", data.accessToken);
 
                 dispatch(setIsAuth(true));
                 navigate("/");

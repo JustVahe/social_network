@@ -7,6 +7,8 @@ import { setIsAuth } from "../../redux/slices/isAuthSlice";
 
 export default function SignUp() {
 
+    localStorage.clear();
+
     const [nameError, setNameError] = useState<ValidationError | undefined>();
     const [surnameError, setSurnameError] = useState<ValidationError | undefined>();
     const [emailError, setEmailError] = useState<ValidationError | undefined>();

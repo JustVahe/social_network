@@ -7,7 +7,7 @@ export default function FriendLabel({friend} : {friend : IUser}) {
     
     return (
       <div className="w-full flex gap-[15px]">
-          <FriendButton status={status} src={avatar} />
+          <FriendButton status={status} src={"/api/public/"+avatar} />
           <div>
               <p className="text-sm-12 font-bold">{name} {surname}</p>
               <p className="text-sm-11">{email}</p>
