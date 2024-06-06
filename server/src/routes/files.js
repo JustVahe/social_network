@@ -1,36 +1,10 @@
 const router = require("express").Router();
 const { sequelize, File, User } = require("../../models/index");
+const { headerImgStorage, avatarStorage } = require("../utils/storages")
 const multer = require("multer");
-const fs = require("fs");
-
-const headerImgStorage = multer.diskStorage(
-    {
-        destination: (request, file, callback) => {
-
-            request.body.user_id = request.params.user_id;
-            const { user_id } = request.body;
-            const path = `${__dirname}../../../public/assets/${user_id}/images/headerImg`;
-            fs.mkdirSync(path, { recursive: true });
-            return callback(null, path);
-
-        },
-        filename: (request, file, callback) => {
-
-            const { user_id } = request.body;
-
-            const path = `${__dirname}../../../public/assets/${user_id}/images/headerImg`;
-            const files = fs.readdirSync(path);
-
-            if (files.includes(file.originalname)) {
-                fs.unlinkSync(path + file.originalname);
-            }
-
-            callback(null, file.originalname);
-        }
-    }
-);
 
 const uploadHeader = multer({ storage: headerImgStorage });
+const uploadAvatar = multer({ storage: avatarStorage });
 
 router.get("/:user_id", async (request, response) => {
 
@@ -66,7 +40,7 @@ router.put("/:user_id/header/",
             );
             user.headerImg = `/assets/${user_id}/images/headerImg/${request.file.originalname}`;
             user.save();
-            return response.status(200).json(user);
+            return response.status(200).json("Cover image upload is complete");
 
         } catch (error) {
 
@@ -74,7 +48,34 @@ router.put("/:user_id/header/",
             return response.status(500).json(error.message);
 
         }
-    });
+    }
+);
+
+router.put("/:user_id/avatar/",
+    uploadAvatar.single('file'),
+    async (request, response) => {
+        try {
+
+            const { user_id } = request.params;
+            const user = await User.findOne(
+                {
+                    where: { id: user_id },
+                }
+            );
+            user.avatar = `/assets/${user_id}/images/avatar/${request.file.originalname}`;
+            user.save();
+
+            return response.status(200).json("Avatar upload is complete");
+
+        } catch (error) {
+
+            console.log(error);
+            return response.status(500).json(error.message);
+
+        }
+    }
+);
+
 
 module.exports = router;
 
