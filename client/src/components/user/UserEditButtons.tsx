@@ -18,10 +18,6 @@ export default function UserEditButtons({ id }: { id: ID }) {
 
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
-
-            for (const pair in formData.entries()) {
-                console.log(pair);
-            }
             
             const updateResponse = await fetch(`/api/files/${id}/header`, {
                 method: "PUT",

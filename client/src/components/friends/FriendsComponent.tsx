@@ -18,6 +18,8 @@ export default function FriendsComponent({ id }: { id: ID }) {
 
 	useEffect(() => {
 
+		checkAccessToken();
+
 		fetch("/api/friends/?status=approved&user_b_id=" + id)
 			.then((res) => {
 				return res.json()
@@ -26,7 +28,7 @@ export default function FriendsComponent({ id }: { id: ID }) {
 				setFriends(data);
 			})
 
-		fetch("/api/friends/?status=pending&user_b_id=" + id)
+		fetch("/api/friends/?status=pending&user_a_id=" + id)
 			.then((res) => {
 				return res.json()
 			})
@@ -34,7 +36,8 @@ export default function FriendsComponent({ id }: { id: ID }) {
 				setRequests(data);
 			})
 
-	}, [dispatch, id, checkAccessToken])
+	//eslint-disable-next-line
+	}, [dispatch, id])
 
 	return (
 		<div className="w-full bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">

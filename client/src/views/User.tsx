@@ -1,16 +1,16 @@
 import Navbar from "../components/menu/Navbar";
 import UserFeed from "../components/user/UserFeed.tsx";
 import Footer from "../components/Footer";
-import UserNavbar from "../components/UserNavbar";
+import UserNavbar from "../components/user/UserNavbar";
 import PhotoFeed from "../components/photoPageComponents/PhotoFeed";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
-import UserEditButtons from "../components/buttons/UserEditButtons.tsx";
+import UserEditButtons from "../components/user/UserEditButtons.tsx";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
 import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice.ts";
+import { selectCurrentUser, setUser } from "../redux/slices/currentUserSlice.ts";
 import { useCheck } from "../hooks/useCheck.ts";
 
 export default function User({ page }: { page: string }) {
@@ -30,10 +30,11 @@ export default function User({ page }: { page: string }) {
 			.then((res) => res.json())
 			.then((data) => {
 				dispatch(setThisUser(data));
+				dispatch(setUser(data));
 			});
 
 	// eslint-disable-next-line
-	}, [username, dispatch, currentUser?.headerImg]);
+	}, [username, dispatch, currentUser?.headerImg, currentUser?.avatar]);
 
 	return (
 		<>
@@ -55,7 +56,7 @@ export default function User({ page }: { page: string }) {
 					</section>
 					<div className="container">
 						{page === "timeline" ? (
-							<UserFeed id={thisUser.id} />
+							<UserFeed/>
 						) : page === "photos" ? (
 							<PhotoFeed id={thisUser.id} />
 						) : page === "friends" ? (

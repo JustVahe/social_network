@@ -1,9 +1,10 @@
 import { TfiClipboard, TfiCommentsSmiley, TfiImage, TfiUser } from "react-icons/tfi";
 import { Link } from "react-router-dom";
+import { IUser } from "../../types";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 
-export default function Shortcuts() {
+export default function Shortcuts({ user }: { user: IUser }) {
 
     const currentUser = useAppSelector(selectCurrentUser);
 
@@ -13,28 +14,30 @@ export default function Shortcuts() {
             <div className="flex flex-col gap-[20px] mt-[30px]">
                 <Link to={`/dashboard`}>
                     <p className="text-gray-400 text-sm-14 flex items-center gap-[10px] transition hover:text-sky-600">
-                        <TfiClipboard/>
+                        <TfiClipboard />
                         News Feed
                     </p>
                 </Link>
-                <Link to={`/${currentUser?.username}/friends`}>
+                <Link to={`/${user?.username}/friends`}>
                     <p className="text-gray-400 text-sm-14 flex items-center gap-[10px] transition hover:text-sky-600">
-                        <TfiUser/>
+                        <TfiUser />
                         Friends
                     </p>
                 </Link>
-                <Link to={`/${currentUser?.username}/photos`}>
+                <Link to={`/${user?.username}/photos`}>
                     <p className="text-gray-400 text-sm-14 flex items-center gap-[10px] transition hover:text-sky-600">
-                        <TfiImage/>
+                        <TfiImage />
                         Images
                     </p>
                 </Link>
-                <Link to={`/${currentUser?.username}/messages`}>
-                    <p className="text-gray-400 text-sm-14 flex items-center gap-[10px] transition hover:text-sky-600">
-                        <TfiCommentsSmiley/>
-                        Messages
-                    </p>
-                </Link>
+                {
+                    currentUser?.id === user?.id && <Link to={`/${user?.username}/messages`}>
+                        <p className="text-gray-400 text-sm-14 flex items-center gap-[10px] transition hover:text-sky-600">
+                            <TfiCommentsSmiley />
+                            Messages
+                        </p>
+                    </Link>
+                }
             </div>
         </div>
     )

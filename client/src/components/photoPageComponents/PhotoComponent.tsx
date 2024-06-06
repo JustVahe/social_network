@@ -12,11 +12,10 @@ export default function PhotoComponent({ id }: { id: ID }) {
         fetch("/api/files/" + id)
             .then((res) => res.json())
             .then(data => {
-                console.log(data);
                 dispatch(setPhoto(data));
             })
 
-    }, [id]);
+    }, [id, dispatch]);
 
     const photos = useAppSelector(selectPhoto);
 
