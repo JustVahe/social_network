@@ -5,32 +5,46 @@ router.get("/", async (request, response) => {
 
     try {
 
-        const users = await User.findAll({
-            include: {
-                all: true,
-                nested: true
-            }
-        });
+        const {username} = request.query;
+
+        let users;
+
+        if (username) {
+            users = await User.findOne({
+                include: {
+                    all: true,
+                    nested: true
+                },
+                where: { username }
+            })
+        } else {
+            users = await User.findAll({
+                include: {
+                    all: true,
+                    nested: true
+                }
+            });
+        }
 
         return response.status(200).send(users);
 
     } catch (error) {
 
-        console.log(error.message);
-        return response.status(500).json("Internal Server Error");
+        console.log(error);
+        return response.status(500).json("Internal Server Error - " + error.message);
 
     }
 
 });
 
-router.get("/:username", async (request, response) => {
+router.get("/:id", async (request, response) => {
 
     try {
 
-        const { username } = request.params;
+        const { id } = request.params;
 
         const user = await User.findOne({
-            where: { username },
+            where: { id },
             include: {
                 all: true,
                 nested: true
@@ -41,8 +55,8 @@ router.get("/:username", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
-        return response.status(500).json("Internal Server Error");
+        console.log(error);
+        return response.status(500).json("Internal Server Error - " + error.message);
 
     }
 
@@ -72,8 +86,8 @@ router.put("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
-        return response.status(500).json("Internal Server Error");
+        console.log(error);
+        return response.status(500).json("Internal Server Error - " + error.message);
 
     }
 
@@ -95,8 +109,8 @@ router.delete("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
-        return response.status(500).json("Internal Server Error");
+        console.log(error);
+        return response.status(500).json("Internal Server Error - " + error.message);
 
     }
 

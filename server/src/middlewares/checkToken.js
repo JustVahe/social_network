@@ -7,8 +7,6 @@ module.exports = async (request, response, next) => {
 
         const accessToken  = request.header("Authorization").split(" ")[1];
 
-        console.log(accessToken);
-
         if (!accessToken) {
             return response.status(401).json("Unauthorized");
         }

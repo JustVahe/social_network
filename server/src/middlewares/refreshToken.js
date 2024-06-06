@@ -6,36 +6,24 @@ module.exports = async (request, response, next) => {
 
     try {
 
-        if (!request.tokenStatus) {
+        const { refreshToken } = request.body;
 
-            const { refreshToken } = request.body;
-
-            if (!refreshToken) {
-                response.status(401).json("Not Authorized: Refresh token wasn't provided.");
-            }
-
-            const payload = jwt.verify(refreshToken, process.env.refreshSecret);
-
-            const newAccessToken = accessGenerator(payload.userId, "5s");
-
-            request.tokens = {
-                accessToken: newAccessToken,
-                refreshToken,
-                id: payload.userId
-            }
-
+        if (!refreshToken) {
+            response.status(401).json("Not Authorized: Refresh token wasn't provided.");
         }
+
+        const payload = jwt.verify(refreshToken, process.env.refreshSecret);
+
+        const newAccessToken = accessGenerator(payload.userId, "15m");
+        response.status(200).json({
+            accessToken: newAccessToken
+        });
 
         next();
 
     } catch (error) {
 
-        if (error.name === "TokenExpiredError") {
-            request.tokens = "jwt_expired"
-        } else {
-            console.log(error);
-            return response.status(500).json(error);
-        }
+        return response.status(401).json("Not Authorized");
 
     }
 

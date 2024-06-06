@@ -12,7 +12,7 @@ router.get("/", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         response.status(500).json(error.message);
 
     }
@@ -34,7 +34,7 @@ router.get("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         response.status(500).json(error.message);
 
     }
@@ -55,7 +55,7 @@ router.post("/", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         response.status(500).json(error.message);
 
     }
@@ -82,7 +82,7 @@ router.put("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         response.status(500).json(error.message);
 
     }
@@ -105,7 +105,7 @@ router.delete("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         response.status(500).json(error.message);
 
     }

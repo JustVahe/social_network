@@ -24,7 +24,7 @@ router.get("/", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         return response.status(500).json("Internal Server Error");
 
     }
@@ -46,7 +46,7 @@ router.get("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         return response.status(500).json("Internal Server Error");
 
     }
@@ -67,7 +67,7 @@ router.post("/", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         return response.status(500).json("Internal Server Error");
 
     }
@@ -94,7 +94,7 @@ router.put("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         return response.status(500).json("Internal Server Error");
 
     }
@@ -117,7 +117,7 @@ router.delete("/:id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error);
         return response.status(500).json("Internal Server Error");
 
     }

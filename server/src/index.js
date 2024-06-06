@@ -22,8 +22,6 @@ app.use("/friends", require("./routes/friends"));
 app.use("/replies", require("./routes/replies"));
 app.use("/files", require("./routes/files"));
 
-console.log(path.join(__dirname, "../public"));
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

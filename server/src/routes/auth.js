@@ -5,6 +5,7 @@ const accessGenerator = require("../utils/accessGenerator");
 const refreshGenerator = require("../utils/refreshGenerator");
 const { v4 } = require("uuid");
 const checkToken = require("../middlewares/checkToken");
+const refreshToken = require("../middlewares/refreshToken");
 
 router.post("/register", async (request, response) => {
 
@@ -31,11 +32,10 @@ router.post("/register", async (request, response) => {
             name, surname, email, username: name.toLowerCase() + "-" + v4().slice(0, 4), password: encryptedPassword
         });
 
-        const accessToken = accessGenerator(newUser.id, "25s");
-        const refreshToken = refreshGenerator(newUser.id, "7d");
+        const accessToken = accessGenerator(user.id, "15m");
+        const refreshToken = refreshGenerator(user.id, "90d");
 
-        response
-            .json({ accessToken, refreshToken });
+        return response.status(200).json({ accessToken, refreshToken });
 
     } catch (error) {
         console.log(error);
@@ -49,8 +49,6 @@ router.post("/login", async (request, response) => {
     try {
 
         const { email, password } = request.body;
-
-        console.log(password);
 
         const user = await User.findOne({
             where: { email }
@@ -71,9 +69,10 @@ router.post("/login", async (request, response) => {
             }
             );
 
-        const accessToken = accessGenerator(user.id, "1m");
+        const accessToken = accessGenerator(user.id, "15m");
+        const refreshToken = refreshGenerator(user.id, "90d");
 
-        response.json({ accessToken });
+        return response.status(200).json({ accessToken, refreshToken});
 
     } catch (error) {
         console.log(error);
@@ -83,6 +82,21 @@ router.post("/login", async (request, response) => {
 });
 
 router.get("/verify", checkToken, (request, response) => {
+
+    try {
+
+        return response.status(200).json(true);
+
+    } catch (error) {
+
+        console.log(error);
+        return response.status(500).json(error);
+
+    }
+
+});
+
+router.post("/refresh", refreshToken, (request, response) => {
 
     try {
 
