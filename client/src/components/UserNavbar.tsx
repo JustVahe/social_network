@@ -21,7 +21,7 @@ export default function UserNavbar({thisUser} : {thisUser :IUser}) {
                       <p className="text-zinc-400 text-sm-14">Singer-songwriter</p>
                     </div>
                     <div className='hidden md:flex md:items-center md:gap-[20px]'>
-                        <NavLink to={"/"+username}>
+                        <NavLink to={"/"+username+"/home"}>
                             {({isActive}) => {
                                 return <p className={"font-medium transition hover:text-sky-600 " + (isActive ? "text-sky-600" : "text-zinc-700")}>Timeline</p>
                             }}
@@ -46,7 +46,7 @@ export default function UserNavbar({thisUser} : {thisUser :IUser}) {
                             onClick={() => setDropdownToggle(prev => !prev)}>
                         <TfiMenu />
                         <div className={'absolute w-[100px] bg-sky-600 top-[60px] ' + (dropdownToggle ? "block" : "hidden")}>
-                            <Link to={"/"+username+"/userPage/"}>
+                            <Link to={"/"+username+"/home/"}>
                               <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Timeline</p>
                             </Link>
                             <Link to={"/"+username+"/photos"}>

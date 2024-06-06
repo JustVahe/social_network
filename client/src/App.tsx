@@ -14,7 +14,7 @@ function App() {
                     <Route path="/signUp" element={<WelcomePage type="signUp" />} />
                     <Route path="/dashboard" element={<MainPage />} />
                     <Route path="/" element={<Redirect />} />
-                    <Route path="/:username" element={<User page="timeline" />} />
+                    <Route path="/:username/home" element={<User page="timeline" />} />
                     <Route path="/:username/photos" element={<User page="photos" />} />
                     <Route path="/:username/friends" element={<User page="friends" />} />
                     <Route path="/:username/messages" element={<User page="messages" />} />

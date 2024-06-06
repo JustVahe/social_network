@@ -1,10 +1,10 @@
-import { ID } from "../types";
-import Friends from "./friends/Friends";
-import NewsfeedComponent from "./feed/NewsfeedComponent";
-import Shortcuts from "./feed/Shortcuts";
-import PostingForm from "./forms/PostingForm";
+import { ID } from "../../types";
+import Friends from "../friends/Friends";
+import NewsfeedComponent from "../feed/NewsfeedComponent";
+import Shortcuts from "../feed/Shortcuts";
+import PostingForm from "../forms/PostingForm";
 import { useEffect } from "react";
-import { useCheck } from "../hooks/useCheck";
+import { useCheck } from "../../hooks/useCheck";
 
 export default function UserFeed({ id }: { id: ID }) {
 

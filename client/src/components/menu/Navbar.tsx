@@ -24,17 +24,17 @@ export default function Navbar() {
                         <img src="/logo.png"/>
                     </Link>
                     <div className="w-[300px] hidden justify-between lg:flex">
-                        <Link to={`/${currentUser?.username}`}>
+                        <Link to={`/${currentUser?.username}/photos`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Photos
                             </p>
                         </Link>
-                        <Link to={`/${currentUser?.username}`}>
+                        <Link to={`/${currentUser?.username}/friends`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Friends
                             </p>
                         </Link>
-                        <Link to={`/${currentUser?.username}`}>
+                        <Link to={`/${currentUser?.username}/messages`}>
                             <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                 Messages
                             </p>

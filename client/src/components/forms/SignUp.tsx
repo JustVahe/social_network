@@ -61,7 +61,7 @@ export default function SignUp() {
                 }
 
                 localStorage.setItem("accessToken", data.accessToken);
-                localStorage.setItem("refreshToken", data.refreshToken)
+                localStorage.setItem("refreshToken", data.refreshToken);
 
                 dispatch(setIsAuth(true));
                 navigate("/");

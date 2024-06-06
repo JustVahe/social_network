@@ -1,17 +1,20 @@
+import { Link } from "react-router-dom";
 import { IUser } from "../../types";
 import FriendButton from "../buttons/FriendButton";
 
-export default function FriendLabel({friend} : {friend : IUser}) {
+export default function FriendLabel({ friend }: { friend: IUser }) {
 
-    const {name,surname,avatar,status,email} = friend;
-    
+    const { username, name, surname, avatar, status, email } = friend;
+
     return (
-      <div className="w-full flex gap-[15px]">
-          <FriendButton status={status} src={"/api/public/"+avatar} />
-          <div>
-              <p className="text-sm-12 font-bold">{name} {surname}</p>
-              <p className="text-sm-11">{email}</p>
-          </div>
-      </div>
+        <div className="w-full flex gap-[15px]">
+            <FriendButton status={status} src={"/api/public/" + avatar} />
+            <div>
+                <Link to={`/${username}/home`}>
+                    <p className="text-sm-12 font-bold">{name} {surname}</p>
+                </Link>
+                <p className="text-sm-11">{email}</p>
+            </div>
+        </div>
     )
 }

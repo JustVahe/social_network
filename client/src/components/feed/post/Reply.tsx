@@ -2,24 +2,25 @@ import { FaReply } from "react-icons/fa"
 import { IReply } from "../../../types"
 import { useEffect, useState } from "react";
 
-export default function Reply({ reply }: { reply: IReply}) {
+export default function Reply({ reply }: { reply: IReply }) {
 
-    const [thisReply,setThisComment] = useState<IReply | undefined>();
-    
+    const [thisReply, setThisComment] = useState<IReply | undefined>();
+
     useEffect(() => {
 
-        fetch("/api/replies/"+reply.id)
+        fetch("/api/replies/" + reply.id)
             .then(response => response.json())
             .then(data => {
                 setThisComment(data)
             });
-    }, [reply])
+            
+    }, [reply.id])
 
     return (
         <>
             {
                 thisReply && <div className="w-full flex gap-[10px] items-start">
-                    <img src={"/api/public/"+thisReply.user.avatar} alt="user" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
+                    <img src={"/api/public/" + thisReply.user.avatar} alt="user" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">
                             <p className="text-sm-13 text-zinc-700 font-bold">{thisReply.user.username}</p>

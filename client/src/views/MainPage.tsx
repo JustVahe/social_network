@@ -9,11 +9,8 @@ const MainPage = () => {
     const {checkAccessToken} = useCheck();
 
     useEffect(() => {
-
         checkAccessToken();
-
     }, [checkAccessToken]);
-
 
     return (
         <>

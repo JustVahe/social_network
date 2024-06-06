@@ -1,40 +1,50 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { FaMessage } from "react-icons/fa6";
+import { useAppSelector } from "../../redux/typedHooks";
+import { selectIsAuth } from "../../redux/slices/isAuthSlice";
 
 export default function CommentBar() {
 
     const [commentMessage, setCommentMessage] = useState<string>();
     const [commentError, setCommentError] = useState<Error | undefined>();
 
-    const commentSendingHandler = async (event : FormEvent) => {
+    const isAuth = useAppSelector(selectIsAuth);
+
+    const commentSendingHandler = async (event: FormEvent) => {
 
         event.preventDefault();
 
         try {
 
-            if (commentMessage && commentMessage?.length !== 0) {
+            if (isAuth) {
 
-                const body = {
-                    message: commentMessage
+                if (commentMessage && commentMessage?.length !== 0) {
+
+                    const body = {
+                        message: commentMessage
+                    }
+
+                    const commentResponse = await fetch("/api/comments", {
+                        method: "POST",
+                        headers: {
+                            'Content-type': "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    });
+
+                    const data = await commentResponse.json();
+
+                    console.log(data);
+
+                    setCommentError(undefined);
+
+                } else {
+                    throw new Error("Please write the message")
                 }
 
-                const commentResponse = await fetch("/api/comments", {
-                    method: "POST",
-                    headers: {
-                        'Content-type': "application/json"
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                const data = await commentResponse.json();
-
-                console.log(data);
-
-                setCommentError(undefined);
-                
-            } else {
-                throw new Error("Please write the message")
             }
+
+
 
         } catch (error: unknown) {
 

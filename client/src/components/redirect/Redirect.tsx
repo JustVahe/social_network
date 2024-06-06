@@ -4,16 +4,20 @@ import { selectIsAuth } from "../../redux/slices/isAuthSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser, setUser } from "../../redux/slices/currentUserSlice";
+import { useCheck } from "../../hooks/useCheck";
 
 export default function Redirect() {
 
     const isAuth = useAppSelector(selectIsAuth);
+    const { checkAccessToken } = useCheck();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector(selectCurrentUser);
 
     useEffect(() => {
+
+        checkAccessToken();
 
         async function loginRedirectHandle() {
 
@@ -28,28 +32,18 @@ export default function Redirect() {
                     });
 
                     const data = await loginResponse.json();
-                    console.log(data);
-                    console.log(currentUser);
-                    console.log("/" + currentUser?.username);
-
-
-
                     dispatch(setUser(data));
-                    navigate("/" + currentUser?.username);
+                    navigate("/" + currentUser?.username + "/home");
                 }
             } catch (error) {
                 console.log(error);
-                
             }
-
-            
-
 
         }
 
         loginRedirectHandle();
 
-    }, [isAuth, navigate, currentUser, dispatch]);
+    }, [isAuth, navigate, currentUser, dispatch, checkAccessToken]);
 
     return (
         <div className="w-full h-screen bg-sky-600 grid place-items-center">
