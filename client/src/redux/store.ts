@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, applyMiddleware } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice"
 import postReducer from "./slices/postSlice"
 import commentReducer from "./slices/commentSlice"
@@ -8,6 +8,7 @@ import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import isAuthReducer from "./slices/isAuthSlice";
 import thisUserReducer from "./slices/thisUserSlice";
+import thunk from "redux-thunk";
 
 const persistConfig = {
     key: "root",
@@ -32,7 +33,7 @@ export const store = configureStore(
         reducer: persistedReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({
             serializableCheck: false
-        }),
+        })
     }
 );
 

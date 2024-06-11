@@ -1,23 +1,22 @@
-import { useAppDispatch } from "../../redux/typedHooks";
 import Post from "./post/Post";
-import { IPost } from "../../types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
+import { selectPost, setPost } from "../../redux/slices/postSlice";
 
-export default function DashboardFeed() {
+export default function HomeFeed() {
 
-
+    const posts = useAppSelector(selectPost);
     const dispatch = useAppDispatch();
-    const [posts, setPosts] = useState<IPost[] | null>();
 
     useEffect(() => {
 
         fetch("/api/posts/")
             .then((res) => res.json())
             .then(data => {
-                setPosts(data);
+                dispatch(setPost(data));
             })
 
-    }, [dispatch])
+    }, [dispatch]);
 
     return (
         <div className="2xl:max-w-[600px] xl:xl:max-w-[480px] flex flex-col gap-[20px]">

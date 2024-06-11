@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "../redux/typedHooks";
 import { setIsAuth } from "../redux/slices/isAuthSlice";
+import { setUser } from "../redux/slices/currentUserSlice";
 
 export const useCheck = () => {
 
@@ -9,28 +10,28 @@ export const useCheck = () => {
 
     const tokenRefreshHandler = async () => {
 
-        const response = await fetch("http://localhost:8246/auth/refresh", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-                refreshToken: localStorage.refreshToken
-            })
-        });
+        try {
 
-        if (response.status === 401) {
-            
-            navigate("/signIn");
-            localStorage.clear();
-            dispatch(setIsAuth(false));
-            return 1;
-
-        } else {
+            const response = await fetch("http://localhost:8246/auth/refresh", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    refreshToken: localStorage.refreshToken
+                })
+            });
 
             const data = await response.json();
             localStorage.setItem("authorization", data.accessToken);
             checkAccessToken();
+
+        } catch (error) {
+
+            navigate("/signIn");
+            localStorage.clear();
+            dispatch(setIsAuth(false));
+            return 1;
 
         }
 
@@ -43,13 +44,16 @@ export const useCheck = () => {
             headers: {
                 "Authorization": `Bearer ${localStorage.authorization}`
             }
-        })
+        });
 
         if (response.status === 401) {
-            tokenRefreshHandler();
+            await tokenRefreshHandler();
+        } else {
+            const data = await response.json();
+            dispatch(setUser(data));
         }
-    }
 
+    }
 
     return { checkAccessToken };
 

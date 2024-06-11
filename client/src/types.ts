@@ -10,6 +10,7 @@ export interface IUser {
     headerImg : string,
     status : string,
     password : string, 
+    description: string,
     posts : IPost[],
     friends : IFriend[],
     requests : []

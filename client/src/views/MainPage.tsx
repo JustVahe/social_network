@@ -10,7 +10,8 @@ const MainPage = () => {
 
     useEffect(() => {
         checkAccessToken();
-    }, [checkAccessToken]);
+    //eslint-disable-next-line
+    }, []);
 
     return (
         <>

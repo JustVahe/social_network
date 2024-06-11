@@ -15,7 +15,7 @@ export const friendsSlice = createSlice({
   initialState,
   reducers: {
     setFriends: (state, action: PayloadAction<IUser[]>) => {
-      state.value = action.payload
+      state.value = {...action.payload} as IUser[];
     },
   }
 })

@@ -1,13 +1,12 @@
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ValidationError } from "yup"
 import { signInScheme } from "../../validations/SignInValidation";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
+import { setUser } from "../../redux/slices/currentUserSlice";
 
 export default function SignIn() {
-
-    localStorage.clear();
 
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
@@ -20,6 +19,10 @@ export default function SignIn() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        localStorage.clear();
+        dispatch(setUser(null));
+    }, []);
 
     const signInHandler = async (event: FormEvent) => {
 
@@ -36,7 +39,7 @@ export default function SignIn() {
             });
 
             console.log(validation);
-            
+
 
             if (validation) {
 
@@ -55,14 +58,16 @@ export default function SignIn() {
 
                 if (response.status !== 200) {
                     throw new Error(data.message);
+                } else {
+                    localStorage.setItem("authorization", data.accessToken);
+                    localStorage.setItem("refreshToken", data.refreshToken);
+
+                    dispatch(setIsAuth(true));
+                    navigate("/");
+                    setGeneralError(undefined);
                 }
 
-                localStorage.setItem("authorization", data.accessToken);
-                localStorage.setItem("refreshToken", data.refreshToken);
 
-                dispatch(setIsAuth(true));
-                navigate("/");
-                setGeneralError(undefined);
 
             }
 
@@ -79,7 +84,7 @@ export default function SignIn() {
             }
 
             console.log(error);
-            
+
 
         }
 
@@ -113,17 +118,17 @@ export default function SignIn() {
                         type="email"
                         placeholder='Email'
                         name="email"
-                        className='w-full p-[10px] text-zinc-800 border-2 border-sky-600 mt-[15px] mb-0 rounded-md placeholder:text-zinc-500' 
+                        className='w-full p-[10px] text-zinc-800 border-2 border-sky-600 mt-[15px] mb-0 rounded-md placeholder:text-zinc-500'
                     />
-                    <input 
-                        type="password" 
-                        placeholder='Password' 
+                    <input
+                        type="password"
+                        placeholder='Password'
                         name="password"
                         onChange={(event: ChangeEvent) => {
                             const eventTarget = event.target as HTMLButtonElement;
                             setPassword(eventTarget.value)
                         }}
-                        className='w-full p-[10px] text-zinc-800 border-2 border-sky-600 my-[15px]  rounded-md placeholder:text-zinc-500' 
+                        className='w-full p-[10px] text-zinc-800 border-2 border-sky-600 my-[15px]  rounded-md placeholder:text-zinc-500'
                     />
                     <button onClick={signInHandler} className='w-full p-[10px] text-center bg-sky-600 rounded-md text-white'>Sign In</button>
                 </form>

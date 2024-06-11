@@ -1,11 +1,12 @@
 import { TfiHome, TfiMenu, TfiSearch } from "react-icons/tfi"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { useAppDispatch, useAppSelector } from "../../redux/typedHooks"
-import { selectCurrentUser, setUser } from "../../redux/slices/currentUserSlice"
+import { useAppSelector } from "../../redux/typedHooks"
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice"
 import AdminDropdown from "../buttons/AdminDropdown"
 import Searchbar from "../forms/Searchbar"
 import { IUser } from "../../types"
+import { useCheck } from "../../hooks/useCheck"
 
 export default function Navbar() {
 
@@ -14,39 +15,33 @@ export default function Navbar() {
     const [userToggle, setUserToggle] = useState<boolean>(false);
 
     const currentUser: IUser | null = useAppSelector(selectCurrentUser);
-    const dispatch = useAppDispatch();
+    const { checkAccessToken } = useCheck();
 
     useEffect(() => {
-
-        fetch("/api/users/" + currentUser?.id)
-            .then((response) => response.json())
-            .then(data => {
-                dispatch(setUser(data));
-            });
-
-
-    }, [currentUser?.id, currentUser?.avatar, dispatch])
+        checkAccessToken();
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <>
             {
                 currentUser && <>
                     <nav className="w-full px-[20px] p-[12px] flex justify-between shadow-zinc-300 shadow-sm items-center bg-white fixed z-50 top-0">
-                        <Link to={`/dashboard`}>
+                        <Link to={`/feed`}>
                             <img src="/logo.png" />
                         </Link>
                         <div className="w-[300px] hidden justify-between lg:flex">
-                            <Link to={`/${currentUser.username}/photos`}>
+                            <Link to={`/dashboard/photos`}>
                                 <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                     Photos
                                 </p>
                             </Link>
-                            <Link to={`/${currentUser.username}/friends`}>
+                            <Link to={`/dashboard/friends`}>
                                 <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                     Friends
                                 </p>
                             </Link>
-                            <Link to={`/${currentUser.username}/messages`}>
+                            <Link to={`/dashboard/messages`}>
                                 <p className="text-sm-14 flex gap-[10px] items-center font-semibold text-zinc-700">
                                     Messages
                                 </p>
@@ -57,7 +52,7 @@ export default function Navbar() {
                                 <TfiSearch />
                             </button>
                             <Searchbar searchToggle={searchToggle} />
-                            <Link to={`/dashboard`}>
+                            <Link to={`/feed`}>
                                 <p className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
                                     <TfiHome />
                                 </p>

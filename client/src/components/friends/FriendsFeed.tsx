@@ -1,5 +1,5 @@
 import Friends from "./Friends";
-import Shortcuts from "../feed/Shortcuts";
+import Shortcuts from "../menu/Shortcuts";
 import FriendsComponent from "./FriendsComponent";
 import { ID } from "../../types";
 import { useCheck } from "../../hooks/useCheck";
@@ -14,7 +14,8 @@ export default function FriendsFeed({ id }: { id: ID }) {
 
     useEffect(() => {
         checkAccessToken();
-    }, [checkAccessToken]);
+    //eslint-disable-next-line
+    }, []);
 
     return (
         thisUser &&

@@ -1,38 +1,31 @@
 import { FaEdit, FaImage } from "react-icons/fa";
-import { ID } from "../../types";
+import { ID, IUser } from "../../types";
 import { useCheck } from "../../hooks/useCheck";
 import { useAppDispatch } from "../../redux/typedHooks";
-import { setUser } from "../../redux/slices/currentUserSlice";
+import { setHeaderImg } from "../../redux/slices/currentUserSlice";
 
 export default function UserEditButtons({ id }: { id: ID }) {
     
     const { checkAccessToken } = useCheck();
-
     const dispatch = useAppDispatch();
-
     const formData = new FormData();
 
-    const coverImageEditHandler = async (eventTarget: HTMLInputElement) => {
 
+    const coverImageEditHandler = async (eventTarget: HTMLInputElement) => {
+        
         if (eventTarget.files) {
 
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
             
-            const updateResponse = await fetch(`/api/files/${id}/header`, {
+            await fetch(`/api/files/${id}/header`, {
                 method: "PUT",
                 body: formData
             });
 
-            const updateData = await updateResponse.json();
-
-            console.log(updateData);
-
             const getResponse = await fetch(`/api/users/${id}`);
-
-            const getData = await getResponse.json();
-
-            dispatch(setUser(getData));
+            const getData :IUser = await getResponse.json();
+            dispatch(setHeaderImg(getData.headerImg));
 
         }
 

@@ -1,13 +1,12 @@
 import { Link, useNavigate } from "react-router-dom"
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { signUpScheme } from "../../validations/SignUpValidation";
 import { ValidationError } from "yup";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
+import { setUser } from "../../redux/slices/currentUserSlice";
 
 export default function SignUp() {
-
-    localStorage.clear();
 
     const [nameError, setNameError] = useState<ValidationError | undefined>();
     const [surnameError, setSurnameError] = useState<ValidationError | undefined>();
@@ -24,6 +23,11 @@ export default function SignUp() {
     const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        localStorage.clear();
+        dispatch(setUser(null));
+    }, [dispatch]);
 
     const signUpHandler = async (event: FormEvent) => {
 

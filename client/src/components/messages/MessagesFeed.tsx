@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useCheck } from "../../hooks/useCheck";
-import Shortcuts from "../feed/Shortcuts";
+import Shortcuts from "../menu/Shortcuts";
 import MessagesComponent from "./MessagesComponent";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectThisUser } from "../../redux/slices/thisUserSlice";
@@ -12,7 +12,8 @@ export default function MessagesFeed() {
 
     useEffect(() => {
         checkAccessToken();
-    }, [checkAccessToken]);
+    //eslint-disable-next-line
+    }, []);
 
     return (
         thisUser &&

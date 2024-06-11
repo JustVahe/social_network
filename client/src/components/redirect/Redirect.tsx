@@ -42,8 +42,8 @@ export default function Redirect() {
         }
 
         loginRedirectHandle();
-
-    }, [isAuth, navigate, currentUser, dispatch, checkAccessToken]);
+        //eslint-disable-next-line
+    }, [isAuth, navigate, currentUser, dispatch]);
 
     return (
         <div className="w-full h-screen bg-sky-600 grid place-items-center">
