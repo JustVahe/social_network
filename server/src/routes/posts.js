@@ -39,7 +39,10 @@ router.get("/:id", async (request, response) => {
 
         const thisPost = await Post.findOne({
             where: { id },
-            include: ["user", "comments", "files"]
+            include: {
+                all: true,
+                nested: true
+            }
         });
 
         return response.status(200).json(thisPost);
@@ -53,11 +56,12 @@ router.get("/:id", async (request, response) => {
 
 });
 
-router.post("/", async (request, response) => {
+router.post("/:user_id", async (request, response) => {
 
     try {
 
-        const { user_id, message } = request.body;
+        const { user_id } = request.params;
+        const { message } = request.body;
 
         const newPost = await Post.create({
             user_id, message
@@ -79,17 +83,14 @@ router.put("/:id", async (request, response) => {
     try {
 
         const { id } = request.params;
-
-        const {message} = request.body;
+        const { message } = request.body;
 
         const thisPost = await Post.findOne({
             where: { id }
         });
-
         thisPost.message = message;
-
         thisPost.save();
-
+        
         return response.status(200).json(thisPost);
 
     } catch (error) {
@@ -113,7 +114,7 @@ router.delete("/:id", async (request, response) => {
 
         thisPost.destroy();
 
-        return response.status(200).send("Post successfully deleted");
+        return response.status(200).json("Post successfully deleted");
 
     } catch (error) {
 

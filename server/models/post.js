@@ -12,9 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ File, User, Comment }) {
 
       this.hasMany(File, { foreignKey: "post_id", as: "files" });
-      this.hasMany(Comment, { foreignKey: "post_id", as: "comments" })
+      this.hasMany(Comment, { foreignKey: "post_id", as: "comments" });
       this.belongsTo(User, { foreignKey: "user_id", as: "user" });
-
     }
   }
   Post.init({

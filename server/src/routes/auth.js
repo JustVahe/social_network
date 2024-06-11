@@ -81,11 +81,21 @@ router.post("/login", async (request, response) => {
 
 });
 
-router.get("/verify", checkToken, (request, response) => {
+router.get("/verify", checkToken, async (request, response) => {
 
     try {
 
-        return response.status(200).json(true);
+        const userId = request.userId;
+
+        const user = await User.findOne({
+            where : {id: userId},
+            include: {
+                all: true,
+                nested: true
+            }
+        });
+
+        return response.status(200).json(user);
 
     } catch (error) {
 
