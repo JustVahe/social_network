@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
 import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
-import { useCheck } from "../hooks/useCheck.ts";
+import { useCheck } from "../utils/hooks/useCheck.ts";
 
 export default function User({ page }: { page: string }) {
 

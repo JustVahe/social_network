@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/typedHooks"
 import { addPostToCurrentUser, selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useRef, useState } from "react";
 import { IPost } from "../../types";
-import { useCheck } from "../../hooks/useCheck";
+import { useCheck } from "../../utils/hooks/useCheck";
 import { addPost } from "../../redux/slices/postSlice";
 
 export default function PostingForm() {

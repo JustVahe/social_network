@@ -1,6 +1,5 @@
 import Navbar from "../components/menu/Navbar";
 import Footer from "../components/Footer";
-import PhotoFeed from "../components/photoPageComponents/PhotoFeed";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
 import UserEditButtons from "../components/user/UserEditButtons.tsx";
@@ -9,7 +8,8 @@ import { selectCurrentUser } from "../redux/slices/currentUserSlice.ts";
 import ProtectedUserFeed from "../components/protectedUser/ProtectedUserFeed.tsx";
 import ProtectedUserNavbar from "../components/menu/ProtectedUserNavbar.tsx";
 import { useEffect } from "react";
-import { useCheck } from "../hooks/useCheck.ts";
+import { useCheck } from "../utils/hooks/useCheck.ts";
+import ProtectedPhotoFeed from "../components/protectedUser/ProtectedPhotoFeed.tsx";
 
 export default function ProtectedUser({ page }: { page: string }) {
 
@@ -38,7 +38,7 @@ export default function ProtectedUser({ page }: { page: string }) {
 				{page === "timeline" ? (
 					<ProtectedUserFeed />
 				) : page === "photos" ? (
-					<PhotoFeed id={currentUser.id} status={"protected"} />
+					<ProtectedPhotoFeed id={currentUser.id} />
 				) : page === "friends" ? (
 					<FriendsFeed id={currentUser.id} />
 				) : page === "messages" ? (

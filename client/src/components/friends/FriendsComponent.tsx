@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/typedHooks";
 import FriendsRow from "./FriendsRow";
 import { ID, IFriend } from "../../types";
-import { useCheck } from "../../hooks/useCheck";
+import { useCheck } from "../../utils/hooks/useCheck";
 
 export default function FriendsComponent({ id }: { id: ID }) {
 

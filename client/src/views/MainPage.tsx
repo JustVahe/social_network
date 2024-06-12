@@ -2,7 +2,7 @@ import Footer from "../components/Footer";
 import Menu from "../components/menu/Menu";
 import Feed from "../components/feed/Feed";
 import { useEffect } from "react";
-import { useCheck } from "../hooks/useCheck";
+import { useCheck } from "../utils/hooks/useCheck";
 
 const MainPage = () => {
 

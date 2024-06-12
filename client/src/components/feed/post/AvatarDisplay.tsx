@@ -3,7 +3,7 @@ import { IPost, IUser } from "../../../types";
 import { useAppDispatch } from "../../../redux/typedHooks";
 import { useState } from "react";
 import { FaX } from "react-icons/fa6";
-import { useCheck } from "../../../hooks/useCheck";
+import { useCheck } from "../../../utils/hooks/useCheck";
 import { deletePost, updatePost } from "../../../redux/slices/postSlice";
 import { deletePostOfCurrentUser, updatePostOfCurrentUser } from "../../../redux/slices/currentUserSlice";
 

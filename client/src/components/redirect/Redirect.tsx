@@ -4,7 +4,7 @@ import { selectIsAuth } from "../../redux/slices/isAuthSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser, setUser } from "../../redux/slices/currentUserSlice";
-import { useCheck } from "../../hooks/useCheck";
+import { useCheck } from "../../utils/hooks/useCheck";
 
 export default function Redirect() {
 

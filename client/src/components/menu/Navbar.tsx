@@ -6,7 +6,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice"
 import AdminDropdown from "../buttons/AdminDropdown"
 import Searchbar from "../forms/Searchbar"
 import { IUser } from "../../types"
-import { useCheck } from "../../hooks/useCheck"
+import { useCheck } from "../../utils/hooks/useCheck"
 
 export default function Navbar() {
 

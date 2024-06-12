@@ -2,7 +2,7 @@ import Friends from "../friends/Friends";
 import Shortcuts from "../menu/Shortcuts";
 import PhotoComponent from "./PhotoComponent";
 import { ID } from "../../types";
-import { useCheck } from "../../hooks/useCheck";
+import { useCheck } from "../../utils/hooks/useCheck";
 import { useEffect } from "react";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
@@ -26,7 +26,7 @@ export default function PhotoFeed({ id, status }: { id: ID, status: string }) {
                     {status === "protected" ? <ProtectedShortcuts /> : <Shortcuts user={currentUser} />}
                 </div>
                 <div className="grid sm:col-span-1 w-full gap-5 content-start">
-                    <PhotoComponent id={id} />
+                    <PhotoComponent id={id} status={status} />
                 </div>
                 <div className="xl:col-span-2 gap-5 sm:col-span-1">
                     <Friends id={id} />

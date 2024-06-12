@@ -12,6 +12,7 @@ export interface IUser {
     password : string, 
     description: string,
     posts : IPost[],
+    files: IPhoto[],
     friends : IFriend[],
     requests : []
 }
@@ -46,7 +47,6 @@ export interface IComment {
 
 export interface IPost {
     id : ID,
-    from: ID ,
     message: string,
     files : IPhoto[],
     likes : number,
@@ -59,7 +59,7 @@ export interface IPost {
 export interface IPhoto {
     id : ID,
     userId : ID,
-    postId: ID,
+    postId: ID | null,
     type: string,
     path : string
 }

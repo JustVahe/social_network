@@ -2,7 +2,7 @@ import Friends from "../friends/Friends";
 import NewsfeedComponent from "../feed/NewsfeedComponent";
 import Shortcuts from "../menu/Shortcuts";
 import { useEffect } from "react";
-import { useCheck } from "../../hooks/useCheck";
+import { useCheck } from "../../utils/hooks/useCheck";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectThisUser } from "../../redux/slices/thisUserSlice";
 

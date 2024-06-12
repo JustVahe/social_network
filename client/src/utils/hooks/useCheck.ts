@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
-import { useAppDispatch } from "../redux/typedHooks";
-import { setIsAuth } from "../redux/slices/isAuthSlice";
-import { setUser } from "../redux/slices/currentUserSlice";
+import { useAppDispatch } from "../../redux/typedHooks";
+import { setIsAuth } from "../../redux/slices/isAuthSlice";
+import { setUser } from "../../redux/slices/currentUserSlice";
 
 export const useCheck = () => {
 

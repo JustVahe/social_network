@@ -2,7 +2,7 @@ import Friends from "./Friends";
 import Shortcuts from "../menu/Shortcuts";
 import FriendsComponent from "./FriendsComponent";
 import { ID } from "../../types";
-import { useCheck } from "../../hooks/useCheck";
+import { useCheck } from "../../utils/hooks/useCheck";
 import { useEffect } from "react";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectThisUser } from "../../redux/slices/thisUserSlice";

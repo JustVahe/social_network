@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { ID, IPost, IUser } from '../../types'
+import { ID, IPhoto, IPost, IUser } from '../../types'
 
 export interface CurrentUserState {
 	value: IUser | null
@@ -44,11 +44,24 @@ export const currentUserSlice = createSlice({
 				state.value.posts.splice(thisPostIndex, 1);
 				state.value.posts = [...state.value.posts, action.payload];
 			}
-		}
+		},
+		addPhotoToCurrentUser: (state, action: PayloadAction<IPhoto[]>) => {
+			if (state.value) {
+				state.value.files = [...state.value.files, ...action.payload];
+			}
+		},
 	}
 })
 
-export const { setUser, setAvatar, setHeaderImg, addPostToCurrentUser, deletePostOfCurrentUser, updatePostOfCurrentUser } = currentUserSlice.actions;
+export const {
+	setUser,
+	setAvatar, 
+	setHeaderImg, 
+	addPostToCurrentUser, 
+	deletePostOfCurrentUser, 
+	updatePostOfCurrentUser,
+	addPhotoToCurrentUser
+} = currentUserSlice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.currentUser.value;
 

@@ -1,7 +1,7 @@
 import Post from "./post/Post";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { useCheck } from "../../hooks/useCheck";
+import { useCheck } from "../../utils/hooks/useCheck";
 import { useEffect } from "react";
 
 export default function ProtectedFeedComponent() {

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom"
 import { useAppSelector } from "../redux/typedHooks";
 import { selectIsAuth } from "../redux/slices/isAuthSlice";
-import { useCheck } from "../hooks/useCheck";
+import { useCheck } from "./hooks/useCheck";
 
 const ProtectedHomeRoute = () => {
 
