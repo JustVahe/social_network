@@ -1,4 +1,4 @@
-import Post from "./post/Post";
+import Post from "../post/Post";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";

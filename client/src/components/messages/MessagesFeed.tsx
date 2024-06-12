@@ -3,12 +3,12 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import Shortcuts from "../menu/Shortcuts";
 import MessagesComponent from "./MessagesComponent";
 import { useAppSelector } from "../../redux/typedHooks";
-import { selectThisUser } from "../../redux/slices/thisUserSlice";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 
 export default function MessagesFeed() {
 
     const {checkAccessToken} = useCheck();
-    const thisUser = useAppSelector(selectThisUser);
+    const currentUser = useAppSelector(selectCurrentUser);
 
     useEffect(() => {
         checkAccessToken();
@@ -16,11 +16,11 @@ export default function MessagesFeed() {
     }, []);
 
     return (
-        thisUser &&
+        currentUser &&
         <div className="container my-0">
             <div className='w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5'>
                 <div className="xl:col-span-1 gap-5 sm:col-span-1">
-                    <Shortcuts user={thisUser} />
+                    <Shortcuts user={currentUser} />
                 </div>
                 <div className="grid col-span-1 md:col-span-2 lg:col-span-3 w-full gap-5 content-start">
                     <MessagesComponent />

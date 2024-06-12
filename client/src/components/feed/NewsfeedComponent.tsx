@@ -1,4 +1,4 @@
-import Post from "./post/Post";
+import Post from "../post/Post";
 import { ID, IPost } from "../../types";
 import { useEffect, useState } from "react";
 

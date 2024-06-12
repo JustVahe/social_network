@@ -1,4 +1,4 @@
-import Post from "./post/Post";
+import Post from "../post/Post";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectPost, setPost } from "../../redux/slices/postSlice";

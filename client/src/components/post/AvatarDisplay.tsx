@@ -1,11 +1,13 @@
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import { IPost, IUser } from "../../../types";
-import { useAppDispatch } from "../../../redux/typedHooks";
+import { IPost, IUser } from "../../types";
+import { useAppDispatch } from "../../redux/typedHooks";
 import { useState } from "react";
 import { FaX } from "react-icons/fa6";
-import { useCheck } from "../../../utils/hooks/useCheck";
-import { deletePost, updatePost } from "../../../redux/slices/postSlice";
-import { deletePostOfCurrentUser, updatePostOfCurrentUser } from "../../../redux/slices/currentUserSlice";
+import { useCheck } from "../../utils/hooks/useCheck";
+import { deletePost, updatePost } from "../../redux/slices/postSlice";
+import { deletePostOfCurrentUser, updatePostOfCurrentUser } from "../../redux/slices/currentUserSlice";
+import { notifyError, notifySuccess } from "../../utils/toastification";
+import { ToastContainer } from "react-toastify";
 
 export default function AvatarDisplay({ user, status, post }: { user: IUser, status?: string, post?: IPost }) {
 
@@ -23,7 +25,23 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 			const deleteRequest = await fetch("/api/posts/" + post.id, { method: "DELETE" });
 			const data = await deleteRequest.json();
-			console.log(data);
+
+			post.files.forEach(async (item) => {
+
+				const fileDeleteRequest = await fetch("/api/files/"+item.id, {method: "DELETE"});
+				const fileDeleteData = await fileDeleteRequest.json();
+				
+				if (fileDeleteRequest.status !== 200) {
+					notifyError(fileDeleteData);
+				}
+
+			})
+
+			if (deleteRequest.status === 200) {
+				notifySuccess(data);
+			} else {
+				notifyError(data);
+			}
 
 			dispatch(deletePost(post.id));
 			dispatch(deletePostOfCurrentUser(post.id));
@@ -119,6 +137,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 						</button>
 					</div> : ""
 			}
+			<ToastContainer />
 		</div>
 	)
 }

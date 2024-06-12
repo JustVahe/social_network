@@ -1,8 +1,8 @@
-import { IPost, IUser } from "../../../types";
+import { IPost, IUser } from "./../../types";
 import AvatarDisplay from "./AvatarDisplay";
 import CommentList from "./CommentList";
 import Likes from "./Likes";
-import CommentBar from "../../forms/CommentBar";
+import CommentBar from "./../forms/CommentBar";
 
 export default function Post({ postData, user, status }: { postData: IPost, user?: IUser, status?: string }) {
 
