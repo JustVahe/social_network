@@ -5,6 +5,8 @@ import { useRef, useState } from "react";
 import { IPost } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { addPost } from "../../redux/slices/postSlice";
+import { notifyError } from "../../utils/toastification";
+import { ToastContainer } from "react-toastify";
 
 export default function PostingForm() {
 
@@ -20,6 +22,10 @@ export default function PostingForm() {
 	const postUploadingHandler = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
 		event.preventDefault();
+
+		if (!files && !message) {
+			return notifyError("Post must have at least one file, or one text");
+		}
 
 		const postBody = {
 			message
@@ -122,6 +128,7 @@ export default function PostingForm() {
 					<button onClick={(event) => postUploadingHandler(event)} className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>
 				</div>
 			</div>
+			<ToastContainer />
 		</div>
 	)
 }
