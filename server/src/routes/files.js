@@ -1,11 +1,26 @@
 const router = require("express").Router();
-const { sequelize, File, User } = require("../../models/index");
-const { headerImgStorage, avatarStorage, postStorage } = require("../utils/storages")
+const { File, User } = require("../../models/index");
+const { headerImgStorage, avatarStorage, postStorage, photoStorage } = require("../utils/storages")
 const multer = require("multer");
 
-const uploadHeader = multer({ storage: headerImgStorage });
-const uploadAvatar = multer({ storage: avatarStorage });
-const uploadPost = multer({ storage: postStorage });
+const { imageFilter } = require("../utils/fileFilters");
+
+const uploadHeader = multer({
+    storage: headerImgStorage,
+    fileFilter: imageFilter
+}).single('file');
+const uploadAvatar = multer({
+    storage: avatarStorage,
+    fileFilter: imageFilter
+}).single('file');
+const uploadPost = multer({
+    storage: postStorage,
+    fileFilter: imageFilter
+}).array("files", 10);
+const uploadPhoto = multer({
+    storage: photoStorage,
+    fileFilter: imageFilter
+}).array("files", 10);
 
 router.get("/:user_id", async (request, response) => {
 
@@ -21,7 +36,7 @@ router.get("/:user_id", async (request, response) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.log(error.message);
         return response.status(500).json(error.message);
 
     }
@@ -29,59 +44,58 @@ router.get("/:user_id", async (request, response) => {
 });
 
 router.put("/:user_id/header/",
-    uploadHeader.single('file'),
-    async (request, response) => {
-        try {
-
-            const { user_id } = request.params;
-            const user = await User.findOne(
-                {
+    (request, response) => {
+        uploadHeader(request, response, async (error) => {
+            if (error) {
+                return response.status(400).json("This file is not an image, please send another file!");
+            }
+            try {
+                const { user_id } = request.params;
+                const user = await User.findOne({
                     where: { id: user_id },
-                }
-            );
-            user.headerImg = `/assets/${user_id}/images/headerImg/${request.file.originalname}`;
-            user.save();
-            return response.status(200).json("Cover image upload is complete");
+                });
+                user.headerImg = `/assets/${user_id}/images/headerImg/${request.file.originalname}`;
+                user.save();
+                return response.status(200).json("Cover image upload is complete");
+            } catch (error) {
+                console.log({ error: error });
+                return response.status(500).json({ message: error.message });
+            }
 
-        } catch (error) {
+        })
 
-            console.log(error);
-            return response.status(500).json(error.message);
-
-        }
     }
 );
 
 router.put("/:user_id/avatar/",
-    uploadAvatar.single('file'),
-    async (request, response) => {
-        try {
+    (request, response) => {
+        uploadAvatar(request, response, async (error) => {
+            if (error) {
+                return response.status(400).json("This file is not an image, please send another file!");
+            }
+            try {
+                const { user_id } = request.params;
+                const user = await User.findOne(
+                    {
+                        where: { id: user_id },
+                    }
+                );
+                user.avatar = `/assets/${user_id}/images/avatar/${request.file.originalname}`;
+                user.save();
+                return response.status(200).json("Avatar upload is complete");
+            } catch (error) {
+                console.log(error);
+                return response.status(500).json(error.message);
+            }
+        })
 
-            const { user_id } = request.params;
-            const user = await User.findOne(
-                {
-                    where: { id: user_id },
-                }
-            );
-
-            user.avatar = `/assets/${user_id}/images/avatar/${request.file.originalname}`;
-            user.save();
-
-            return response.status(200).json("Avatar upload is complete");
-
-        } catch (error) {
-
-            console.log(error);
-            return response.status(500).json(error.message);
-
-        }
     }
 );
 
 router.post("/:user_id/post/",
-    uploadPost.array("files", 12),
+    uploadPost,
     async (request, response) => {
-        
+
         try {
 
             const { user_id } = request.params;
@@ -91,7 +105,7 @@ router.post("/:user_id/post/",
             console.log(files);
 
             files.forEach(async (file) => {
-                
+
                 const path = `/assets/${user_id}/images/posts/${file.originalname}`;
                 const type = file.mimetype.split("/")[0];
 
@@ -101,9 +115,9 @@ router.post("/:user_id/post/",
                     path,
                     type
                 });
-                
+
             })
-            
+
             return response.status(200).json("Files have been sent successfully");
 
 
@@ -112,6 +126,37 @@ router.post("/:user_id/post/",
             console.log(error);
             return response.status(500).json(error.message);
 
+        }
+    }
+);
+
+router.post("/:user_id",
+    uploadPhoto,
+    async (request, response) => {
+        try {
+
+            // photos.length = 0;
+
+            const { user_id } = request.params;
+            const files = request.files;
+
+            files.forEach(async (file) => {
+
+                const path = `/assets/${user_id}/images/${file.originalname}`;
+                const type = file.mimetype.split("/")[0];
+
+                const newFile = await File.create({
+                    user_id,
+                    path,
+                    type
+                });
+
+            });
+
+            return response.status(200).json("Files have been successfully uploaded");
+        } catch (error) {
+            console.log(error);
+            return response.status(500).json(error.message);
         }
     }
 )

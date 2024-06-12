@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     message: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     likes: {
       defaultValue: 0,

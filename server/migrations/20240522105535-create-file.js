@@ -15,7 +15,7 @@ module.exports = {
       },
       post_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: true
       },
       type: {
         type: DataTypes.STRING,
