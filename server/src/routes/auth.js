@@ -32,8 +32,8 @@ router.post("/register", async (request, response) => {
             name, surname, email, username: name.toLowerCase() + "-" + v4().slice(0, 4), password: encryptedPassword
         });
 
-        const accessToken = accessGenerator(user.id, "15m");
-        const refreshToken = refreshGenerator(user.id, "90d");
+        const accessToken = accessGenerator(newUser.id, "15m");
+        const refreshToken = refreshGenerator(newUser.id, "90d");
 
         return response.status(200).json({ accessToken, refreshToken });
 

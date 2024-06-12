@@ -5,6 +5,8 @@ import { signInScheme } from "../../validations/SignInValidation";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
+import { ToastContainer } from "react-toastify";
+import { notifyError } from "../../utils/toastification";
 
 export default function SignIn() {
 
@@ -22,6 +24,7 @@ export default function SignIn() {
     useEffect(() => {
         localStorage.clear();
         dispatch(setUser(null));
+        // eslint-disable-next-line
     }, []);
 
     const signInHandler = async (event: FormEvent) => {
@@ -78,13 +81,13 @@ export default function SignIn() {
 
             if (validationErrorInner) {
                 setPasswordError(validationErrorInner.find((item: ValidationError) => item.type === "password"));
+                notifyError(passwordError?.message as string);
                 setEmailError(validationErrorInner.find((item: ValidationError) => item.type === "email"));
+                notifyError(emailError?.message as string);
             } else {
                 setGeneralError(errors);
+                notifyError(generalError?.message as string);
             }
-
-            console.log(error);
-
 
         }
 
@@ -101,14 +104,6 @@ export default function SignIn() {
                     Have no account?
                     <Link to={"/signUp"}><span className="text-sky-600 no-underline hover:underline"> Create one!</span></Link>
                 </p>
-                {
-                    (generalError || emailError || passwordError) &&
-                    <div className="w-full p-[10px] bg-sky-600 text-white rounded-sm mt-[10px]">
-                        <p>{emailError && emailError.message}</p>
-                        <p>{passwordError && passwordError.message}</p>
-                        <p>{generalError && generalError.message}</p>
-                    </div>
-                }
                 <form>
                     <input
                         onChange={(event: ChangeEvent) => {
@@ -136,6 +131,7 @@ export default function SignIn() {
             <div className="rounded-b-md bg-zinc-200 p-2 text-sm-11 w-full">
                 © Winku 2018. All rights reserved.
             </div>
+            <ToastContainer />
         </div>
     )
 }

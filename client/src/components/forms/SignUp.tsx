@@ -5,6 +5,8 @@ import { ValidationError } from "yup";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
+import { notifyError } from "../../utils/toastification";
+import { ToastContainer } from "react-toastify";
 
 export default function SignUp() {
 
@@ -80,11 +82,16 @@ export default function SignUp() {
 
             if (validationErrorInner) {
                 setNameError(validationErrorInner.find((item: ValidationError) => item.type === "name"));
+                notifyError(nameError?.message as string);
                 setSurnameError(validationErrorInner.find((item: ValidationError) => item.type === "surname"));
+                notifyError(surnameError?.message as string);
                 setPasswordError(validationErrorInner.find((item: ValidationError) => item.type === "password"));
+                notifyError(passwordError?.message as string);
                 setEmailError(validationErrorInner.find((item: ValidationError) => item.type === "email"));
+                notifyError(emailError?.message as string);
             } else {
                 setGeneralError(errors);
+                notifyError(generalError?.message as string);
             }
 
         }
@@ -102,16 +109,6 @@ export default function SignUp() {
                     Already have an account?
                     <Link to={"/signIn"}><span className="text-sky-600 no-underline hover:underline"> Then sign in!</span></Link>
                 </p>
-                {
-                    (generalError || nameError || emailError || passwordError || surnameError) &&
-                    <div className="w-full p-[10px] bg-sky-600 text-white rounded-sm mt-[10px]">
-                        <p>{nameError && nameError.message}</p>
-                        <p>{surnameError && surnameError.message}</p>
-                        <p>{emailError && emailError.message}</p>
-                        <p>{passwordError && passwordError.message}</p>
-                        <p>{generalError && generalError.message}</p>
-                    </div>
-                }
                 <form>
                     <input
                         onChange={(event: ChangeEvent) => {
@@ -155,6 +152,7 @@ export default function SignUp() {
             <div className="rounded-b-md bg-zinc-200 p-2 text-sm-11 w-full mt-[30px]">
                 © Winku 2018. All rights reserved.
             </div>
+            <ToastContainer />
         </div>
     )
 

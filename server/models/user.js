@@ -67,11 +67,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     avatar: {
       type: DataTypes.STRING,
-      defaultValue: "./assets/defaultAvatar.jpg"
+      defaultValue: "/assets/defaultAvatar.jpg"
     },
     headerImg: {
       type: DataTypes.STRING,
-      defaultValue: "./assets/defaultHeader.jpg"
+      defaultValue: "/assets/defaultHeader.jpg"
     }
   }, {
     sequelize,

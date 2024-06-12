@@ -12,7 +12,7 @@ export const useCheck = () => {
 
         try {
 
-            const response = await fetch("http://localhost:8246/auth/refresh", {
+            const response = await fetch("/api/auth/refresh", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -39,7 +39,7 @@ export const useCheck = () => {
 
     const checkAccessToken = async () => {
 
-        const response = await fetch("http://localhost:8246/auth/verify", {
+        const response = await fetch("/api/auth/verify", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${localStorage.authorization}`
