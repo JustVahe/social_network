@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { File, User } = require("../../models/index");
 const { headerImgStorage, avatarStorage, postStorage, photoStorage } = require("../utils/storages")
 const multer = require("multer");
+const fs = require("fs");
 
 const { imageFilter } = require("../utils/fileFilters");
 
@@ -159,7 +160,36 @@ router.post("/:user_id",
             return response.status(500).json(error.message);
         }
     }
-)
+);
+
+router.delete("/:id", async (request, response) => {
+
+    try {
+
+        const { id } = request.params;
+
+        const file = await File.findOne({
+            where: {id}
+        });
+
+        const path = `${__dirname}../../../public/${file.path}`;
+        
+        file.destroy();
+
+        fs.unlink(path, (error) => {
+            if (error) {
+                return response.status(400).json("File is not deleted");
+            } else {
+                return response.status(200).json("File is successfully deleted");
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json(error.message);
+    }
+
+})
 
 
 module.exports = router;
