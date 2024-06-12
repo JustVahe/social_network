@@ -6,33 +6,33 @@ import { setHeaderImg } from "../../redux/slices/currentUserSlice";
 import { notifyError, notifySuccess } from "../../utils/toastification";
 
 export default function UserEditButtons({ id }: { id: ID }) {
-
+    
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const formData = new FormData();
 
 
     const coverImageEditHandler = async (eventTarget: HTMLInputElement) => {
-
+        
         if (eventTarget.files) {
 
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
-
+            
             const headerResponse = await fetch(`/api/files/${id}/header`, {
                 method: "PUT",
                 body: formData
             });
             const headerData = await headerResponse.json();
 
-            if (headerResponse.status !== 200) {
+            if (headerResponse.status !== 200 ) {
                 notifyError(headerData);
-            } else {
+            }else {
                 notifySuccess(headerData);
             }
 
             const getResponse = await fetch(`/api/users/${id}`);
-            const getData: IUser = await getResponse.json();
+            const getData :IUser = await getResponse.json();
             dispatch(setHeaderImg(getData.headerImg));
 
         }
