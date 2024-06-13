@@ -54,6 +54,7 @@ export interface IPost {
     dislikes : number
     user: IUser,
     comments: IComment[]
+    user_id: ID
 }
 
 export interface IPhoto {

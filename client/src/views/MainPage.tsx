@@ -1,4 +1,4 @@
-import Footer from "../components/Footer";
+import Footer from "../components/menu/Footer";
 import Menu from "../components/menu/Menu";
 import Feed from "../components/feed/Feed";
 import { useEffect } from "react";

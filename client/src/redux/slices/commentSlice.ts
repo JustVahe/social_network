@@ -18,7 +18,7 @@ export const commentSlice = createSlice({
       state.value = action.payload
     },
     addComment: (state, action: PayloadAction<IComment>) => {
-        state.value.push(action.payload)
+      state.value = [...state.value, action.payload];
     },
   }
 })

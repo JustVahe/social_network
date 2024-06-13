@@ -1,15 +1,18 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { FaMessage } from "react-icons/fa6";
 // import { useAppSelector } from "../../redux/typedHooks";
-// import { selectIsAuth } from "../../redux/slices/isAuthSlice";
 import { notifyError } from "../../utils/toastification";
 import { IPost } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
+import { addComment } from "../../redux/slices/commentSlice";
+import { useAppDispatch } from "../../redux/typedHooks";
+import { setPost } from "../../redux/slices/postSlice";
 
-export default function CommentBar({postData} : {postData : IPost}) {
+export default function CommentBar({ postData }: { postData?: IPost }) {
 
     const [commentMessage, setCommentMessage] = useState<string>();
     const { checkAccessToken } = useCheck();
+    const dispatch = useAppDispatch();
 
     const commentSendingHandler = async (event: FormEvent) => {
 
@@ -24,7 +27,7 @@ export default function CommentBar({postData} : {postData : IPost}) {
 
                     const body = {
                         message: commentMessage,
-                        user_id: postData.user.id,
+                        user_id: postData.user_id,
                         post_id: postData.id
                     }
                     const commentResponse = await fetch("/api/comments", {
@@ -35,7 +38,19 @@ export default function CommentBar({postData} : {postData : IPost}) {
                         body: JSON.stringify(body)
                     });
                     const data = await commentResponse.json();
-                    console.log(data);
+                    addComment(data);
+
+                    if (commentResponse.status === 200) {
+
+                        fetch("/api/posts/")
+                            .then((res) => res.json())
+                            .then(data => {
+                                dispatch(setPost(data));
+                            })
+
+                    }
+
+                    await checkAccessToken();
 
                 } else {
                     throw new Error("Please write the message")

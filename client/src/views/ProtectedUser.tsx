@@ -1,5 +1,5 @@
 import Navbar from "../components/menu/Navbar";
-import Footer from "../components/Footer";
+import Footer from "../components/menu/Footer.tsx";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
 import UserEditButtons from "../components/user/UserEditButtons.tsx";
