@@ -16,7 +16,7 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 						postData.files.map(
 							item => {
 								if (item.type === "image") {
-									return <img key={item.id} src={"/api/public" + item.path}></img>
+									return <img key={item.id} src={"/api/public" + item.path} alt="post"></img>
 								}
 							}
 						)
@@ -30,7 +30,7 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 						{postData.message}
 					</p>
 					<CommentList comments={postData.comments} />
-					<CommentBar />
+					<CommentBar postData={postData} />
 				</>
 			}
 		</div>

@@ -6,7 +6,7 @@ import { IPost } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { addPost } from "../../redux/slices/postSlice";
 import { notifyError } from "../../utils/toastification";
-import { ToastContainer } from "react-toastify";
+
 
 export default function PostingForm() {
 
@@ -71,7 +71,7 @@ export default function PostingForm() {
 	}
 	return (
 		<div className="w-full min-h-[160px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] flex gap-5 justify-between rounded-md">
-			<img src={"/api/public/" + currentUser?.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
+			<img src={"/api/public/" + currentUser?.avatar} alt="avatar" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
 			<div className="flex flex-col flex-grow w-full xl:max-w-[440px] lg:w-[85%] md:w-full min-h-[110px] bg-white border border-zinc-100 rounded-md p-[10px] relative">
 				<textarea
 					ref={textareaRef}
@@ -90,7 +90,7 @@ export default function PostingForm() {
 									<p className="text-sm-13 text-white w-3/4">
 										{item.name}
 									</p>
-									<img src={url} alt="image" className="w-[80px] h-[80px] object-cover" />
+									<img src={url} alt="preview" className="w-[80px] h-[80px] object-cover" />
 									<button
 										onClick={() => {
 											// setFiles(files => {
@@ -128,7 +128,6 @@ export default function PostingForm() {
 					<button onClick={(event) => postUploadingHandler(event)} className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>
 				</div>
 			</div>
-			<ToastContainer />
 		</div>
 	)
 }

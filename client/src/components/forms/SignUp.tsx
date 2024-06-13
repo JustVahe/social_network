@@ -6,7 +6,6 @@ import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
 import { notifyError } from "../../utils/toastification";
-import { ToastContainer } from "react-toastify";
 
 export default function SignUp() {
 
@@ -152,7 +151,6 @@ export default function SignUp() {
             <div className="rounded-b-md bg-zinc-200 p-2 text-sm-11 w-full mt-[30px]">
                 © Winku 2018. All rights reserved.
             </div>
-            <ToastContainer />
         </div>
     )
 

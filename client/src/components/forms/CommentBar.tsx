@@ -1,29 +1,32 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { FaMessage } from "react-icons/fa6";
-import { useAppSelector } from "../../redux/typedHooks";
-import { selectIsAuth } from "../../redux/slices/isAuthSlice";
+// import { useAppSelector } from "../../redux/typedHooks";
+// import { selectIsAuth } from "../../redux/slices/isAuthSlice";
+import { notifyError } from "../../utils/toastification";
+import { IPost } from "../../types";
+import { useCheck } from "../../utils/hooks/useCheck";
 
-export default function CommentBar() {
+export default function CommentBar({postData} : {postData : IPost}) {
 
     const [commentMessage, setCommentMessage] = useState<string>();
-    const [commentError, setCommentError] = useState<Error | undefined>();
-
-    const isAuth = useAppSelector(selectIsAuth);
+    const { checkAccessToken } = useCheck();
 
     const commentSendingHandler = async (event: FormEvent) => {
 
         event.preventDefault();
+        await checkAccessToken();
 
         try {
 
-            if (isAuth) {
+            if (postData) {
 
                 if (commentMessage && commentMessage?.length !== 0) {
 
                     const body = {
-                        message: commentMessage
+                        message: commentMessage,
+                        user_id: postData.user.id,
+                        post_id: postData.id
                     }
-
                     const commentResponse = await fetch("/api/comments", {
                         method: "POST",
                         headers: {
@@ -31,12 +34,8 @@ export default function CommentBar() {
                         },
                         body: JSON.stringify(body)
                     });
-
                     const data = await commentResponse.json();
-
                     console.log(data);
-
-                    setCommentError(undefined);
 
                 } else {
                     throw new Error("Please write the message")
@@ -44,25 +43,14 @@ export default function CommentBar() {
 
             }
 
-
-
         } catch (error: unknown) {
-
             const commentEmptynessError = error as Error;
-            setCommentError(commentEmptynessError);
-
+            notifyError(commentEmptynessError.message);
         }
-
-
     }
 
     return (
         <>
-            {
-                commentError && <div className="w-full m-2.5 bg-red-50 p-[5px]">
-                    {commentError.message}
-                </div>
-            }
             <div className="w-full ml-2.5 flex justify-between items-center p-[10px] bg-sky-50 rounded-md border border-blue-100 shadow-sm shadow-zinc-300">
                 <input type="text"
                     onChange={(event: ChangeEvent) => {

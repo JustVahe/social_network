@@ -58,8 +58,8 @@ export interface IPost {
 
 export interface IPhoto {
     id : ID,
-    userId : ID,
-    postId: ID | null,
+    user_id : ID,
+    post_id: ID,
     type: string,
     path : string
 }

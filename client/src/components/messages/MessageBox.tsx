@@ -16,7 +16,7 @@ export default function MessageBox() {
             <Message align="right" message="Only in your dreams!!" ></Message>
             <Message align="left" message="I hate you with all my heart and soul, i will destroy you one day, i am sure." ></Message>
         </div>
-        <MessageSendingBar type="message" />
+        <MessageSendingBar />
     </div>
   )
 }

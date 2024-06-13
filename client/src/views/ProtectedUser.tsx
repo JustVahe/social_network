@@ -28,6 +28,7 @@ export default function ProtectedUser({ page }: { page: string }) {
 				<img
 					src={"/api/public" + currentUser.headerImg}
 					className="object-cover w-full h-[530px] object-top"
+					alt="cover_image"
 				/>
 				{currentUser && <UserEditButtons id={currentUser.id} />}
 			</header>

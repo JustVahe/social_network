@@ -6,7 +6,6 @@ import { selectCurrentUser, setAvatar } from '../../redux/slices/currentUserSlic
 import 'react-toastify/dist/ReactToastify.css';
 import { useCheck } from '../../utils/hooks/useCheck';
 import { IUser } from '../../types';
-import { Bounce, ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess } from '../../utils/toastification';
 
 export default function ProtectedUserNavbar() {
@@ -107,7 +106,7 @@ export default function ProtectedUserNavbar() {
                         src={"/api/public" + currentUser?.avatar}
                         className="rounded-full object-cover object-top w-20 h-20 
                     md:w-[120px] md:h-[120px] lg:w-[170px] lg:h-[170px] relative"
-                        alt="user" />
+                        alt="avatar" />
                     <label
                         htmlFor="avatar"
                         className={`p-[5px] transition bg-sky-800/30 hover:bg-sky-600/90 rounded-md text-sm-13 
@@ -119,19 +118,6 @@ export default function ProtectedUserNavbar() {
                         avatarUploadHandle(eventTarget);
                     }} type="file" id='avatar' className='hidden' />
                 </div>
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="colored"
-                    transition={Bounce}
-                />
             </div>
 
         </>

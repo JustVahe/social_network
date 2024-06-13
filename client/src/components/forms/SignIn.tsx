@@ -5,9 +5,7 @@ import { signInScheme } from "../../validations/SignInValidation";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
-import { ToastContainer } from "react-toastify";
 import { notifyError } from "../../utils/toastification";
-
 export default function SignIn() {
 
     const [email, setEmail] = useState<string | undefined>();
@@ -131,7 +129,6 @@ export default function SignIn() {
             <div className="rounded-b-md bg-zinc-200 p-2 text-sm-11 w-full">
                 © Winku 2018. All rights reserved.
             </div>
-            <ToastContainer />
         </div>
     )
 }

@@ -5,6 +5,7 @@ import User from "./views/User"
 import ProtectedRoute from "./utils/ProtectedRoute"
 import ProtectedUser from "./views/ProtectedUser"
 import ProtectedHomeRoute from "./utils/ProtectedHomeRoute"
+import { ToastContainer } from "react-toastify"
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/:username/messages" element={<User page="messages" />} />
                 </Routes>
             </Router>
+            <ToastContainer />
         </>
     )
 }

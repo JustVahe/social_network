@@ -28,7 +28,7 @@ export default function Navbar() {
                 currentUser && <>
                     <nav className="w-full px-[20px] p-[12px] flex justify-between shadow-zinc-300 shadow-sm items-center bg-white fixed z-50 top-0">
                         <Link to={`/feed`}>
-                            <img src="/logo.png" />
+                            <img src="/logo.png" alt="logo"/>
                         </Link>
                         <div className="w-[300px] hidden justify-between lg:flex">
                             <Link to={`/dashboard/photos`}>

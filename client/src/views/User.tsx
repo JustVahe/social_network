@@ -40,6 +40,7 @@ export default function User({ page }: { page: string }) {
 				<img
 					src={"/api/public" + thisUser?.headerImg}
 					className="object-cover w-full h-[530px] object-top"
+					alt="cover_image"
 				/>
 			</header>
 			{thisUser && (

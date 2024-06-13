@@ -7,15 +7,15 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import { deletePost, updatePost } from "../../redux/slices/postSlice";
 import { deletePostOfCurrentUser, updatePostOfCurrentUser } from "../../redux/slices/currentUserSlice";
 import { notifyError, notifySuccess } from "../../utils/toastification";
-import { ToastContainer } from "react-toastify";
 
 export default function AvatarDisplay({ user, status, post }: { user: IUser, status?: string, post?: IPost }) {
 
-	const { checkAccessToken } = useCheck();
+	
 	const [optionsTogggle, setOptionsToggle] = useState<boolean>(false);
 	const [updateToggle, setUpdateToggle] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<string | undefined>();
 	const dispatch = useAppDispatch();
+	const { checkAccessToken } = useCheck();
 
 	const deleteHandler = async () => {
 		
@@ -85,7 +85,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	return (
 		user &&
 		<div className="w-full flex items-center gap-[10px] relative">
-			<img src={"/api/public" + user.avatar} alt="admin" className="w-[45px] h-[45px] object-cover object-top rounded-full" />
+			<img src={"/api/public" + user.avatar} alt="avatar" className="w-[45px] h-[45px] object-cover object-top rounded-full" />
 			<div>
 				<p className="text-sm-14 font-bold text-sky-600">{
 					user.name + " " + user.surname
@@ -137,7 +137,6 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 						</button>
 					</div> : ""
 			}
-			<ToastContainer />
 		</div>
 	)
 }

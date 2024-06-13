@@ -56,7 +56,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                     src={"/api/public" + thisUser?.avatar}
                     className="rounded-full object-cover object-top w-20 h-20 
                     md:w-[120px] md:h-[120px] lg:w-[170px] lg:h-[170px] relative"
-                    alt="user" />
+                    alt="avatar" />
             </div>
         </div>
     )
