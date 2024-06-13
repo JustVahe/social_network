@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { File, User } = require("../../models/index");
-const { headerImgStorage, avatarStorage, postStorage, photoStorage } = require("../utils/storages")
+const { headerImgStorage, avatarStorage, postStorage, photoStorage, onePhotoSendingStorage } = require("../utils/storages")
 const multer = require("multer");
 const fs = require("fs");
 
@@ -18,10 +18,14 @@ const uploadPost = multer({
     storage: postStorage,
     fileFilter: imageFilter
 }).array("files", 10);
-const uploadPhoto = multer({
+const uploadPhotos = multer({
     storage: photoStorage,
     fileFilter: imageFilter
 }).array("files", 10);
+const uploadPhoto = multer({
+    storage: onePhotoSendingStorage,
+    fileFilter: imageFilter
+}).single("file");
 
 router.get("/:user_id", async (request, response) => {
 
@@ -94,73 +98,121 @@ router.put("/:user_id/avatar/",
 );
 
 router.post("/:user_id/post/",
-    uploadPost,
     async (request, response) => {
 
-        try {
+        uploadPost(request, response, async (error) => {
+            if (error) {
+                return response.status(400).json("This file is not an image, please send another file!");
+            }
 
-            const { user_id } = request.params;
-            const { post_id } = request.body;
-            const files = request.files;
+            try {
 
-            console.log(files);
+                const { user_id } = request.params;
+                const { post_id } = request.body;
+                const files = request.files;
 
-            files.forEach(async (file) => {
+                console.log(files);
 
-                const path = `/assets/${user_id}/images/posts/${file.originalname}`;
-                const type = file.mimetype.split("/")[0];
+                files.forEach(async (file) => {
 
-                const newFile = await File.create({
-                    user_id,
-                    post_id,
-                    path,
-                    type
-                });
+                    const path = `/assets/${user_id}/images/posts/${file.originalname}`;
+                    const type = file.mimetype.split("/")[0];
 
-            })
+                    const newFile = await File.create({
+                        user_id,
+                        post_id,
+                        path,
+                        type
+                    });
 
-            return response.status(200).json("Files have been sent successfully");
+                })
+
+                return response.status(200).json("Files have been sent successfully");
 
 
-        } catch (error) {
+            } catch (error) {
 
-            console.log(error);
-            return response.status(500).json(error.message);
+                console.log(error);
+                return response.status(500).json(error.message);
 
-        }
+            }
+        });
     }
 );
 
 router.post("/:user_id",
-    uploadPhoto,
     async (request, response) => {
-        try {
+        uploadPhotos(request, response, async (error) => {
+            if (error) {
+                return response.status(400).json("This file is not an image, please send another file!");
+            }
+            try {
+                const { user_id } = request.params;
+                const files = request.files;
 
-            // photos.length = 0;
+                files.forEach(async (file) => {
 
-            const { user_id } = request.params;
-            const files = request.files;
+                    const path = `/assets/${user_id}/images/${file.originalname}`;
+                    const type = file.mimetype.split("/")[0];
 
-            files.forEach(async (file) => {
-
-                const path = `/assets/${user_id}/images/${file.originalname}`;
-                const type = file.mimetype.split("/")[0];
-
-                const newFile = await File.create({
-                    user_id,
-                    path,
-                    type
+                    const newFile = await File.create({
+                        user_id,
+                        path,
+                        type
+                    });
                 });
 
+                return response.status(200).json("Files have been successfully uploaded");
+
+            } catch (error) {
+                console.log(error);
+                return response.status(500).json(error.message);
+            }
+        });
+    }
+);
+
+router.put("/:id", async (request, response) => { 
+    uploadPhoto(request, response, async (error) => {
+        if (error) {
+            return response.status(400).json(error);
+        }
+        try {
+
+            const requestFile = request.file;
+            const { id } = request.params;
+            const { user_id } = request.body;
+
+            const file = await File.findOne({
+                where: { id }
             });
 
-            return response.status(200).json("Files have been successfully uploaded");
+            const path = `${__dirname}../../../public/${file.path}`;
+            const newPath = `/assets/${user_id}/images/${requestFile.originalname}`;
+
+            fs.unlink(path, (error) => {
+                if (error) {
+                    return response.status(400).json("File is not deleted");
+                }
+            });
+
+            file.path = newPath;
+            file.save();
+
+            fs.appendFile(requestFile.path, 'Hello content!', function (err) {
+                if (err) throw err;
+                console.log('Saved!')
+            });
+
+            return response.status(200).json("Image is successfully updated");
+
         } catch (error) {
             console.log(error);
             return response.status(500).json(error.message);
         }
-    }
-);
+    });
+
+})
 
 router.delete("/:id", async (request, response) => {
 
@@ -169,11 +221,11 @@ router.delete("/:id", async (request, response) => {
         const { id } = request.params;
 
         const file = await File.findOne({
-            where: {id}
+            where: { id }
         });
 
         const path = `${__dirname}../../../public/${file.path}`;
-        
+
         file.destroy();
 
         fs.unlink(path, (error) => {
