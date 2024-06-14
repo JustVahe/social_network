@@ -27,7 +27,7 @@ export const postSlice = createSlice({
 			const thisPostIndex = state.value.findIndex(item => item.id === action.payload.id)
 			state.value.splice(thisPostIndex, 1, action.payload);
 		}
-	}
+	},
 })
 
 export const { setPost, addPost, deletePost, updatePost } = postSlice.actions;

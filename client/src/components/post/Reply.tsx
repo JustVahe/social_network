@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export default function Reply({ reply }: { reply: IReply }) {
 
     const [thisReply, setThisComment] = useState<IReply | undefined>();
+    
 
     useEffect(() => {
 
@@ -13,7 +14,7 @@ export default function Reply({ reply }: { reply: IReply }) {
             .then(data => {
                 setThisComment(data)
             });
-            
+                    
     }, [reply.id])
 
     return (
@@ -24,7 +25,8 @@ export default function Reply({ reply }: { reply: IReply }) {
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">
                             <p className="text-sm-13 text-zinc-700 font-bold">{thisReply.user.username}</p>
-                            <button className="text-zinc-700 transition hover:text-sky-600">
+                            <button 
+                                className="text-zinc-700 transition hover:text-sky-600">
                                 <FaReply />
                             </button>
                         </div>
@@ -36,3 +38,4 @@ export default function Reply({ reply }: { reply: IReply }) {
 
     )
 }
+
