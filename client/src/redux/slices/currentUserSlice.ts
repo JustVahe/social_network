@@ -35,14 +35,13 @@ export const currentUserSlice = createSlice({
 		},
 		deletePostOfCurrentUser: (state, action: PayloadAction<ID>) => {
 			if (state.value) {
-				state.value.posts.filter(item => item.id !== action.payload);
+				state.value.posts = state.value.posts.filter(item => item.id !== action.payload);
 			}
 		},
 		updatePostOfCurrentUser: (state, action: PayloadAction<IPost>) => {
 			if (state.value) {
-				const thisPostIndex = state.value.posts.findIndex(item => item.id === action.payload.id);
-				state.value.posts.splice(thisPostIndex, 1);
-				state.value.posts = [...state.value.posts, action.payload];
+				const thisPostIndex = state.value.posts.findIndex(item => item.id === action.payload.id)
+				state.value.posts.splice(thisPostIndex, 1, action.payload);
 			}
 		},
 		addPhotoToCurrentUser: (state, action: PayloadAction<IPhoto[]>) => {
@@ -55,10 +54,10 @@ export const currentUserSlice = createSlice({
 
 export const {
 	setUser,
-	setAvatar, 
-	setHeaderImg, 
-	addPostToCurrentUser, 
-	deletePostOfCurrentUser, 
+	setAvatar,
+	setHeaderImg,
+	addPostToCurrentUser,
+	deletePostOfCurrentUser,
 	updatePostOfCurrentUser,
 	addPhotoToCurrentUser
 } = currentUserSlice.actions;

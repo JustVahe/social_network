@@ -76,6 +76,9 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 			dispatch(updatePost(newPost));
 			dispatch(updatePostOfCurrentUser(newPost));
 
+			setOptionsToggle(false);
+			setUpdateToggle(false);
+
 			await checkAccessToken();
 
 		}

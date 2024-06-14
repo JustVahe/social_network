@@ -21,17 +21,16 @@ export const postSlice = createSlice({
 			state.value.push(action.payload)
 		},
 		deletePost: (state, action: PayloadAction<ID>) => {
-			state.value.filter(item => item.id !== action.payload);
+			state.value = state.value.filter(item => item.id !== action.payload);
 		},
-		updatePost: (state, action: PayloadAction<IPost>) => { 
-			const thisPostIndex = state.value.findIndex(item => item.id === action.payload.id);
-			state.value.splice(thisPostIndex,1);
-			state.value = [...state.value, action.payload];
+		updatePost: (state, action: PayloadAction<IPost>) => {
+			const thisPostIndex = state.value.findIndex(item => item.id === action.payload.id)
+			state.value.splice(thisPostIndex, 1, action.payload);
 		}
 	}
 })
 
-export const { setPost, addPost, deletePost, updatePost} = postSlice.actions;
+export const { setPost, addPost, deletePost, updatePost } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts.value;
 

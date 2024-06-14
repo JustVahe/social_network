@@ -18,7 +18,6 @@ export default function User({ page }: { page: string }) {
 	const dispatch = useAppDispatch();
 
 	const { checkAccessToken } = useCheck();
-	console.log(username, 'username')
 
 	useEffect(() => {
 		checkAccessToken();
@@ -26,7 +25,6 @@ export default function User({ page }: { page: string }) {
 		fetch("/api/users/?username=" + username)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
 				dispatch(setThisUser(data));
 			});
 

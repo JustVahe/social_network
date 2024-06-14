@@ -6,7 +6,7 @@ import { IPost } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { addComment } from "../../redux/slices/commentSlice";
 import { useAppDispatch } from "../../redux/typedHooks";
-import { setPost } from "../../redux/slices/postSlice";
+import { updatePost } from "../../redux/slices/postSlice";
 
 export default function CommentBar({ postData }: { postData?: IPost }) {
 
@@ -42,10 +42,10 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
 
                     if (commentResponse.status === 200) {
 
-                        fetch("/api/posts/")
+                        fetch("/api/posts/"+postData.id)
                             .then((res) => res.json())
                             .then(data => {
-                                dispatch(setPost(data));
+                                dispatch(updatePost(data));
                             })
 
                     }
