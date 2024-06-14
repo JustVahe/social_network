@@ -110,7 +110,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 			}
 			{
 				optionsTogggle ?
-					<div className="absolute top-[40px] right-[10px] w-[130px] flex flex-col bg-slate-50 border text-sm-13 border-slate-400">
+					<div className="absolute z-50 top-[40px] right-[10px] w-[130px] flex flex-col bg-slate-50 border text-sm-13 border-slate-400">
 						<button
 							onClick={() => setUpdateToggle(prev => !prev)}
 							className="w-full p-2.5 flex gap-[5px] items-center border-b border-slate-400 transition hover:bg-sky-600 hover:text-white">
@@ -125,7 +125,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 			}
 			{
 				updateToggle ?
-					<div className="absolute p-[10px] top-[40px] right-[140px] w-[250px] flex items-start justify-between bg-slate-50 border text-sm-13 border-slate-400">
+					<div className="absolute z-50 p-[10px] top-[40px] right-[140px] w-[250px] flex items-start justify-between bg-slate-50 border text-sm-13 border-slate-400">
 						<textarea
 							onChange={(event) => {
 								const eventTarget = event.target as HTMLTextAreaElement;
