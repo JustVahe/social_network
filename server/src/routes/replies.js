@@ -45,13 +45,15 @@ router.post("/", async (request, response) => {
 
     try {
 
-        const { user_id, post_id, message } = request.body;
+        console.log(request.body);
+
+        const { user_id, comment_id, message } = request.body;
 
         const newReply = await Reply.create({
-            user_id, post_id, message
+            user_id, comment_id, message
         });
 
-        return response.status(200).send(newReply);
+        return response.status(200).json(newReply);
 
     } catch (error) {
 
@@ -78,7 +80,7 @@ router.put("/:id", async (request, response) => {
 
         await reply.save();
 
-        return response.status(200).send(reply);
+        return response.status(200).json(reply);
 
     } catch (error) {
 
@@ -101,7 +103,7 @@ router.delete("/:id", async (request, response) => {
 
         reply.destroy();
 
-        return response.status(200).send("Reply is Destroyed")
+        return response.status(200).json("Reply is Destroyed")
 
     } catch (error) {
 
