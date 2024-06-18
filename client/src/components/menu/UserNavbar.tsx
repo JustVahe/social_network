@@ -1,12 +1,35 @@
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { TfiMenu } from 'react-icons/tfi';
-import { useState } from 'react';
-import { IUser } from '../../types';
+import { useEffect, useState } from 'react';
+import { IRequest, IUser } from '../../types';
+import { useAppSelector } from '../../redux/typedHooks';
+import { selectCurrentUser } from '../../redux/slices/currentUserSlice';
 
 export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
     const { username } = useParams();
     const [dropdownToggle, setDropdownToggle] = useState(false);
+    const currentUser = useAppSelector(selectCurrentUser);
+    const [request, setRequest] = useState<IRequest>();
+
+    useEffect(() => {
+
+        fetch("/api/requests/" + currentUser?.id, {
+            method: "POST",
+            headers: {
+                "Content-type" : "application/json"
+            },
+            body: JSON.stringify({
+                target_id: thisUser.id
+            })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setRequest(data);
+            }
+            );
+        // eslint-disable-next-liine
+    }, [])
 
     return (
         <div className='relative'>
@@ -33,6 +56,14 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                             }}
                         </NavLink>
                     </div>
+                    <button className='hidden md:block md:p-[5px] md:transition md:bg-zinc-700 md:text-white md:font-bold md:rounded-md md:hover:bg-sky-600'>
+                        {
+                            request?.status === "approved" ?
+                                "Unfriend" : request?.status === "pending" ?
+                                    "Waiting for friendship response..." 
+                                    : "Add friend"
+                        }
+                    </button>
                     <button className='w-10 h-10 grid place-items-center md:hidden text-xl text-zinc-400 relative'
                         onClick={() => setDropdownToggle(prev => !prev)}>
                         <TfiMenu />
@@ -46,6 +77,9 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                             <Link to={"/" + username + "/friends"}>
                                 <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Friends</p>
                             </Link>
+                            <button className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
+                                Add Friend
+                            </button>
                         </div>
                     </button>
                 </div>

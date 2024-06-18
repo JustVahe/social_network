@@ -1,29 +1,29 @@
 export type ID = string | number;
 
 export interface IUser {
-    id : ID,
-    name : string,
-    surname : string,
-    username : string,
+    id: ID,
+    name: string,
+    surname: string,
+    username: string,
     email: string,
-    avatar : string,
-    headerImg : string,
-    status : string,
-    password : string, 
+    avatar: string,
+    headerImg: string,
+    status: string,
+    password: string,
     description: string,
-    posts : IPost[],
+    posts: IPost[],
     files: IPhoto[],
-    friends : IFriend[],
-    requests : [],
+    friends: IFriend[],
+    requests: [],
     createdAt: string,
     updatedAt: string
 }
 
 export interface IReply {
-    id : ID,
-    user_id : ID,
-    comment_id : ID,
-    message : string,
+    id: ID,
+    user_id: ID,
+    comment_id: ID,
+    message: string,
     user: IUser,
     comment: IComment,
     createdAt: string,
@@ -42,10 +42,10 @@ export interface IFriend {
 }
 
 export interface IComment {
-    id : ID,
-    user_id : ID,
-    post_id : ID,
-    message : string,
+    id: ID,
+    user_id: ID,
+    post_id: ID,
+    message: string,
     user: IUser,
     post: IPost,
     replies: IReply[],
@@ -54,12 +54,12 @@ export interface IComment {
 }
 
 export interface IPost {
-    id : ID,
+    id: ID,
     message: string,
-    files : IPhoto[],
-    likes : number,
+    files: IPhoto[],
+    likes: number,
     watches: number,
-    dislikes : number
+    dislikes: number
     user: IUser,
     comments: IComment[],
     user_id: ID,
@@ -68,16 +68,16 @@ export interface IPost {
 }
 
 export interface IPhoto {
-    id : ID,
-    user_id : ID,
+    id: ID,
+    user_id: ID,
     post_id: ID,
     type: string,
-    path : string,
+    path: string,
     createdAt: string,
     updatedAt: string
 }
 
-export interface IMessage{
+export interface IMessage {
     id: ID,
     from: ID,
     to: ID,
@@ -90,4 +90,13 @@ export interface IMessage{
 export interface ITokenBody {
     accessToken: string | undefined,
     refreshToken: string | undefined
+}
+
+export interface IRequest {
+    id: ID,
+    from_id: ID,
+    to_id: ID,
+    status: "approved" | "pending" | "rejected",
+    createdAt: string,
+    updatedAt: string
 }
