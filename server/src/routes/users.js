@@ -18,12 +18,7 @@ router.get("/", async (request, response) => {
                 where: { username }
             })
         } else {
-            users = await User.findAll({
-                include: {
-                    all: true,
-                    nested: true
-                }
-            });
+            users = await User.findAll();
         }
 
         return response.status(200).send(users);

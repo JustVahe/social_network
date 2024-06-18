@@ -21,6 +21,8 @@ app.use("/comments", require("./routes/comments"));
 app.use("/friends", require("./routes/friends"));
 app.use("/replies", require("./routes/replies"));
 app.use("/files", require("./routes/files"));
+app.use("/requests", require("./routes/requests"));
+
 
 
 app.listen(PORT, () => {

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { where, Op } = require("sequelize");
+const { Op } = require("sequelize");
 const { sequelize, Friend } = require("../../models/index");
 
 router.get("/", async (request, response) => {
