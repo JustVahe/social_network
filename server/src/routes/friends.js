@@ -1,66 +1,66 @@
 const router = require("express").Router();
+const { where, Op } = require("sequelize");
 const { sequelize, Friend } = require("../../models/index");
 
 router.get("/", async (request, response) => {
 
     try {
 
-        const { status, user_b_id } = request.query;
+        const friends = await Friend.findAll({
+            include: {
+                all: true,
+                nested: true
+            }
+        })
 
-
-        let friends;
-
-        if (status) {
-            friends = await Friend.findAll({
-                where: { status },
-                include: ["user_a", "user_b"]
-            });
-        } else if (user_b_id) {
-            friends = await Friend.findAll({
-                where: { user_b_id },
-                include: ["user_a", "user_b"]
-            });
-        } else if (status && user_b_id) {
-            friends = await Friend.findAll({
-                where: { status, user_b_id },
-                include: ["user_a", "user_b"]
-            });
-        } else {
-            friends = await Friend.findAll({
-                include: ["user_a", "user_b"]
-            });
-        }
-        
         return response.status(200).json(friends);
 
     } catch (error) {
-
         console.log(error);
-        response.status(500).json(error.message);
-
+        return response.status(500).json(error);
     }
 
 });
 
-router.get("/:user_a_id", async (request, response) => {
+router.get("/:id", async (request, response) => {
 
     try {
 
-        const { user_a_id } = request.params;
+        const { id } = request.params;
 
         const friends = await Friend.findAll({
-            where: { user_a_id },
-            include: ["user_a", "user_b"]
+            where: {
+                [Op.or] : [{user_a_id : id}, {user_b_id: id}]
+            },
+            include: {
+                all: true,
+                nested: true
+            }
+        });
+        
+        const respectedFriends = JSON.parse(JSON.stringify(friends));
+
+        respectedFriends.map(item => {
+            if (item.user_b_id === id) {
+
+                [item.user_a_id, item.user_b_id] = [item.user_b_id, item.user_a_id];
+
+                const tempVar = item.user_a;
+                item.user_a = item.user_b;
+                item.user_b = tempVar;
+
+            }
         });
 
-        return response.status(200).json(friends);
+        
+
+        return response.status(200).json(respectedFriends);
 
     } catch (error) {
-
         console.log(error);
-        response.status(500).json(error.message);
-
+        return response.status(500).json(error);
     }
-});
+
+})
 
 module.exports = router;

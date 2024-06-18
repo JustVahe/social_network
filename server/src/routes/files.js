@@ -111,8 +111,6 @@ router.post("/:user_id/post/",
                 const { post_id } = request.body;
                 const files = request.files;
 
-                console.log(files);
-
                 files.forEach(async (file) => {
 
                     const path = `/assets/${user_id}/images/posts/${file.originalname}`;
@@ -201,7 +199,6 @@ router.put("/:id", async (request, response) => {
 
             fs.appendFile(requestFile.path, 'Hello content!', function (err) {
                 if (err) throw err;
-                console.log('Saved!')
             });
 
             return response.status(200).json("Image is successfully updated");

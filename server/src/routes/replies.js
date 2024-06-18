@@ -45,8 +45,6 @@ router.post("/", async (request, response) => {
 
     try {
 
-        console.log(request.body);
-
         const { user_id, comment_id, message } = request.body;
 
         const newReply = await Reply.create({

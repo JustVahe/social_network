@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const { sequelize, User } = require("../../models/index");
+const { sequelize, User, Friend } = require("../../models/index");
 
 router.get("/", async (request, response) => {
 
     try {
 
-        const {username} = request.query;
+        const { username } = request.query;
 
         let users;
 
@@ -47,7 +47,7 @@ router.get("/:id", async (request, response) => {
             where: { id },
             include: {
                 all: true,
-                nested: true
+                nested: true,
             }
         });
 

@@ -11,7 +11,7 @@ router.get("/", async (request, response) => {
 
         if (user_id) {
             thisPost = await Post.findAll({
-                where: { user_id },
+                where: { user_id }, 
                 include: ["user", "comments", "files"]
             });
         } else {
@@ -64,7 +64,11 @@ router.post("/:user_id", async (request, response) => {
         const { message } = request.body;
 
         const newPost = await Post.create({
-            user_id, message
+            user_id, message,
+            include: {
+                all: true,
+                nested: true
+            }
         });
 
         return response.status(200).json(newPost);
