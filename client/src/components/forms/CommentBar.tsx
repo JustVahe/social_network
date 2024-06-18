@@ -5,14 +5,16 @@ import { notifyError } from "../../utils/toastification";
 import { IPost } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { addComment } from "../../redux/slices/commentSlice";
-import { useAppDispatch } from "../../redux/typedHooks";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { updatePost } from "../../redux/slices/postSlice";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 
 export default function CommentBar({ postData }: { postData?: IPost }) {
 
     const [commentMessage, setCommentMessage] = useState<string>();
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
+    const currentUser = useAppSelector(selectCurrentUser);
 
     const commentSendingHandler = async (event: FormEvent) => {
 
@@ -27,7 +29,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
 
                     const body = {
                         message: commentMessage,
-                        user_id: postData.user_id,
+                        user_id: currentUser?.id,
                         post_id: postData.id
                     }
                     const commentResponse = await fetch("/api/comments", {

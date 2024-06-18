@@ -14,7 +14,9 @@ export interface IUser {
     posts : IPost[],
     files: IPhoto[],
     friends : IFriend[],
-    requests : []
+    requests : [],
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface IReply {
@@ -24,6 +26,8 @@ export interface IReply {
     message : string,
     user: IUser,
     comment: IComment,
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface IFriend {
@@ -32,7 +36,9 @@ export interface IFriend {
     user_b_id: ID,
     user_a: IUser,
     user_b: IUser,
-    status: string
+    status: string,
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface IComment {
@@ -42,7 +48,9 @@ export interface IComment {
     message : string,
     user: IUser,
     post: IPost,
-    replies: IReply[]
+    replies: IReply[],
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface IPost {
@@ -53,8 +61,10 @@ export interface IPost {
     watches: number,
     dislikes : number
     user: IUser,
-    comments: IComment[]
-    user_id: ID
+    comments: IComment[],
+    user_id: ID,
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface IPhoto {
@@ -62,7 +72,9 @@ export interface IPhoto {
     user_id : ID,
     post_id: ID,
     type: string,
-    path : string
+    path : string,
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface IMessage{
@@ -70,7 +82,9 @@ export interface IMessage{
     from: ID,
     to: ID,
     message: string,
-    date: string
+    date: string,
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface ITokenBody {

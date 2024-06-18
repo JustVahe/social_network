@@ -3,17 +3,18 @@ import { useAppDispatch, useAppSelector } from "../../redux/typedHooks"
 import { addPostToCurrentUser, selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useRef, useState } from "react";
 import { IPost } from "../../types";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { addPost } from "../../redux/slices/postSlice";
 import { notifyError } from "../../utils/toastification";
+import { useHandlers } from "../../utils/hooks/handlers";
 
 
 export default function PostingForm() {
 
+	const { sortHandler } = useHandlers();
+
 	const currentUser = useAppSelector(selectCurrentUser);
 	const [message, setMessage] = useState<string>();
 	const [files, setFiles] = useState<FileList | null>();
-	const { checkAccessToken } = useCheck();
 	const textareaRef = useRef(null);
 
 	const dispatch = useAppDispatch();
@@ -63,8 +64,9 @@ export default function PostingForm() {
 
 			dispatch(addPostToCurrentUser(post));
 			dispatch(addPost(post));
+			setMessage("");
 
-			await checkAccessToken();
+			await sortHandler();
 
 		}
 
@@ -77,6 +79,7 @@ export default function PostingForm() {
 					ref={textareaRef}
 					className="resize-none w-full outline-none"
 					placeholder="write something"
+					value={message}
 					onChange={(event) => {
 						const eventTarget = event.target as HTMLTextAreaElement;
 						setMessage(eventTarget.value);
@@ -93,6 +96,10 @@ export default function PostingForm() {
 									<img src={url} alt="preview" className="w-[80px] h-[80px] object-cover" />
 									<button
 										onClick={() => {
+											const data = [...files];
+											data.splice(outerIndex, 1);
+											const unknownData = data as unknown;
+											setFiles(unknownData as FileList)	
 											// setFiles(files => {
 											// 	const newFilelist = Array.from(files as Iterable<File>).filter((item, index) => index !== outerIndex) as unknown;
 											// 	re	

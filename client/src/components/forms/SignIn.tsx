@@ -39,9 +39,6 @@ export default function SignIn() {
                 abortEarly: false
             });
 
-            console.log(validation);
-
-
             if (validation) {
 
                 setEmailError(undefined);

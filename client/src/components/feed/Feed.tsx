@@ -21,7 +21,7 @@ export default function Feed() {
 						<HomeFeed />
 					</div>
 					<div className="xl:col-span-2 gap-5 sm:col-span-1">
-						{currentUser && <Friends id={currentUser?.id} />}
+						{currentUser && <Friends id={currentUser.id} />}
 					</div>
 				</div>
 			</div>

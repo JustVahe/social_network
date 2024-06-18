@@ -3,8 +3,9 @@ import { IComment, IReply } from './../../types'
 import Reply from './Reply'
 import { useCheck } from '../../utils/hooks/useCheck'
 import { notifyError, notifySuccess } from '../../utils/toastification'
-import { useAppDispatch } from '../../redux/typedHooks'
+import { useAppDispatch, useAppSelector } from '../../redux/typedHooks'
 import { updateComment } from '../../redux/slices/commentSlice'
+import { selectCurrentUser } from '../../redux/slices/currentUserSlice'
 
 export default function ReplyList({ thisComment, replyToggle, setReplyToggle, setThisComment }:
     {
@@ -18,6 +19,7 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
     const { checkAccessToken } = useCheck();
     const [message, setMessage] = useState<string | undefined>();
     const dispatch = useAppDispatch();
+    const currentUser = useAppSelector(selectCurrentUser);
 
     const replyHandler = async (event: FormEvent) => {
 
@@ -26,12 +28,10 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
         if (thisComment) {
 
             const body = {
-                user_id: thisComment.user_id,
+                user_id: currentUser?.id,
                 comment_id: thisComment.id,
                 message
             }
-
-            console.log(body);
 
             const replyResponse = await fetch("/api/replies/", {
                 method: "POST",

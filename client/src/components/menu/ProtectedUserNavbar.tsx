@@ -38,8 +38,6 @@ export default function ProtectedUserNavbar() {
                 notifySuccess(updateData);
             }
 
-            console.log(updateData);
-
             const getResponse = await fetch(`/api/users/${currentUser?.id}`);
             const getData: IUser = await getResponse.json();
             dispatch(setAvatar(getData.avatar));

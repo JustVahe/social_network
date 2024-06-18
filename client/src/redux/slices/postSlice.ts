@@ -15,7 +15,11 @@ export const postSlice = createSlice({
 	initialState,
 	reducers: {
 		setPost: (state, action: PayloadAction<IPost[]>) => {
-			state.value = action.payload
+			state.value = action.payload.sort((a:IPost , b:IPost) => {
+				const firstDate = new Date(a.updatedAt)[Symbol.toPrimitive]("number");
+				const secondDate = new Date(b.updatedAt)[Symbol.toPrimitive]("number");
+				return secondDate - firstDate;
+			});
 		},
 		addPost: (state, action: PayloadAction<IPost>) => {
 			state.value.push(action.payload)

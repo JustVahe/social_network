@@ -27,6 +27,16 @@ export const currentUserSlice = createSlice({
 				state.value.headerImg = action.payload;
 			}
 		},
+		sortPostsOfCurrentUser: (state, action: PayloadAction<IPost[]>) => {
+			if (state.value) {
+				const sortedPayload = action.payload.sort((a:IPost , b:IPost) => {
+					const firstDate = new Date(a.updatedAt)[Symbol.toPrimitive]("number");
+					const secondDate = new Date(b.updatedAt)[Symbol.toPrimitive]("number");
+					return secondDate - firstDate;
+				});
+				state.value.posts = sortedPayload;
+			}
+		},
 		addPostToCurrentUser: (state, action: PayloadAction<IPost>) => {
 			if (state.value) {
 				const lastState = state.value.posts;
@@ -59,7 +69,8 @@ export const {
 	addPostToCurrentUser,
 	deletePostOfCurrentUser,
 	updatePostOfCurrentUser,
-	addPhotoToCurrentUser
+	addPhotoToCurrentUser,
+	sortPostsOfCurrentUser
 } = currentUserSlice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.currentUser.value;

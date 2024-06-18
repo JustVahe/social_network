@@ -1,7 +1,7 @@
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import { IPost, IUser } from "../../types";
 import { useAppDispatch } from "../../redux/typedHooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaX } from "react-icons/fa6";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { deletePost, updatePost } from "../../redux/slices/postSlice";
@@ -10,15 +10,38 @@ import { notifyError, notifySuccess } from "../../utils/toastification";
 
 export default function AvatarDisplay({ user, status, post }: { user: IUser, status?: string, post?: IPost }) {
 
-	
+
 	const [optionsTogggle, setOptionsToggle] = useState<boolean>(false);
 	const [updateToggle, setUpdateToggle] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<string | undefined>();
+	const [createdAtDate, setCreatedAtDate] = useState<Date | null>();
+	const [updatedAtDate, setUpdatedAtDate] = useState<Date | null>();
 	const dispatch = useAppDispatch();
 	const { checkAccessToken } = useCheck();
 
+	useEffect(() => {
+
+		if (post) {
+
+			const createdAt = new Date(post.createdAt);
+			const updatedAt = new Date(post.updatedAt);
+
+			if (updatedAt.getMilliseconds() > createdAt.getMilliseconds()) {
+				setUpdatedAtDate(updatedAt);
+				setCreatedAtDate(undefined);
+			} else {
+				setUpdatedAtDate(undefined);
+				setCreatedAtDate(createdAt);
+			}
+
+		}
+
+
+
+	}, [post])
+
 	const deleteHandler = async () => {
-		
+
 		await checkAccessToken();
 
 		if (post) {
@@ -28,9 +51,9 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 			post.files.forEach(async (item) => {
 
-				const fileDeleteRequest = await fetch("/api/files/"+item.id, {method: "DELETE"});
+				const fileDeleteRequest = await fetch("/api/files/" + item.id, { method: "DELETE" });
 				const fileDeleteData = await fileDeleteRequest.json();
-				
+
 				if (fileDeleteRequest.status !== 200) {
 					notifyError(fileDeleteData);
 				}
@@ -59,17 +82,17 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 		if (post) {
 
-			const updateResponse = await fetch("/api/posts/" + post.id, 
-				{ 
+			const updateResponse = await fetch("/api/posts/" + post.id,
+				{
 					method: "PUT",
 					headers: {
-						"Content-Type" : "application/json"
+						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
 						message: newMessage
 					})
 				});
-			
+
 			const updateData = await updateResponse.json();
 
 			const newPost = await (await fetch(`/api/posts/${updateData.id}`)).json();
@@ -93,7 +116,14 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 				<p className="text-sm-14 font-bold text-sky-600">{
 					user.name + " " + user.surname
 				}</p>
-				<p className="text-sm-11 text-zinc-400">Published: June,2 2018 19:PM</p>
+				<p className="text-sm-11 text-zinc-400">Published at: 
+					{
+						createdAtDate && <span>{" " +createdAtDate.toDateString()}</span>
+					}
+					{
+						updatedAtDate && <span>{" " +updatedAtDate.toDateString()}</span>
+					}
+				</p>
 			</div>
 			{
 				status === "protected" &&
@@ -133,7 +163,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 							}}
 							defaultValue={post?.message}
 							className="w-[70%] h-[150px] resize-none border border-zinc-400 outline-none" />
-						<button 
+						<button
 							onClick={updateHandler}
 							className="w-[28%] bg-sky-600 rounded-md text-white">
 							Update

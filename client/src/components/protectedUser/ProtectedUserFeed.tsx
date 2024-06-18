@@ -1,19 +1,20 @@
 import Friends from "../friends/Friends";
 import PostingForm from "../forms/PostingForm";
 import { useEffect } from "react";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import ProtectedFeedComponent from "../feed/ProtectedFeedComponent";
 import ProtectedShortcuts from "../menu/ProtectedShortcuts";
+import { useHandlers } from "../../utils/hooks/handlers";
 
 export default function ProtectedUserFeed() {
 
-    const { checkAccessToken } = useCheck();
     const currentUser = useAppSelector(selectCurrentUser);
+    const { sortHandler } = useHandlers();
 
     useEffect(() => {
-        checkAccessToken();
+
+        sortHandler();
         //eslint-disable-next-line
     }, []);
 
