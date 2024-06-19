@@ -5,7 +5,7 @@ router.get("/", async (request, response) => {
 
     try {
 
-        const { username } = request.query;
+        const { username, filter, value } = request.query;
 
         let users;
 
@@ -17,6 +17,21 @@ router.get("/", async (request, response) => {
                 },
                 where: { username }
             })
+        } else if (filter && value) {
+
+            const users = await User.findAll();
+
+            if (filter === "name") {
+
+                const newUsers = users.filter(item => {
+                    const nameSurname = item.name + " " + item.surname;
+                    return nameSurname.toLowerCase().startsWith(value);
+                });
+
+                return response.status(200).json(newUsers);
+
+            }
+
         } else {
             users = await User.findAll();
         }

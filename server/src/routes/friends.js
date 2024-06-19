@@ -1,16 +1,13 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
-const { sequelize, Friend } = require("../../models/index");
+const { sequelize, Friend, Request } = require("../../models/index");
 
 router.get("/", async (request, response) => {
 
     try {
 
         const friends = await Friend.findAll({
-            include: {
-                all: true,
-                nested: true
-            }
+            include: ["user_a","user_b"]
         })
 
         return response.status(200).json(friends);
@@ -30,14 +27,11 @@ router.get("/:id", async (request, response) => {
 
         const friends = await Friend.findAll({
             where: {
-                [Op.or] : [{user_a_id : id}, {user_b_id: id}]
+                [Op.or]: [{ user_a_id: id }, { user_b_id: id }]
             },
-            include: {
-                all: true,
-                nested: true
-            }
+            include: ["user_a","user_b"]
         });
-        
+
         const respectedFriends = JSON.parse(JSON.stringify(friends));
 
         respectedFriends.map(item => {
@@ -52,9 +46,31 @@ router.get("/:id", async (request, response) => {
             }
         });
 
-        
-
         return response.status(200).json(respectedFriends);
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json(error);
+    }
+
+});
+
+router.post("/:id", async (request, response) => {
+
+    try {
+
+        const { id } = request.params;
+
+        const requestOfThisFriend = await Request.findOne({
+            where: { id }
+        });
+
+        const friend = await Friend.create({
+            user_a_id: requestOfThisFriend.from_id,
+            user_b_id: requestOfThisFriend.to_id
+        });
+
+        return response.status(200).json(friend);
 
     } catch (error) {
         console.log(error);
