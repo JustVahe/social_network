@@ -19,7 +19,7 @@ export default function ProtectedUser({ page }: { page: string }) {
 	useEffect(() => {
 		checkAccessToken();
 		//eslint-disable-next-line
-	}, [])
+	}, []);
 
 	return currentUser && (
 		<>
@@ -39,9 +39,9 @@ export default function ProtectedUser({ page }: { page: string }) {
 				{page === "timeline" ? (
 					<ProtectedUserFeed />
 				) : page === "photos" ? (
-					<ProtectedPhotoFeed id={currentUser.id} />
+					<ProtectedPhotoFeed />
 				) : page === "friends" ? (
-					<FriendsFeed id={currentUser.id} />
+					<FriendsFeed user={currentUser} status="protected" />
 				) : page === "messages" ? (
 					<MessagesFeed />
 				) : (

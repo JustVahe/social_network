@@ -1,20 +1,21 @@
 import Friends from "./Friends";
 import Shortcuts from "../menu/Shortcuts";
 import FriendsComponent from "./FriendsComponent";
-import { ID } from "../../types";
+import { IUser } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { useEffect } from "react";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectThisUser } from "../../redux/slices/thisUserSlice";
+import FriendsProtected from "./FriendsProtected";
 
-export default function FriendsFeed({ id }: { id: ID }) {
+export default function FriendsFeed({ user, status }: { user: IUser, status: string }) {
 
     const { checkAccessToken } = useCheck();
     const thisUser = useAppSelector(selectThisUser);
 
     useEffect(() => {
         checkAccessToken();
-    //eslint-disable-next-line
+        //eslint-disable-next-line
     }, []);
 
     return (
@@ -25,10 +26,10 @@ export default function FriendsFeed({ id }: { id: ID }) {
                     <Shortcuts user={thisUser} />
                 </div>
                 <div className="grid sm:col-span-1 w-full gap-5 content-start">
-                    <FriendsComponent id={id} />
+                    <FriendsComponent user={user} />
                 </div>
                 <div className="xl:col-span-2 gap-5 sm:col-span-1">
-                    <Friends id={id} />
+                    {status === "protected" ? <FriendsProtected /> : <Friends user={user} />}
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import isAuthReducer from "./slices/isAuthSlice";
 import thisUserReducer from "./slices/thisUserSlice";
+import usersFriendsReducer from "./slices/usersFriends";
 
 const persistConfig = {
     key: "root",
@@ -22,7 +23,8 @@ const reducer = combineReducers({
     comments: commentReducer,
     photos: photoReducer,
     isAuth: isAuthReducer,
-    thisUser: thisUserReducer
+    thisUser: thisUserReducer,
+    usersFriends: usersFriendsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);

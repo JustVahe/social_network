@@ -16,6 +16,8 @@ export default function UserFeed() {
         //eslint-disable-next-line
     }, []);
 
+    console.log(thisUser);
+
     return (
         thisUser &&
         <div className="container my-0">
@@ -27,7 +29,7 @@ export default function UserFeed() {
                     <NewsfeedComponent id={thisUser.id} />
                 </div>
                 <div className="xl:col-span-2 gap-5 sm:col-span-1">
-                    <Friends id={thisUser.id} />
+                    <Friends user={thisUser} />
                 </div>
             </div>
         </div>

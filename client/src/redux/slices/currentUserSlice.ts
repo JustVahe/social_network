@@ -58,7 +58,7 @@ export const currentUserSlice = createSlice({
 			if (state.value) {
 				state.value.files = [...state.value.files, ...action.payload];
 			}
-		},
+		}
 	}
 })
 
@@ -70,7 +70,7 @@ export const {
 	deletePostOfCurrentUser,
 	updatePostOfCurrentUser,
 	addPhotoToCurrentUser,
-	sortPostsOfCurrentUser
+	sortPostsOfCurrentUser,
 } = currentUserSlice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.currentUser.value;

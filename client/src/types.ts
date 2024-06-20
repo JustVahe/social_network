@@ -98,5 +98,7 @@ export interface IRequest {
     to_id: ID,
     status: "approved" | "pending" | "rejected",
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    from: IUser,
+    to: IUser
 }

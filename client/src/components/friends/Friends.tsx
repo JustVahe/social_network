@@ -1,21 +1,26 @@
 import FriendLabel from "../feed/FriendLabel"
-import { ID, IFriend } from "../../types";
+import { IFriend, IUser } from "../../types";
 import { useEffect, useState } from "react";
 
-export default function Friends({ id }: { id: ID }) {
+export default function Friends({ user }: { user: IUser }) {
 
     const [friends, setFriends] = useState<IFriend[] | undefined>();
 
     useEffect(() => {
-        if (id) {
-            fetch("/api/friends/"+ id)
-                .then((response) => response.json())
-                .then((data) => {
-                    setFriends(data);
-                }
-            );
+
+        const func = async () => {
+            if (user.id) {
+                await fetch("/api/friends/" + user.id)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setFriends(data);
+                    });
+            }
         }
-    }, [id]);
+
+        func();
+
+    }, [user.id, user.friends]);
 
     return (
         <div className="xl:sticky xl:top-[70px] sm:relative w-full p-[20px] px-[25px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 rounded-md h-[590px] flex flex-grow flex-col">
@@ -25,11 +30,9 @@ export default function Friends({ id }: { id: ID }) {
                 {
                     (friends && friends.length !== 0) ? friends.map((item) => {
                         return <FriendLabel friend={item.user_b} key={item.id} />
-                    }) : <p className=" italic text-zinc-500 text-sm-14">You have no friends yet...</p>
+                    }) : <p className=" italic text-zinc-500 text-sm-14">This user has no friends yet...</p>
                 }
             </div>
         </div>
     )
 }
-
-// onChange={(event) => searchHandler(event)}

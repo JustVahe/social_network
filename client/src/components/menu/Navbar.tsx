@@ -51,7 +51,7 @@ export default function Navbar() {
                             <button onClick={() => setSearchToggle(prev => !prev)} className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
                                 <TfiSearch />
                             </button>
-                            <Searchbar searchToggle={searchToggle} />
+                            <Searchbar searchToggle={searchToggle} setSearchToggle={setSearchToggle}/>
                             <Link to={`/feed`}>
                                 <p className="w-[30px] h-[30px] grid place-items-center transition-all rounded-md hover:bg-zinc-300 hover:bg-opacity-45">
                                     <TfiHome />

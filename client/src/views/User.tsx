@@ -50,9 +50,9 @@ export default function User({ page }: { page: string }) {
 						{page === "timeline" ? (
 							<UserFeed/>
 						) : page === "photos" ? (
-							<PhotoFeed id={thisUser.id} status="common" />
+							<PhotoFeed user={thisUser} status="common" />
 						) : page === "friends" ? (
-							<FriendsFeed id={thisUser.id} />
+							<FriendsFeed user={thisUser} />
 						) : page === "messages" ? (
 							<MessagesFeed />
 						) : (

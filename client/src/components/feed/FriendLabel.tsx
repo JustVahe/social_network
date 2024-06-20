@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { IUser } from "../../types";
 import FriendButton from "../buttons/FriendButton";
 
-export default function FriendLabel({ friend }: { friend: IUser }) {
-
+export default function FriendLabel({ friend, setSearchToggle }: { friend: IUser, setSearchToggle?:React.Dispatch<React.SetStateAction<boolean>> }) {
+    
     const { username, name, surname, avatar, status, email } = friend;
 
     return (
@@ -11,7 +11,11 @@ export default function FriendLabel({ friend }: { friend: IUser }) {
             <FriendButton status={status} src={"/api/public/" + avatar} />
             <div>
                 <Link to={`/${username}/home`}>
-                    <p className="text-sm-12 font-bold">{name} {surname}</p>
+                    <p onClick={() => {
+                        if (setSearchToggle) {
+                            setSearchToggle(false)
+                        }
+                    }} className="text-sm-12 font-bold">{name} {surname}</p>
                 </Link>
                 <p className="text-sm-11">{email}</p>
             </div>

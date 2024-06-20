@@ -1,4 +1,3 @@
-import Friends from "../friends/Friends";
 import PostingForm from "../forms/PostingForm";
 import { useEffect } from "react";
 import { useAppSelector } from "../../redux/typedHooks";
@@ -6,6 +5,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import ProtectedFeedComponent from "../feed/ProtectedFeedComponent";
 import ProtectedShortcuts from "../menu/ProtectedShortcuts";
 import { useHandlers } from "../../utils/hooks/handlers";
+import FriendsProtected from "../friends/FriendsProtected";
 
 export default function ProtectedUserFeed() {
 
@@ -13,7 +13,6 @@ export default function ProtectedUserFeed() {
     const { sortHandler } = useHandlers();
 
     useEffect(() => {
-
         sortHandler();
         //eslint-disable-next-line
     }, []);
@@ -30,7 +29,7 @@ export default function ProtectedUserFeed() {
                     <ProtectedFeedComponent />
                 </div>
                 <div className="xl:col-span-2 gap-5 sm:col-span-1">
-                    <Friends id={currentUser.id} />
+                    <FriendsProtected />
                 </div>
             </div>
         </div>

@@ -1,9 +1,13 @@
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { TfiMenu } from 'react-icons/tfi';
 import { useEffect, useState } from 'react';
-import { IRequest, IUser } from '../../types';
+import { ID, IRequest, IUser } from '../../types';
 import { useAppSelector } from '../../redux/typedHooks';
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice';
+import Unfriend from '../friends/friendButtons/Unfriend';
+import PendingFriend from '../friends/friendButtons/PendingFriend';
+import AddFriend from '../friends/friendButtons/AddFriend';
+import { useHandlers } from '../../utils/hooks/handlers';
 
 export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
@@ -12,12 +16,14 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
     const currentUser = useAppSelector(selectCurrentUser);
     const [request, setRequest] = useState<IRequest>();
 
+    const { friendRequestAddingHandler } = useHandlers();
+
     useEffect(() => {
 
         fetch("/api/requests/" + currentUser?.id, {
             method: "POST",
             headers: {
-                "Content-type" : "application/json"
+                "Content-type": "application/json"
             },
             body: JSON.stringify({
                 target_id: thisUser.id
@@ -26,10 +32,9 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
             .then((response) => response.json())
             .then((data) => {
                 setRequest(data);
-            }
-            );
-        // eslint-disable-next-liine
-    }, [])
+            });
+
+    }, [thisUser.id, currentUser?.id])
 
     return (
         <div className='relative'>
@@ -56,14 +61,11 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                             }}
                         </NavLink>
                     </div>
-                    <button className='hidden md:block md:p-[5px] md:transition md:bg-zinc-700 md:text-white md:font-bold md:rounded-md md:hover:bg-sky-600'>
-                        {
-                            request?.status === "approved" ?
-                                "Unfriend" : request?.status === "pending" ?
-                                    "Waiting for friendship response..." 
-                                    : "Add friend"
-                        }
-                    </button>
+                    {
+                        request?.status === "approved" ? <Unfriend/> :
+                            request?.status === "pending" ? <PendingFriend />
+                                : <AddFriend from={currentUser as IUser} to={thisUser} setRequest={setRequest}/>
+                    }
                     <button className='w-10 h-10 grid place-items-center md:hidden text-xl text-zinc-400 relative'
                         onClick={() => setDropdownToggle(prev => !prev)}>
                         <TfiMenu />
@@ -77,9 +79,25 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                             <Link to={"/" + username + "/friends"}>
                                 <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Friends</p>
                             </Link>
-                            <button className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
-                                Add Friend
-                            </button>
+                            {
+                                request?.status === "approved" ?
+                                    <p
+                                        className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
+                                        Unfriend
+                                    </p>
+                                    :
+                                    request?.status === "pending" ?
+                                        <p
+                                            className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
+                                            Waiting for response
+                                        </p>
+                                        :
+                                        <p
+                                            onClick={() => friendRequestAddingHandler(currentUser?.id as ID, thisUser.id)}
+                                            className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
+                                            Add Friend
+                                        </p>
+                                    }
                         </div>
                     </button>
                 </div>

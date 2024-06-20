@@ -17,7 +17,7 @@ export default function Image({ image, alt, containerStyles, imageStyles, setMod
         alt: string,
         containerStyles?: string,
         imageStyles?: string,
-        setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>
+        setModalResponse?: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>
     }) {
 
     const currentUser = useAppSelector(selectCurrentUser);
@@ -61,7 +61,11 @@ export default function Image({ image, alt, containerStyles, imageStyles, setMod
                 </div>
             </div>
             {
-                modalType && <ModalWindow image={image} type={modalType} setModalType={setModalType} setModalResponse={setModalResponse} />
+                modalType && <ModalWindow 
+                    image={image} 
+                    type={modalType} 
+                    setModalType={setModalType} 
+                    setModalResponse={setModalResponse as React.Dispatch<React.SetStateAction<ModalResponse | undefined>>} />
             }
         </>
 
