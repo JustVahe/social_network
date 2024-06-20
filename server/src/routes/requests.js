@@ -18,6 +18,46 @@ router.get("/", async (request, response) => {
 
 })
 
+router.get("/:id", async (request, response) => {
+
+    try {
+
+        const { id } = request.params;
+        const { toggle, status } = request.query;
+
+        if (status) {
+            if (toggle === "from_me") {
+                const requests = await Request.findAll({
+                    where: { from_id: id, status },
+                    include: ["from", "to"]
+                });
+                return response.status(200).json(requests);
+            } else if (toggle === "to_me") {
+                const requests = await Request.findAll({
+                    where: { to_id: id, status },
+                    include: ["from", "to"]
+                });
+                return response.status(200).json(requests);
+            } else {
+                const requests = await Request.findAll({
+                    where: {
+                        [Op.or]: [{ to_id: id }, { from_id: id }],
+                        status
+                    },
+                    include: ["from", "to"]
+                });
+                return response.status(200).json(requests);
+            }
+        }
+        
+
+    } catch (error) {
+        console.log(error);
+        return response.status(200).json(error);
+    }
+
+})
+
 router.post("/:id", async (request, response) => {
 
     try {
@@ -31,7 +71,17 @@ router.post("/:id", async (request, response) => {
             }
         })
 
-        const newRequest = requests.find(item => item.from_id === target_id)
+        const newRequest = requests.find(item => {
+            if (item.to_id === id) {
+                return item.from_id === target_id
+            } else {
+                return item.to_id === target_id
+            }
+        });
+
+        if (!newRequest) {
+            return response.status(200).json(null);
+        }
 
         return response.status(200).json(newRequest);
 
@@ -60,6 +110,31 @@ router.post("/", async (request, response) => {
     }
 
 });
+
+router.put("/:id", async (request, response) => {
+
+    try {
+
+        const { id } = request.params;
+
+        const requestData = await Request.findOne({
+            where: { id }
+        });
+
+        requestData.status = "rejected";
+
+        requestData.save();
+
+        return response.status(200).json(requestData);
+
+    } catch (error) {
+        console.log(error);
+        response.status(500).json(error);
+    }
+
+})
+
+module.exports = router;
 
 router.delete("/:id", async (request, response) => {
 

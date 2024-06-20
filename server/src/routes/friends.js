@@ -7,7 +7,7 @@ router.get("/", async (request, response) => {
     try {
 
         const friends = await Friend.findAll({
-            include: ["user_a","user_b"]
+            include: ["user_a", "user_b"]
         })
 
         return response.status(200).json(friends);
@@ -29,7 +29,7 @@ router.get("/:id", async (request, response) => {
             where: {
                 [Op.or]: [{ user_a_id: id }, { user_b_id: id }]
             },
-            include: ["user_a","user_b"]
+            include: ["user_a", "user_b"]
         });
 
         const respectedFriends = JSON.parse(JSON.stringify(friends));
@@ -65,16 +65,51 @@ router.post("/:id", async (request, response) => {
             where: { id }
         });
 
-        const friend = await Friend.create({
-            user_a_id: requestOfThisFriend.from_id,
-            user_b_id: requestOfThisFriend.to_id
+        const friend = await Friend.create(
+            {
+                user_a_id: requestOfThisFriend.to_id,
+                user_b_id: requestOfThisFriend.from_id,
+            }
+        );
+
+        requestOfThisFriend.status = "approved";
+
+        requestOfThisFriend.save();
+
+        const detailedFriend = await Friend.findOne({
+            where: { id: friend.id },
+            include: {
+                all: true,
+                nested: true
+            }
         });
 
-        return response.status(200).json(friend);
+        return response.status(200).json(detailedFriend);
 
     } catch (error) {
         console.log(error);
         return response.status(500).json(error);
+    }
+
+});
+
+router.delete("/:id", async (request, response) => {
+
+    try {
+
+        const { id } = request.params;
+
+        const friend = await Friend.findOne({
+            where: { id }
+        });
+
+        friend.destroy();
+
+        return response.status(200).json("Friend is successfully unfriended");
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
     }
 
 })
