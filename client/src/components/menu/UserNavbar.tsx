@@ -1,7 +1,7 @@
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { TfiMenu } from 'react-icons/tfi';
 import { useEffect, useState } from 'react';
-import { ID, IRequest, IUser } from '../../types';
+import { ID, IFriend, IRequest, IUser } from '../../types';
 import { useAppSelector } from '../../redux/typedHooks';
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice';
 import Unfriend from '../friends/friendButtons/Unfriend';
@@ -15,6 +15,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
     const [dropdownToggle, setDropdownToggle] = useState(false);
     const currentUser = useAppSelector(selectCurrentUser);
     const [request, setRequest] = useState<IRequest>();
+    const [friend, setFriend] = useState<IFriend>();
 
     const { friendRequestAddingHandler } = useHandlers();
 
@@ -34,7 +35,16 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                 setRequest(data);
             });
 
+        fetch(`/api/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
+            .then(response => response.json())
+            .then(data => {
+                setFriend(data);
+            })
+
     }, [thisUser.id, currentUser?.id])
+
+    console.log(friend);
+    
 
     return (
         <div className='relative'>
@@ -62,9 +72,9 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                         </NavLink>
                     </div>
                     {
-                        request?.status === "approved" ? <Unfriend/> :
+                        friend ? <Unfriend setFriend={setFriend} friend={friend} /> :
                             request?.status === "pending" ? <PendingFriend />
-                                : <AddFriend from={currentUser as IUser} to={thisUser} setRequest={setRequest}/>
+                                : <AddFriend from={currentUser as IUser} to={thisUser} setRequest={setRequest} />
                     }
                     <button className='w-10 h-10 grid place-items-center md:hidden text-xl text-zinc-400 relative'
                         onClick={() => setDropdownToggle(prev => !prev)}>
@@ -97,7 +107,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                                             className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
                                             Add Friend
                                         </p>
-                                    }
+                            }
                         </div>
                     </button>
                 </div>

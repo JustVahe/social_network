@@ -52,6 +52,8 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
 
                     }
 
+                    setCommentMessage("");
+
                     await checkAccessToken();
 
                 } else {
@@ -70,6 +72,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
         <>
             <div className="w-full ml-2.5 flex justify-between items-center p-[10px] bg-sky-50 rounded-md border border-blue-100 shadow-sm shadow-zinc-300">
                 <input type="text"
+                    value={commentMessage}
                     onChange={(event: ChangeEvent) => {
                         const target = event.target as HTMLInputElement;
                         setCommentMessage(target.value);

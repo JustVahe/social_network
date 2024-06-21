@@ -16,8 +16,6 @@ export default function UserFeed() {
         //eslint-disable-next-line
     }, []);
 
-    console.log(thisUser);
-
     return (
         thisUser &&
         <div className="container my-0">

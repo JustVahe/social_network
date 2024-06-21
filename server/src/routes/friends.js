@@ -6,11 +6,35 @@ router.get("/", async (request, response) => {
 
     try {
 
+        const { user_id, target_id } = request.query;
+
         const friends = await Friend.findAll({
             include: ["user_a", "user_b"]
-        })
+        });
 
-        return response.status(200).json(friends);
+
+        if (user_id, target_id) {
+
+            const friend = await Friend.findOne({
+                where: {
+                    [Op.or]: [{ user_a_id: user_id }, { user_a_id: target_id }],
+                    [Op.or]: [{ user_b_id: user_id }, { user_b_id: target_id }],
+                },
+                include: {
+                    all: true,
+                    nested: true
+                }
+            })
+
+            if (friend) {
+                return response.status(200).json(friend);
+            } else {
+                return response.status(200).json(null);
+            }
+
+        } else {
+            return response.status(200).json(friends);
+        }
 
     } catch (error) {
         console.log(error);

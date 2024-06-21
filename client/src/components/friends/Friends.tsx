@@ -1,10 +1,13 @@
 import FriendLabel from "../feed/FriendLabel"
-import { IFriend, IUser } from "../../types";
-import { useEffect, useState } from "react";
+import { IUser } from "../../types";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
+import { selectThisUsersFriends, setThisUsersFriends } from "../../redux/slices/thisUsersFriends";
 
 export default function Friends({ user }: { user: IUser }) {
 
-    const [friends, setFriends] = useState<IFriend[] | undefined>();
+    const friends = useAppSelector(selectThisUsersFriends);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
 
@@ -13,14 +16,14 @@ export default function Friends({ user }: { user: IUser }) {
                 await fetch("/api/friends/" + user.id)
                     .then((response) => response.json())
                     .then((data) => {
-                        setFriends(data);
+                        dispatch(setThisUsersFriends(data));
                     });
             }
         }
 
         func();
 
-    }, [user.id, user.friends]);
+    }, [user.id, user.friends, dispatch]);
 
     return (
         <div className="xl:sticky xl:top-[70px] sm:relative w-full p-[20px] px-[25px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 rounded-md h-[590px] flex flex-grow flex-col">

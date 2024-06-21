@@ -8,7 +8,7 @@ import { useAppSelector } from "../../redux/typedHooks";
 import { selectThisUser } from "../../redux/slices/thisUserSlice";
 import FriendsProtected from "./FriendsProtected";
 
-export default function FriendsFeed({ user, status }: { user: IUser, status: string }) {
+export default function FriendsFeed({ user, status }: { user: IUser, status?: string }) {
 
     const { checkAccessToken } = useCheck();
     const thisUser = useAppSelector(selectThisUser);

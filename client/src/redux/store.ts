@@ -9,6 +9,7 @@ import persistReducer from "redux-persist/es/persistReducer";
 import isAuthReducer from "./slices/isAuthSlice";
 import thisUserReducer from "./slices/thisUserSlice";
 import usersFriendsReducer from "./slices/usersFriends";
+import thisUsersFriendsReducer from "./slices/thisUsersFriends";
 
 const persistConfig = {
     key: "root",
@@ -24,7 +25,8 @@ const reducer = combineReducers({
     photos: photoReducer,
     isAuth: isAuthReducer,
     thisUser: thisUserReducer,
-    usersFriends: usersFriendsReducer
+    usersFriends: usersFriendsReducer,
+    thisUsersFriends: thisUsersFriendsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);
