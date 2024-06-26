@@ -1,4 +1,4 @@
-export default function FriendButton({src, status} : {src : string, status : string}) {
+export default function FriendButton({src, status} : {src : string, status? : string}) {
   return (
     <div className="w-[34px] h-[34px] relative">
         <img src={src} className="w-[34px] h-[34px] rounded-full" alt="avatar"/>

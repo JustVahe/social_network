@@ -66,7 +66,6 @@ export const useHandlers = () => {
         });
         const declineData = await declineResponse.json();
 
-        console.log(declineData);
         return declineData;
 
     }

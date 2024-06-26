@@ -1,12 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const http = require("http");
+const connectSocket = require("./utils/socketConfig");
 require("dotenv").config();
 
 const app = express();
+const server = http.createServer(app);
+
+connectSocket(server);
 
 app.use(express.json());
-app.use("/public",express.static(path.join(__dirname, "../public")));
+app.use("/public", express.static(path.join(__dirname, "../public")));
 app.use(cors());
 
 const PORT = process.env.PORT || 4000;
@@ -22,9 +27,10 @@ app.use("/friends", require("./routes/friends"));
 app.use("/replies", require("./routes/replies"));
 app.use("/files", require("./routes/files"));
 app.use("/requests", require("./routes/requests"));
+app.use("/messages", require("./routes/messages"));
+app.use("/rooms", require("./routes/rooms"));
 
 
-
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
-})
+});

@@ -9,7 +9,11 @@ module.exports = {
 				type: DataTypes.UUID,
 				defaultValue: DataTypes.UUIDV4()
 			},
-			from: {
+			from_id: {
+				type: DataTypes.UUID,
+				allowNull: false
+			},
+			room_id: {
 				type: DataTypes.UUID,
 				allowNull: false
 			},

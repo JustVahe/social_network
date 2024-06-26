@@ -13,8 +13,6 @@ export default function PhotoFeed({ user, status }: { user: IUser, status: strin
     const { checkAccessToken } = useCheck();
     const currentUser = useAppSelector(selectCurrentUser);
 
-    console.log(user);
-
     useEffect(() => {
         checkAccessToken();
         //eslint-disable-next-line

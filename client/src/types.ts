@@ -30,6 +30,16 @@ export interface IReply {
     updatedAt: string
 }
 
+export interface IRoom {
+    id: ID,
+    type: "user" | "chat",
+    name: string,
+    avatar: string,
+    user_a: IUser,
+    user_b: IUser,
+    messages: IMessage[]
+}
+
 export interface IFriend {
     id: ID,
     user_a_id: ID,
@@ -79,8 +89,8 @@ export interface IPhoto {
 
 export interface IMessage {
     id: ID,
-    from: ID,
-    to: ID,
+    from: IUser,
+    from_id: ID
     message: string,
     date: string,
     createdAt: string,

@@ -4,13 +4,9 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class Message extends Model {
-		/**
-		 * Helper method for defining associations.
-		 * This method is not a part of Sequelize lifecycle.
-		 * The `models/index` file will call this method automatically.
-		 */
-		static associate({User}) {
-			this.belongsTo(User, {foreignKey: "from", as:"from"})
+		static associate({ User, Room }) {
+			this.belongsTo(User, { foreignKey: "from_id", as: "from" })
+			this.belongsTo(Room, {foreignKey: "room_id", as: "room"})
 		}
 	}
 	Message.init({
@@ -20,7 +16,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4()
 		},
-		from: {
+		from_id: {
+			type: DataTypes.UUID,
+			allowNull: false
+		},
+		room_id: {
 			type: DataTypes.UUID,
 			allowNull: false
 		},

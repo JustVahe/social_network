@@ -4,15 +4,18 @@ import Shortcuts from "../menu/Shortcuts";
 import MessagesComponent from "./MessagesComponent";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import {connect} from "socket.io-client";
+
+connect("http://localhost:8246");
 
 export default function MessagesFeed() {
-
-    const {checkAccessToken} = useCheck();
+    
+    const { checkAccessToken } = useCheck();
     const currentUser = useAppSelector(selectCurrentUser);
 
     useEffect(() => {
         checkAccessToken();
-    //eslint-disable-next-line
+        //eslint-disable-next-line
     }, []);
 
     return (
@@ -26,6 +29,6 @@ export default function MessagesFeed() {
                     <MessagesComponent />
                 </div>
             </div>
-        </div>  
+        </div>
     )
 }

@@ -36,7 +36,7 @@ export default function Redirect() {
                     navigate("/" + currentUser?.username + "/home");
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
 
         }

@@ -10,6 +10,8 @@ import isAuthReducer from "./slices/isAuthSlice";
 import thisUserReducer from "./slices/thisUserSlice";
 import usersFriendsReducer from "./slices/usersFriends";
 import thisUsersFriendsReducer from "./slices/thisUsersFriends";
+import roomReducer from "./slices/roomSlice"
+import roomsReducer from "./slices/roomsSlice";
 
 const persistConfig = {
     key: "root",
@@ -26,7 +28,9 @@ const reducer = combineReducers({
     isAuth: isAuthReducer,
     thisUser: thisUserReducer,
     usersFriends: usersFriendsReducer,
-    thisUsersFriends: thisUsersFriendsReducer
+    thisUsersFriends: thisUsersFriendsReducer,
+    room: roomReducer,
+    rooms: roomsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);
