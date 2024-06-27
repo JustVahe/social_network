@@ -116,13 +116,9 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 				<p className="text-sm-14 font-bold text-sky-600">{
 					user.name + " " + user.surname
 				}</p>
-				<p className="text-sm-11 text-zinc-400">Published at: 
-					{
-						createdAtDate && <span>{" " +createdAtDate.toDateString()}</span>
-					}
-					{
-						updatedAtDate && <span>{" " +updatedAtDate.toDateString()}</span>
-					}
+				<p className="text-sm-11 text-zinc-400">Published at:
+					{createdAtDate && <span>{" " + createdAtDate.toDateString()}</span>}
+					{updatedAtDate && <span>{" " + updatedAtDate.toDateString()}</span>}
 				</p>
 			</div>
 			{

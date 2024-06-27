@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { IMessage, IRoom } from '../../types'
+import { IConnection, IMessage, IRoom } from '../../types'
 
 export interface RoomState {
-	value: IRoom | undefined
+	value: IRoom & IConnection | undefined
 }
 
 const initialState: RoomState = {
@@ -14,8 +14,8 @@ export const Room = createSlice({
 	name: 'currentMessagingUser',
 	initialState,
 	reducers: {
-		setRoom: (state, action: PayloadAction<IRoom>) => {
-			state.value = action.payload
+		setRoom: (state, action: PayloadAction<IRoom & IConnection>) => {
+			state.value = {...action.payload}
 		},
 		setMessagesOfTheRoom: (state, action: PayloadAction<IMessage[]>) => {
 			if (state.value) {

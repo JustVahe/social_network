@@ -24,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      defaultValue: "/assets/defaultAvatar.jpg"
+    },
+    description: {
+      type: DataTypes.STRING,
+      defaultValue: "This chat has no description yet"
     }
   }, {
     sequelize,

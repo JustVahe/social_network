@@ -37,7 +37,19 @@ export interface IRoom {
     avatar: string,
     user_a: IUser,
     user_b: IUser,
-    messages: IMessage[]
+    messages: IMessage[],
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface IConnection {
+    id: ID,
+    chat_id: ID,
+    user_id: ID,
+    chat: IChat,
+    user: IUser,
+    createdAt: string,
+    updatedAt: string
 }
 
 export interface IFriend {
@@ -93,6 +105,16 @@ export interface IMessage {
     from_id: ID
     message: string,
     date: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface IChat {
+    id: ID,
+    name: string,
+    avatar: string,
+    decription: string,
+    connections: IConnection[],
     createdAt: string,
     updatedAt: string
 }

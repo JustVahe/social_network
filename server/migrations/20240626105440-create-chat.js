@@ -11,11 +11,15 @@ module.exports = {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false
+        defaultValue: "New Group Chat"
       },
-      connection_id: {
-        type: DataTypes.UUID,
-        allowNull: false
+      avatar: {
+        type: DataTypes.STRING,
+        defaultValue: "/assets/defaultAvatar.jpg"
+      },
+      description: {
+        type: DataTypes.STRING,
+        defaultValue: "This chat has no description yet"
       },
       createdAt: {
         allowNull: false,

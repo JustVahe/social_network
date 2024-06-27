@@ -29,6 +29,8 @@ app.use("/files", require("./routes/files"));
 app.use("/requests", require("./routes/requests"));
 app.use("/messages", require("./routes/messages"));
 app.use("/rooms", require("./routes/rooms"));
+app.use("/chats", require("./routes/chats"));
+app.use("/connections", require("./routes/connections"));
 
 
 server.listen(PORT, () => {
