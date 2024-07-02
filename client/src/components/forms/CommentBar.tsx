@@ -44,7 +44,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
 
                     if (commentResponse.status === 200) {
 
-                        fetch("/api/posts/"+postData.id)
+                        fetch("/api/posts/" + postData.id)
                             .then((res) => res.json())
                             .then(data => {
                                 dispatch(updatePost(data));

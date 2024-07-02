@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useCheck } from "../../utils/hooks/useCheck";
 import Shortcuts from "../menu/Shortcuts";
 import MessagesComponent from "./MessagesComponent";
 import { useAppSelector } from "../../redux/typedHooks";
@@ -10,13 +8,7 @@ connect("http://localhost:8246");
 
 export default function MessagesFeed() {
     
-    const { checkAccessToken } = useCheck();
     const currentUser = useAppSelector(selectCurrentUser);
-
-    useEffect(() => {
-        checkAccessToken();
-        //eslint-disable-next-line
-    }, []);
 
     return (
         currentUser &&

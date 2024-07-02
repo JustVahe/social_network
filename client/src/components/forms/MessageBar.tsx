@@ -1,31 +1,48 @@
 import { FaPaperPlane } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { addMessageToTheRoom, selectRoom } from "../../redux/slices/roomSlice";
+import { selectRoom } from "../../redux/slices/roomSlice";
 import { useEffect, useState } from "react";
 import { notifyError } from "../../utils/toastification";
-import { IRoom } from "../../types";
+import { IChat, IMessage, IRoom } from "../../types";
 import { getSocket } from "../../utils/hooks/socket";
 
-export default function MessageSendingBar() {
+export default function MessageSendingBar({ setMessages }: {
+	setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>
+}) {
 
-	const currentUser = useAppSelector(selectCurrentUser);
 	const [message, setMessage] = useState<string>("");
 	const [approvedRoom, setApprovedRoom] = useState<IRoom | undefined>();
-	const dispatch = useAppDispatch();
+	const [approvedChat, setApprovedChat] = useState<IChat | undefined>();
 	const [socket] = useState(getSocket());
+
+	const dispatch = useAppDispatch();
+
+	const currentUser = useAppSelector(selectCurrentUser);
 	const room = useAppSelector(selectRoom);
 
-	useEffect(() => {	
+	useEffect(() => {
 
-		socket.emit("join_room", room);
+		if (room?.chat) {
+			socket.emit("join_chat", room.chat);
+		} else {
+			socket.emit("join_room", room);
+		}
 
-		socket.on("receive_approved_room", (data : IRoom) => {
+		socket.on("receive_approved_room", (data: IRoom) => {
 			setApprovedRoom(data);
 		});
 
+		socket.on("receive_approved_chat", (data: IChat) => {
+			setApprovedChat(data);
+		});
+
 		socket.on("receive_message", (data) => {
-			dispatch(addMessageToTheRoom(data));
+			console.log(data);
+			setMessages((messages) => {
+				return [...messages, data];
+			});
+
 		});
 
 		//eslint-disable-next-line
@@ -40,21 +57,47 @@ export default function MessageSendingBar() {
 				message
 			}
 
-			const messageData = await (
-				await fetch("/api/messages/?room_id=" + approvedRoom?.id, {
-					method: "POST",
-					headers: {
-						"Content-type" : "application/json"
-					},
-					body: JSON.stringify(body)
-				})
-			).json();
+			if (approvedChat) {
 
-			const wholeMessageData = await(await fetch("/api/messages/"+messageData.id)).json();
-			dispatch(addMessageToTheRoom(wholeMessageData));
+				const messageData = await (
+					await fetch("/api/messages/?room_id=" + approvedChat?.id, {
+						method: "POST",
+						headers: {
+							"Content-type": "application/json"
+						},
+						body: JSON.stringify(body)
+					})
+				).json();
 
-			socket.emit("send_message", wholeMessageData);
-			setMessage("");
+				const wholeMessageData = await (await fetch("/api/messages/" + messageData.id)).json();
+
+				setMessages((messages) => {
+					return [...messages, wholeMessageData];
+				});
+
+				socket.emit("send_message_to_chat", wholeMessageData);
+				setMessage("");
+
+			} else {
+				const messageData = await (
+					await fetch("/api/messages/?room_id=" + approvedRoom?.id, {
+						method: "POST",
+						headers: {
+							"Content-type": "application/json"
+						},
+						body: JSON.stringify(body)
+					})
+				).json();
+
+				const wholeMessageData = await (await fetch("/api/messages/" + messageData.id)).json();
+
+				setMessages((messages) => {
+					return [...messages, wholeMessageData];
+				});
+
+				socket.emit("send_message", wholeMessageData);
+				setMessage("");
+			}
 
 		} else {
 			notifyError("Please write the message");
@@ -74,7 +117,7 @@ export default function MessageSendingBar() {
 				className="w-[80%] bg-transparent p-[10px] outline-none placeholder:text-sky-800"
 				placeholder="Send Message" />
 			<button
-				onClick={async () => await messageSendingHandler()}
+				onClick={() => void messageSendingHandler()}
 				className="p-[5px] bg-sky-600 text-white rounded-md flex items-center gap-[10px]">
 				<FaPaperPlane /> Send
 			</button>

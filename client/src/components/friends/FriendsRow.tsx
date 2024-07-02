@@ -11,7 +11,7 @@ export default function FriendsRow({ item, setFriends, outerUser }:
         outerUser: IUser
     }) {
 
-    const user: IUser = item.user_b;
+    const user = item.user_b;
     const { unfriendHandler } = useHandlers();
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch  = useAppDispatch();
@@ -31,11 +31,7 @@ export default function FriendsRow({ item, setFriends, outerUser }:
                     currentUser?.id === outerUser.id && <button
                         onClick={() => {
                             unfriendHandler(item.id as string);
-                            setFriends(prev => {
-                                if (prev) {
-                                    return prev.filter(state => state.id !== item.id);
-                                }
-                            });
+                            setFriends(prev => (prev || []).filter(state => state.id !== item.id));
                             dispatch(deleteFriendOfCurrrentUser(item));
                         }}
                         className="bg-zinc-500 p-[5px] text-white text-sm-13 rounded-md">Unfriend</button>

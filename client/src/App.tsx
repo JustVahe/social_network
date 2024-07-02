@@ -28,6 +28,9 @@ function App() {
                     <Route path="/dashboard/messages" element={<ProtectedRoute>
                         <ProtectedUser page="messages" />
                     </ProtectedRoute>} />
+                    <Route path="/dashboard/edit" element={<ProtectedRoute>
+                        <ProtectedUser page="user_edit" />
+                    </ProtectedRoute>} />
                     <Route path="/feed" element={<MainPage />} />
                     <Route path="/:username/home" element={<User page="timeline" />} />
                     <Route path="/:username/photos" element={<User page="photos" />} />

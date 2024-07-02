@@ -31,6 +31,7 @@ export default function MessagesComponent() {
 				</span>
 				All Messages
 			</p>
+			
 			{
 				(!rooms || rooms.length === 0) ? <div className="italic text-sm-14 text-zinc-400">
 					You haven't started chat with someone yet

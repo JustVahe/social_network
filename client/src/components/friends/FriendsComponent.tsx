@@ -7,14 +7,10 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import RequestRow from "./RequestRow";
 
 export default function FriendsComponent({ user }: { user: IUser }) {
-
-
 	const [friends, setFriends] = useState<IFriend[] | undefined>();
 	const [requestsFromMe, setRequestsFromMe] = useState<IRequest[] | undefined>();
 	const [requestsToMe, setRequestsToMe] = useState<IRequest[] | undefined>();
-
 	const currentUser = useAppSelector(selectCurrentUser);
-
 	const dispatch = useAppDispatch();
 
 	const [friendsToggle, setFriendsToggle] = useState("friends");
@@ -35,20 +31,14 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 			})
 
 		fetch("/api/requests/" + user.id + "?toggle=from_me&status=pending")
-			.then((res) => {
-				return res.json()
-			})
+			.then((res) => res.json())
 			.then(data => {
 				setRequestsFromMe(data);
 			})
 
 		fetch("/api/requests/" + user.id + "?toggle=to_me&status=pending")
-			.then((res) => {
-				return res.json()
-			})
-			.then(data => {
-				setRequestsToMe(data);
-			})
+			.then((res) => res.json())
+			.then(data => setRequestsToMe(data))
 
 		//eslint-disable-next-line
 	}, [dispatch, user.id])

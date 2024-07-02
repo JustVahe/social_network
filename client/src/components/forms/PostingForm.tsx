@@ -99,11 +99,7 @@ export default function PostingForm() {
 											const data = [...files];
 											data.splice(outerIndex, 1);
 											const unknownData = data as unknown;
-											setFiles(unknownData as FileList)	
-											// setFiles(files => {
-											// 	const newFilelist = Array.from(files as Iterable<File>).filter((item, index) => index !== outerIndex) as unknown;
-											// 	re	
-											// })
+											setFiles(unknownData as FileList)
 										}}
 										className="text-sm-14 text-white p-[5px] rounded-sm hover:bg-white/35">
 										X

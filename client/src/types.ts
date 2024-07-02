@@ -113,10 +113,11 @@ export interface IChat {
     id: ID,
     name: string,
     avatar: string,
-    decription: string,
+    description: string,
     connections: IConnection[],
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    messages: IMessage[]
 }
 
 export interface ITokenBody {

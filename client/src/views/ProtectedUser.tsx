@@ -10,6 +10,7 @@ import ProtectedUserNavbar from "../components/menu/ProtectedUserNavbar.tsx";
 import { useEffect } from "react";
 import { useCheck } from "../utils/hooks/useCheck.ts";
 import ProtectedPhotoFeed from "../components/protectedUser/ProtectedPhotoFeed.tsx";
+import UserEditFeed from "../components/feed/UserEditFeed.tsx";
 
 export default function ProtectedUser({ page }: { page: string }) {
 
@@ -44,9 +45,10 @@ export default function ProtectedUser({ page }: { page: string }) {
 					<FriendsFeed user={currentUser} status="protected" />
 				) : page === "messages" ? (
 					<MessagesFeed />
-				) : (
-					""
-				)}
+				) : page === "user_edit" ? (
+					<UserEditFeed />
+				)
+				: ""}
 			</div>
 			<Footer />
 		</>

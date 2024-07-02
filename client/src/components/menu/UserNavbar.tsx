@@ -21,7 +21,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
     const dispatch = useAppDispatch();
 
     const [dropdownToggle, setDropdownToggle] = useState(false);
-    const [request, setRequest] = useState<IRequest>();
+    const [request, setRequest] = useState<IRequest>(); 
     const [friend, setFriend] = useState<IFriend>();
 
     const { friendRequestAddingHandler } = useHandlers();
@@ -40,6 +40,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
             .then((response) => response.json())
             .then((data) => {
                 setRequest(data);
+                console.log({data, thisUser : thisUser.id});
             });
 
         fetch(`/api/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
@@ -48,7 +49,10 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                 setFriend(data);
             })
 
-    }, [thisUser.id, currentUser?.id])
+    }, [thisUser.id, currentUser?.id]);
+
+    console.log(friend);
+    
 
     return (
         <div className='relative'>
@@ -76,7 +80,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                         </NavLink>
                     </div>
                     {
-                        friend ? <Unfriend setFriend={setFriend} friend={friend} /> :
+                        request?.status === "approved" ? <Unfriend setFriend={setFriend} friend={friend as IFriend} /> :
                             request?.status === "pending" ? <PendingFriend />
                                 : <AddFriend from={currentUser as IUser} to={thisUser} setRequest={setRequest} />
                     }
@@ -133,10 +137,10 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                                 : request?.status === "pending" ? <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
                                     Waiting for response
                                 </p>
-                                :<p onClick={() => friendRequestAddingHandler(currentUser?.id as ID, thisUser.id)}
+                                : !request ? <p onClick={() => friendRequestAddingHandler(currentUser?.id as ID, thisUser.id)}
                                     className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
                                     Add Friend
-                                </p>
+                                </p> : ""
                             }
                         </div>
                     </button>

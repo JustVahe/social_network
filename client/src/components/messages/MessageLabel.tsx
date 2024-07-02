@@ -24,7 +24,7 @@ export default function MessageLabel({ room }: { room: IRoom & IConnection }) {
 				<p className="text-sm-13 text-zinc-700">{room.user_b.name} {room.user_b.surname}</p>
 			</div> : <div className="w-full border-b border-b-slate-200 flex p-[10px] items-center gap-[10px]">
 				<FriendButton src={"/api/public" + room.chat.avatar} />
-				<p className="text-sm-13 text-zinc-700">{room.chat.name}</p>
+				<p className="text-sm-13 text-zinc-700 w-[60%]">{room.chat.name}</p>
 			</div>
 			}
 		</button>

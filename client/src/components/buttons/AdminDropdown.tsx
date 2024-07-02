@@ -13,7 +13,7 @@ export default function AdminDropdown({userToggle} : {userToggle : boolean}) {
                <p className="text-sm-13">View Profile</p>
             </h1>
          </Link>
-         <Link to={"/friends"}>
+         <Link to={"/dashboard/edit"}>
             <h1 className="w-full px-[15px] py-[10px] transition-all hover:bg-zinc-200 flex gap-[10px] items-center">
                <span className="text-sky-600"><TfiPencilAlt /></span>
                <p className="text-sm-13">Edit Profile</p>

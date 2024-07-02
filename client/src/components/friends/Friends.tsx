@@ -10,18 +10,14 @@ export default function Friends({ user }: { user: IUser }) {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-
-        const func = async () => {
-            if (user.id) {
-                await fetch("/api/friends/" + user.id)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        dispatch(setThisUsersFriends(data));
-                    });
-            }
+        if (user.id) {
+          fetch("/api/friends/" + user.id)
+                .then((response) => response.json())
+                .then((data) => {
+                    dispatch(setThisUsersFriends(data));
+                });
         }
 
-        func();
 
     }, [user.id, user.friends, dispatch]);
 
@@ -31,9 +27,7 @@ export default function Friends({ user }: { user: IUser }) {
             <input type="text" className="w-full p-[5px] text-sm-13 border border-gray-200 mt-[20px] outline-none" placeholder="Search contacts" />
             <div className="w-full h-full no-scrollbar overflow-y-scroll flex flex-col mt-[20px] gap-5">
                 {
-                    (friends && friends.length !== 0) ? friends.map((item) => {
-                        return <FriendLabel friend={item.user_b} key={item.id} />
-                    }) : <p className=" italic text-zinc-500 text-sm-14">This user has no friends yet...</p>
+                    (friends && friends.length) ? friends.map((item) => <FriendLabel friend={item.user_b} key={item.id} />) : <p className=" italic text-zinc-500 text-sm-14">This user has no friends yet...</p>
                 }
             </div>
         </div>

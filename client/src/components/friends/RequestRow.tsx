@@ -3,13 +3,14 @@ import { useAppDispatch } from "../../redux/typedHooks";
 import { IFriend, IRequest, IUser } from "../../types";
 import { useHandlers } from "../../utils/hooks/handlers";
 
-export default function FriendsRow({ item, type, setFriends, setRequests }: {
+interface IParams { 
     item: IRequest,
     type: "from" | "to",
     setFriends: React.Dispatch<React.SetStateAction<IFriend[] | undefined>>,
     setRequests: React.Dispatch<React.SetStateAction<IRequest[] | undefined>>
-}) {
+}
 
+export default function FriendsRow({ item, type, setFriends, setRequests }: IParams) {
     const { friendAddingHandler, requestDeclineHandler } = useHandlers();
     const user: IUser = type === "from" ? item.to : item.from;
     const dispatch = useAppDispatch();
@@ -28,15 +29,15 @@ export default function FriendsRow({ item, type, setFriends, setRequests }: {
                 type === "to" && <div className="flex gap-[10px] items-center">
                     <button
                         onClick={async () => {
-                            await requestDeclineHandler(item.id);
-                            fetch("/api/requests/" + item.id + "?toggle=to_me&status=pending")
-                                .then((res) => {
-                                    return res.json()
-                                })
-                                .then(data => {
-                                    setRequests(data);
-                                    dispatch(setUsersFriends(data));
-                                })
+                                await requestDeclineHandler(item.id);
+                                fetch("/api/requests/" + item.id + "?toggle=to_me&status=pending")
+                                    .then((res) => {
+                                        return res.json()
+                                    })
+                                    .then(data => {
+                                        setRequests(data);
+                                        dispatch(setUsersFriends(data));
+                                    })
                         }}
                         className="bg-zinc-500 p-[5px] text-white text-sm-13 rounded-md">
                         Decline

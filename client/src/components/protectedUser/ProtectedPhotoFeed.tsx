@@ -1,5 +1,3 @@
-import { useCheck } from "../../utils/hooks/useCheck";
-import { useEffect } from "react";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import ProtectedShortcuts from "../menu/ProtectedShortcuts";
@@ -8,13 +6,7 @@ import FriendsProtected from "../friends/FriendsProtected";
 
 export default function ProtectedPhotoFeed() {
 
-    const { checkAccessToken } = useCheck();
     const currentUser = useAppSelector(selectCurrentUser);
-
-    useEffect(() => {
-        checkAccessToken();
-        //eslint-disable-next-line
-    }, []);
 
     return (
         currentUser &&

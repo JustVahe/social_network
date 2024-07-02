@@ -8,21 +8,17 @@ import { setUser } from "../../redux/slices/currentUserSlice";
 import { notifyError } from "../../utils/toastification";
 
 export default function SignUp() {
-
     const [nameError, setNameError] = useState<ValidationError | undefined>();
     const [surnameError, setSurnameError] = useState<ValidationError | undefined>();
     const [emailError, setEmailError] = useState<ValidationError | undefined>();
     const [passwordError, setPasswordError] = useState<ValidationError | undefined>();
-
     const [generalError, setGeneralError] = useState<Error | null>();
-
     const [name, setName] = useState<string | undefined>();
     const [surname, setSurname] = useState<string | undefined>();
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
 
     const navigate = useNavigate();
-
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -80,17 +76,35 @@ export default function SignUp() {
             const validationErrorInner: ValidationError[] = errors.inner;
 
             if (validationErrorInner) {
-                setNameError(validationErrorInner.find((item: ValidationError) => item.type === "name"));
-                notifyError(nameError?.message as string);
-                setSurnameError(validationErrorInner.find((item: ValidationError) => item.type === "surname"));
-                notifyError(surnameError?.message as string);
-                setPasswordError(validationErrorInner.find((item: ValidationError) => item.type === "password"));
-                notifyError(passwordError?.message as string);
-                setEmailError(validationErrorInner.find((item: ValidationError) => item.type === "email"));
-                notifyError(emailError?.message as string);
+
+                const validateManager = ({ name, message }: { name: string, message: string }) => {
+                    setNameError(validationErrorInner.find((item: ValidationError) => item.type === name));
+                    notifyError(message);            
+                }
+
+                const fields = [
+                    {
+                        name: 'name',
+                        message: nameError?.message || ''
+                    },
+                    {
+                        name: 'surname',
+                        message: surnameError?.message  || ''
+                    },
+                    {
+                        name: 'password',
+                        message: passwordError?.message || ''
+                    },
+                    {
+                        name: 'email',
+                        message:emailError?.message || ''
+                    }
+                ]
+
+                fields.forEach(validateManager)
             } else {
                 setGeneralError(errors);
-                notifyError(generalError?.message as string);
+                notifyError(generalError?.message  || '');
             }
 
         }

@@ -11,14 +11,14 @@ export default function NewsfeedComponent({ id }: { id?: ID }) {
 		if (id) {
 			fetch("/api/posts/?user_id=" + id)
 				.then((res) => res.json())
-				.then((data : IPost[]) => {
+				.then((data: IPost[]) => {
 					setPosts(data.sort((a, b) => {
 						const firstPostDate = new Date(a.updatedAt)[Symbol.toPrimitive]("number");
 						const secondPostDate = new Date(b.updatedAt)[Symbol.toPrimitive]("number");
 						return firstPostDate - secondPostDate;
 					}));
 				}
-			);
+				);
 		}
 
 	}, [id])
