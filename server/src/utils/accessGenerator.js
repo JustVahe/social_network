@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-function accessGenerator(userId, expDate) {
+function accessGenerator(userId, expiresIn) {
     
     const payload = {
         userId
     }
 
-    return jwt.sign(payload, process.env.accessSecret, {expiresIn: expDate});
+    return jwt.sign(payload, process.env.accessSecret, { expiresIn });
 
 }
 

@@ -99,25 +99,6 @@ router.post("/", async (request, response) => {
 
 });
 
-router.delete("/:id", async (request, response) => {
-
-    try {
-
-        const { id } = request.params;
-        const room = await Room.findOne({
-            where: { id }
-        });
-
-        room.destroy();
-        return response.status(200).json(`Chat successfully deleted`);
-
-    } catch (error) {
-        console.log(error);
-        return response.status(500).json(error);
-    }
-
-});
-
 router.get("/:id", async (request, response) => {
 
     try {
@@ -141,7 +122,7 @@ router.get("/:id", async (request, response) => {
 
         if (room) return response.status(200).json(room);
         if (connection) return response.status(200).json(connection);
-        
+
 
     } catch (error) {
         console.log(error);
@@ -149,5 +130,25 @@ router.get("/:id", async (request, response) => {
     }
 
 });
+
+router.delete("/:id", async (request, response) => {
+
+    try {
+
+        const { id } = request.params;
+        const room = await Room.findOne({
+            where: { id }
+        });
+
+        room.destroy();
+        return response.status(200).json(`Chat successfully deleted`);
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json(error);
+    }
+
+});
+
 
 module.exports = router;

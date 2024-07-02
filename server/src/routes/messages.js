@@ -21,9 +21,7 @@ router.get("/", async (request, response) => {
                 const aDate = new Date(a.createdAt)[Symbol.toPrimitive]("number");
                 const bDate = new Date(b.createdAt)[Symbol.toPrimitive]("number");
                 return aDate - bDate;
-            })
-
-            console.log(newMessages);
+            });
             
             return response.status(200).json(newMessages);
         } else {

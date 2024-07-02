@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { sequelize, User, Friend } = require("../../models/index");
+const { User } = require("../../models/index");
+const multiparty = require("multiparty");
 
 router.get("/", async (request, response) => {
 
@@ -77,22 +78,37 @@ router.put("/:id", async (request, response) => {
     try {
 
         const { id } = request.params;
-
-        const body = request.body;
+        const form = new multiparty.Form();
 
         const user = await User.findOne({
             where: { id }
         });
 
-        Object.keys(body).forEach(item => {
-            if (item) {
-                user[item] = body[item];
+        form.parse(request, (errors, fields, files) => {
+
+            if (errors) {
+                Object.keys(errors).forEach(item => {
+                    if (errors) {
+                        return response.status(500).json(errors);
+                    }
+                });
+            }
+            Object.keys(fields).forEach(item => {
+                if (item) user[item] = fields[item][0];
+            });
+            user.save();
+
+        });
+
+        const newUser = await User.findOne({
+            where: { id },
+            include: {
+                all: true,
+                nested: true
             }
         });
 
-        user.save();
-
-        return response.json(user);
+        return response.status(200).json(newUser);
 
     } catch (error) {
 

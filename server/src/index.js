@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "../public")));
 app.use(cors());
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3001;
 
 // auth route
 
