@@ -12,6 +12,7 @@ import usersFriendsReducer from "./slices/usersFriends";
 import thisUsersFriendsReducer from "./slices/thisUsersFriends";
 import roomReducer from "./slices/roomSlice"
 import roomsReducer from "./slices/roomsSlice";
+import friendsReducer from "./slices/friendsSlice";
 
 const persistConfig = {
     key: "root",
@@ -30,7 +31,8 @@ const reducer = combineReducers({
     usersFriends: usersFriendsReducer,
     thisUsersFriends: thisUsersFriendsReducer,
     room: roomReducer,
-    rooms: roomsReducer
+    rooms: roomsReducer,
+    friends: friendsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);
