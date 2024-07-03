@@ -2,7 +2,6 @@ import Post from "../post/Post";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { addPosts, selectPost, setPost } from "../../redux/slices/postSlice";
-import { FaArrowsRotate } from "react-icons/fa6";
 import PostLoading from "../post/PostLoading";
 
 export default function HomeFeed() {
