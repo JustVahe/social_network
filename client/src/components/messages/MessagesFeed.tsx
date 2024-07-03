@@ -4,7 +4,7 @@ import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import {connect} from "socket.io-client";
 
-connect("http://localhost:8246");
+connect("https://social-network-85xf.onrender.com");
 
 export default function MessagesFeed() {
     
