@@ -5,22 +5,39 @@ router.get("/", async (request, response) => {
 
     try {
 
-        const { user_id } = request.query;
+        const { user_id, limit, offset } = request.query;
 
-        let thisPost;
+        console.log({limit, offset});
 
         if (user_id) {
-            thisPost = await Post.findAll({
-                where: { user_id }, 
+            const posts = await Post.findAll({
+                where: { user_id },
                 include: ["user", "comments", "files"]
             });
-        } else {
-            thisPost = await Post.findAll({
-                include: ["user", "comments", "files"]
-            });
+            return response.status(200).json(posts);
         }
 
-        return response.status(200).json(thisPost);
+        if (limit && offset) {
+
+            const posts = await Post.findAll({
+                include: {
+                    all: true,
+                    nested: true
+                },
+                limit,
+                offset,
+                order: [['updatedAt', 'DESC']]
+            });
+
+            return response.status(200).json(posts);
+        }
+
+        const posts = await Post.findAll({
+            include: ["user", "comments", "files"]
+        });
+        return response.status(200).json(posts);
+
+
 
     } catch (error) {
 
@@ -94,7 +111,7 @@ router.put("/:id", async (request, response) => {
         });
         thisPost.message = message;
         thisPost.save();
-        
+
         return response.status(200).json(thisPost);
 
     } catch (error) {

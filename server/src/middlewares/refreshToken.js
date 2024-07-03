@@ -9,13 +9,13 @@ module.exports = async (request, response, next) => {
         const { refreshToken } = request.body;
 
         if (!refreshToken) {
-            response.status(401).json("Not Authorized: Refresh token wasn't provided.");
+            return response.status(401).json("Not Authorized: Refresh token wasn't provided.");
         }
 
         const payload = jwt.verify(refreshToken, process.env.refreshSecret);
 
         const newAccessToken = accessGenerator(payload.userId, "15m");
-        response.status(200).json({
+        return response.status(200).json({
             accessToken: newAccessToken
         });
 
