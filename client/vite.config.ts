@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8246",
+        target: "https://social-network-85xf.onrender.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
