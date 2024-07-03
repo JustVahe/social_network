@@ -1,17 +1,46 @@
 import { v4 } from "uuid";
-import { selectUsers } from "../../redux/slices/userSlice"
-import { useAppSelector } from "../../redux/typedHooks"
-import MessageUser from "./MessageUser";
+import MessageLabel from "./MessageLabel";
+import { useAppSelector } from "../../redux/typedHooks";
+import { selectRooms } from "../../redux/slices/roomsSlice";
+import { FaChevronDown, FaPlus, FaSearch } from "react-icons/fa";
+import { useState } from "react";
+import { FaMessage } from "react-icons/fa6";
+import ModalWindow from "../shared/ModalWindow";
 
 export default function MessagesLeft() {
 
-    const users = useAppSelector(selectUsers);
+	const rooms = useAppSelector(selectRooms);
+	const [chatToggle, setChatToggle] = useState<boolean>(false);
+	const [modalType, setModalType] = useState<string | boolean>(false);
 
-    return (
-      <div className="col-span-5 sm:col-span-2 xl:col-span-1 border-r border-r-slate-200 flex flex-col">
-        {
-            users && users.map((item) => <MessageUser user={item} key={v4()} />)
-        }
-      </div>
-    )
+	return (
+		<div className="col-span-5 sm:col-span-2 xl:col-span-1 flex-grow pr-2.5 border-r border-r-slate-200 flex flex-col">
+			{
+				modalType && <ModalWindow type = {modalType} setModalType={setModalType}/>
+			}
+			<div className="flex flex-col h-full">
+				{rooms && rooms.map((item) => <MessageLabel room={item} key={v4()} />)}
+			</div>
+			<div
+				className="w-full bg-zinc-700/60 flex flex-col rounded-md text-white p-[5px]">
+				{
+					chatToggle && <>
+						<button 
+							onClick={() => setModalType("create_group_chat")}
+							className="w-full rounded-md text-sm-13 p-2.5 flex justify-between items-center transition hover:bg-sky-600/90">
+							Create Group Chat <FaMessage />
+						</button>
+						<button className="w-full rounded-md text-sm-13 p-2.5 flex justify-between items-center transition hover:bg-sky-600/90">
+							Find Someone <FaSearch />
+						</button>
+					</>
+				}
+				<button
+					className="w-full rounded-md text-sm-13 p-2.5 flex justify-center items-center transition hover:bg-sky-600/90"
+					onClick={() => setChatToggle(prev => !prev)}>
+					{!chatToggle ? <FaPlus /> : <FaChevronDown />}
+				</button>
+			</div>
+		</div>
+	)
 }

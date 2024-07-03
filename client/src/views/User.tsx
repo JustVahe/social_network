@@ -1,63 +1,67 @@
 import Navbar from "../components/menu/Navbar";
-import UserFeed from "../components/UserFeed";
-import Footer from "../components/Footer";
-import UserNavbar from "../components/UserNavbar";
+import UserFeed from "../components/user/UserFeed.tsx";
+import Footer from "../components/menu/Footer.tsx";
+import UserNavbar from "../components/menu/UserNavbar.tsx";
 import PhotoFeed from "../components/photoPageComponents/PhotoFeed";
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../redux/typedHooks";
-import { selectUsers, setUsers } from "../redux/slices/userSlice";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
-import UserEditButtons from "../components/buttons/UserEditButtons.tsx";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
+import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
+import { useCheck } from "../utils/hooks/useCheck.ts";
 
 export default function User({ page }: { page: string }) {
-  const { id } = useParams();
 
-  const users = useAppSelector(selectUsers);
-  const dispatch = useAppDispatch();
+	const { username } = useParams();
+	const thisUser = useAppSelector(selectThisUser);
+	const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    fetch("http://localhost:8000/api/users")
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(setUsers(data));
-      });
-  }, [dispatch]);
+	const { checkAccessToken } = useCheck();
 
-  const thisUser = users.find((item) => item.id === id);
+	useEffect(() => {
+		checkAccessToken();
 
-  return (
-    <>
-      <Navbar />
-      <header className="w-full h-[530px] overflow-hidden relative">
-        <img
-          src={thisUser?.headerImg}
-          className="object-cover w-full h-[530px] object-top"
-        />
-        <UserEditButtons />
-      </header>
-      {id && (
-        <>
-          <section>
-            <UserNavbar />
-          </section>
-          <div className="container">
-            {page === "timeline" ? (
-              <UserFeed id={id} />
-            ) : page === "photos" ? (
-              <PhotoFeed />
-            ) : page === "friends" ? (
-              <FriendsFeed />
-            ) : page === "messages" ? (
-              <MessagesFeed />
-            ) : (
-              ""
-            )}
-          </div>
-        </>
-      )}
-      <Footer />
-    </>
-  );
+		fetch("/api/users/?username=" + username)
+			.then((res) => res.json())
+			.then((data) => {
+				dispatch(setThisUser(data));
+			});
+
+	// eslint-disable-next-line
+	}, [username]);
+
+	return (
+		<>
+			<Navbar />
+			<header className="w-full h-[530px] overflow-hidden relative">
+				<img
+					src={"/api/public" + thisUser?.headerImg}
+					className="object-cover w-full h-[530px] object-top"
+					alt="cover_image"
+				/>
+			</header>
+			{thisUser && (
+				<>
+					<section>
+						<UserNavbar thisUser={thisUser} />
+					</section>
+					<div className="container">
+						{page === "timeline" ? (
+							<UserFeed/>
+						) : page === "photos" ? (
+							<PhotoFeed user={thisUser} status="common" />
+						) : page === "friends" ? (
+							<FriendsFeed user={thisUser} />
+						) : page === "messages" ? (
+							<MessagesFeed />
+						) : (
+							""
+						)}
+					</div>
+				</>
+			)}
+			<Footer />
+		</>
+	);
 }

@@ -1,52 +1,52 @@
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom"
-import { setComment } from "../../redux/slices/commentSlice";
-import { setPhoto } from "../../redux/slices/photoSlice";
-import { useEffect } from "react";
-import { useAppSelector } from "../../redux/typedHooks";
-import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { VscLoading } from "react-icons/vsc";
-import { setUsers } from "../../redux/slices/userSlice";
-import { setPost } from "../../redux/slices/postSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
+import { selectIsAuth } from "../../redux/slices/isAuthSlice";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { selectCurrentUser, setUser } from "../../redux/slices/currentUserSlice";
+import { useCheck } from "../../utils/hooks/useCheck";
 
 export default function Redirect() {
 
+    const isAuth = useAppSelector(selectIsAuth);
+    const { checkAccessToken } = useCheck();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector(selectCurrentUser);
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/users")
-            .then((res) => res.json())
-            .then(data => {
-                dispatch(setUsers(data));
-            }).then(() =>
-                fetch("http://localhost:8000/api/posts")
-                    .then((res) => res.json())
-                    .then(data => {
-                        dispatch(setPost(data));
-                    })
-            ).then(() =>
-                fetch("http://localhost:8000/api/comments")
-                    .then((res) => res.json())
-                    .then(data => {
-                        dispatch(setComment(data));
-                    })
-            ).then(() =>
-                fetch("http://localhost:8000/api/photos")
-                    .then((res) => res.json())
-                    .then(data => {
-                        dispatch(setPhoto(data));
-                    })
-            ).then(() => {
-                navigate("/" + currentUser?.id + "/feed")
-            })
 
-    }, [dispatch, currentUser, navigate])
+        checkAccessToken();
+
+        async function loginRedirectHandle() {
+
+            try {
+                if (!isAuth) navigate("/signIn");
+                else {
+                    const loginResponse = await fetch("/api/dashboard", {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.authorization}`
+                        },
+                    });
+
+                    const data = await loginResponse.json();
+                    dispatch(setUser(data));
+                    navigate("/" + currentUser?.username + "/home");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+
+        }
+
+        loginRedirectHandle();
+        //eslint-disable-next-line
+    }, [isAuth, navigate, currentUser, dispatch]);
 
     return (
-        <div className="w-full h-full bg-sky-600 grid place-items-center">
+        <div className="w-full h-screen bg-sky-600 grid place-items-center">
             <div className="text-white">
                 Loading <VscLoading />
             </div>

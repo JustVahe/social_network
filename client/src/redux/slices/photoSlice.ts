@@ -15,10 +15,10 @@ export const photoSlice = createSlice({
   initialState,
   reducers: {
     setPhoto: (state, action: PayloadAction<IPhoto[]>) => {
-      state.value = action.payload
+      state.value = action.payload;
     },
-    addPhoto: (state, action: PayloadAction<IPhoto>) => {
-        state.value.push(action.payload)
+    addPhoto: (state, action: PayloadAction<IPhoto[]>) => {
+        state.value = [...state.value, ...action.payload];
     },
   }
 })

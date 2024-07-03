@@ -18,12 +18,16 @@ export const commentSlice = createSlice({
       state.value = action.payload
     },
     addComment: (state, action: PayloadAction<IComment>) => {
-        state.value.push(action.payload)
+      state.value = [...state.value, action.payload];
+    },
+    updateComment: (state, action: PayloadAction<IComment>) => {
+      const thisCommentIndex = state.value.findIndex(item => item.id === action.payload.id);
+      state.value.splice(thisCommentIndex, 1, action.payload);
     },
   }
 })
 
-export const { setComment, addComment } = commentSlice.actions;
+export const { setComment, addComment, updateComment } = commentSlice.actions;
 
 export const selectComment = (state: RootState) => state.comments.value;
 
