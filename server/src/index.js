@@ -12,7 +12,14 @@ connectSocket(server);
 
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "../public")));
-app.use(cors());
+app.use(cors({
+    origin: process.env.CORS, // specify the origin
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Authorization', 'Content-Type', 'Origin'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    maxAge: -1
+}));
 
 const PORT = process.env.PORT || 3001;
 
