@@ -13,7 +13,7 @@ connectSocket(server);
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "../public")));
 app.use(cors({
-    origin: "https://winku-social-network.vercel.app/", // specify the origin
+    origin: process.env.CORS,
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type', 'Origin'],
     credentials: true,

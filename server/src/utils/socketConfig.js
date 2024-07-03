@@ -1,11 +1,9 @@
-const router = require("express").Router();
-const { sequelize, Message } = require("../../models/index");
 const { Server } = require("socket.io")
 
 const connectSocket = (server) => {
     const io = new Server(server, {
         cors: {
-            origin: "https://winku-social-network.vercel.app/",
+            origin: process.env.CORS,
             methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
         }
     });
