@@ -23,7 +23,7 @@ export default function Reply({ reply }: { reply: IReply }) {
     return (
         <>
             {
-                thisReply && <div className="w-full flex gap-[10px] items-start">
+                thisReply && <div className="w-[90%] flex gap-[10px] items-start">
                     <img src={"/api/public/" + thisReply.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">

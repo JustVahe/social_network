@@ -15,14 +15,13 @@ export const postSlice = createSlice({
 	initialState,
 	reducers: {
 		setPost: (state, action: PayloadAction<IPost[]>) => {
-			state.value = action.payload.sort((a:IPost , b:IPost) => {
-				const firstDate = new Date(a.updatedAt)[Symbol.toPrimitive]("number");
-				const secondDate = new Date(b.updatedAt)[Symbol.toPrimitive]("number");
-				return secondDate - firstDate;
-			});
+			state.value = action.payload;
 		},
 		addPost: (state, action: PayloadAction<IPost>) => {
-			state.value.push(action.payload)
+			state.value = [action.payload,...state.value];
+		},
+		addPosts: (state, action: PayloadAction<IPost[]>) => {
+			state.value = [...state.value, ...action.payload];
 		},
 		deletePost: (state, action: PayloadAction<ID>) => {
 			state.value = state.value.filter(item => item.id !== action.payload);
@@ -34,7 +33,7 @@ export const postSlice = createSlice({
 	},
 })
 
-export const { setPost, addPost, deletePost, updatePost } = postSlice.actions;
+export const { setPost, addPost, addPosts, deletePost, updatePost } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts.value;
 

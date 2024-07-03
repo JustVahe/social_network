@@ -28,10 +28,7 @@ export default function PostingForm() {
 			return notifyError("Post must have at least one file, or one text");
 		}
 
-		const postBody = {
-			message
-		}
-
+		const postBody = { message };
 		const postResponse = await fetch("/api/posts/" + currentUser?.id, {
 			method: "POST",
 			headers: {
@@ -39,18 +36,14 @@ export default function PostingForm() {
 			},
 			body: JSON.stringify(postBody)
 		});
-
 		const data: IPost = await postResponse.json();
 
 		if (data) {
-
 			if (files) {
 				Array.from(files).forEach(file => {
 					formData.append("files", file);
 				})
-
 				formData.append("post_id", data.id as string);
-
 				await fetch(`/api/files/${currentUser?.id}/post`, {
 					method: "POST",
 					body: formData
@@ -60,17 +53,15 @@ export default function PostingForm() {
 			const postRequest = await fetch(`/api/posts/${data.id}`);
 			const post: IPost = await postRequest.json();
 
-			textareaRef.current;
-
 			dispatch(addPostToCurrentUser(post));
 			dispatch(addPost(post));
 			setMessage("");
+			setFiles(undefined);
 
 			await sortHandler();
-
 		}
-
 	}
+	
 	return (
 		<div className="w-full min-h-[160px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] flex gap-5 justify-between rounded-md">
 			<img src={"/api/public/" + currentUser?.avatar} alt="avatar" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
@@ -110,10 +101,6 @@ export default function PostingForm() {
 					</div>
 				}
 				<div className="w-[90px] flex justify-between ml-auto mr-5 items-center">
-					{/* <label htmlFor="music" className="text-zinc-600 cursor-pointer">
-						<FaMusic />
-					</label>
-					<input className="w-0 opacity-0" type="file" name="music" id="music" /> */}
 					<label htmlFor="photo" className="text-zinc-600 cursor-pointer">
 						<FaImage />
 					</label>
