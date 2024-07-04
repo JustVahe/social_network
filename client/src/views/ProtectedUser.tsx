@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { useCheck } from "../utils/hooks/useCheck.ts";
 import ProtectedPhotoFeed from "../components/protectedUser/ProtectedPhotoFeed.tsx";
 import UserEditFeed from "../components/feed/UserEditFeed.tsx";
-import { url } from "../utils/enviromentConfig.ts";
+import { imageUrl } from "../utils/enviromentConfig.ts";
 
 export default function ProtectedUser({ page }: { page: string }) {
 
@@ -28,7 +28,7 @@ export default function ProtectedUser({ page }: { page: string }) {
 			<Navbar />
 			<header className="w-full h-[530px] overflow-hidden relative">
 				<img
-					src={`${url}/public` + currentUser.headerImg}
+					src={`${imageUrl}/public` + currentUser.headerImg}
 					className="object-cover w-full h-[530px] object-top"
 					alt="cover_image"
 				/>
