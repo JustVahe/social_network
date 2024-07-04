@@ -64,7 +64,9 @@ router.put("/:user_id/header/",
                 const {data, error} = supabase.storage.from("assets")
                     .list(`${user_id}/images/headerImg/${request.file.originalname}`,request.file);
 
-                console.log(data);
+                if(error) {
+                    return response.status(500).json(error);
+                }
 
                 user.headerImg = `/assets/${user_id}/images/headerImg/${request.file.originalname}`;
                 user.save();
