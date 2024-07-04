@@ -12,6 +12,8 @@ import { FaMessage } from 'react-icons/fa6';
 import { setRoom } from '../../redux/slices/roomSlice';
 import { addRoom } from '../../redux/slices/roomsSlice';
 import { url } from '../../utils/enviromentConfig';
+import { deleteFriendOfCurrrentUser } from '../../redux/slices/usersFriends';
+import { deleteFriendOfThisUser } from '../../redux/slices/thisUsersFriends';
 
 export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
@@ -22,10 +24,10 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
     const dispatch = useAppDispatch();
 
     const [dropdownToggle, setDropdownToggle] = useState(false);
-    const [request, setRequest] = useState<IRequest>(); 
+    const [request, setRequest] = useState<IRequest>();
     const [friend, setFriend] = useState<IFriend>();
 
-    const { friendRequestAddingHandler } = useHandlers();
+    const { friendRequestAddingHandler, unfriendHandler } = useHandlers();
 
     useEffect(() => {
 
@@ -41,7 +43,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
             .then((response) => response.json())
             .then((data) => {
                 setRequest(data);
-                console.log({data, thisUser : thisUser.id});
+                console.log({ data, thisUser: thisUser.id });
             });
 
         fetch(`${url}/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
@@ -51,9 +53,6 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
             })
 
     }, [thisUser.id, currentUser?.id]);
-
-    console.log(friend);
-    
 
     return (
         <div className='relative'>
@@ -89,7 +88,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                         onClick={async () => {
 
                             const findRoom = await ((await fetch(`${url}/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
-                            
+
                             if (thisUser.id) {
                                 if (!findRoom) {
                                     const roomData = await (await fetch(`${url}/rooms`, {
@@ -118,7 +117,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                                 md:font-bold md:rounded-md md:bg-sky-600">
                         Send Message <FaMessage />
                     </button>
-                    <button className='w-10 h-10 grid place-items-center md:hidden text-xl text-zinc-400 relative'
+                    <div className='w-10 h-10 grid place-items-center md:hidden text-xl text-zinc-400 relative'
                         onClick={() => setDropdownToggle(prev => !prev)}>
                         <TfiMenu />
                         <div className={'absolute w-[100px] bg-sky-600 top-[60px] ' + (dropdownToggle ? "block" : "hidden")}>
@@ -132,19 +131,28 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                                 <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">Friends</p>
                             </Link>
                             {
-                                request?.status === "approved" ? <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
-                                    Unfriend
-                                </p>
-                                : request?.status === "pending" ? <p className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
-                                    Waiting for response
-                                </p>
-                                : !request ? <p onClick={() => friendRequestAddingHandler(currentUser?.id as ID, thisUser.id)}
-                                    className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
-                                    Add Friend
-                                </p> : ""
+                                (request?.status === "approved" && friend) ?
+                                    <button
+                                        onClick={() => {
+                                            unfriendHandler(friend.id as string);
+                                            setFriend(undefined);
+                                            dispatch(deleteFriendOfCurrrentUser(friend));
+                                            dispatch(deleteFriendOfThisUser(friend));
+                                        }}
+                                        className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
+                                        Unfriend
+                                    </button>
+                                    : request?.status === "pending" ?
+                                        <button className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
+                                            Waiting for response
+                                        </button>
+                                        : !request ? <button onClick={() => friendRequestAddingHandler(currentUser?.id as ID, thisUser.id)}
+                                            className="text-white p-2.5 font-medium text-md transition hover:bg-zinc-50 hover:bg-opacity-25">
+                                            Add Friend
+                                        </button> : ""
                             }
                         </div>
-                    </button>
+                    </div>
                 </div>
             </div>
             <div

@@ -28,7 +28,7 @@ export default function Comment({ comment }: { comment: IComment }) {
         <>
             {
                 thisComment && <div className="w-[90%] flex gap-[10px] items-start">
-                    <img src={"${url}/public/" + thisComment.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
+                    <img src={`${url}/public/` + thisComment.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">
                             {
