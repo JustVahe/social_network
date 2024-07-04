@@ -3,7 +3,7 @@ const { File, User } = require("../../models/index");
 const { headerImgStorage, avatarStorage, postStorage, photoStorage, onePhotoSendingStorage } = require("../utils/storages")
 const multer = require("multer");
 const fs = require("fs");
-
+const supabase = require("../utils/supabaseClient");
 const { imageFilter } = require("../utils/fileFilters");
 
 const uploadHeader = multer({
@@ -55,10 +55,15 @@ router.put("/:user_id/header/",
                 return response.status(400).json("This file is not an image, please send another file!");
             }
             try {
+
                 const { user_id } = request.params;
                 const user = await User.findOne({
                     where: { id: user_id },
                 });
+
+                const {data, error} = supabase.storage.from("assets")
+                    .upload(`${user_id}/images/headerImg/${request.file.originalname}`,request.file);
+
                 user.headerImg = `/assets/${user_id}/images/headerImg/${request.file.originalname}`;
                 user.save();
                 return response.status(200).json("Cover image upload is complete");

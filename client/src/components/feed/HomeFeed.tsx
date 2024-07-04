@@ -24,8 +24,6 @@ export default function HomeFeed() {
 
     const infiniteHandler = () => {
 
-        console.log("handler called");
-
         const observableItem = document.querySelector("#loader_div");
         postObserver.observe(observableItem as Element);
 
@@ -54,7 +52,6 @@ export default function HomeFeed() {
 
     useEffect(() => {
         infiniteHandler();
-        console.log("effect");
         //eslint-disable-next-line
     }, [])
 

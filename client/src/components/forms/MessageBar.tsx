@@ -39,7 +39,6 @@ export default function MessageSendingBar({ setMessages }: {
 		});
 
 		socket.on("receive_message", (data) => {
-			console.log(data);
 			setMessages((messages) => {
 				return [...messages, data];
 			});
