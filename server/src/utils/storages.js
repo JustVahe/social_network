@@ -6,10 +6,8 @@ module.exports.headerImgStorage = multer.diskStorage(
         destination: (request, file, callback) => {
 
             request.body.user_id = request.params.user_id;
-
             const { user_id } = request.body;
-
-            const path = `${__dirname}../../../public/assets/${user_id}/images/headerImg/`;
+            const path = `${process.env.SUPABASE_IMAGE_DIR}/assets/${user_id}/images/headerImg/`;
             
             fs.mkdirSync(path, { recursive: true });
             return callback(null, path);
@@ -18,8 +16,7 @@ module.exports.headerImgStorage = multer.diskStorage(
         filename: (request, file, callback) => {
 
             const { user_id } = request.body;
-
-            const path = `${__dirname}../../../public/assets/${user_id}/images/headerImg/`;
+            const path = `${process.env.SUPABASE_IMAGE_DIR}/assets/${user_id}/images/headerImg/`;
             const files = fs.readdirSync(path);
 
             if (files.includes(file.originalname)) {

@@ -129,7 +129,6 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
                                                     return state;
                                                 }
                                             });
-                                            console.log(selectedList);
                                         }}
                                         id={index.toString()}></input>
                                 </div>)}

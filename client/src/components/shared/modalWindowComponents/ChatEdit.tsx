@@ -69,7 +69,6 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
             }
 
             const chatData = await fetch(`${url}/chats/` + room?.chat_id).then(res => res.json());
-            console.log(chatData);
             setChat(chatData);
 
         }

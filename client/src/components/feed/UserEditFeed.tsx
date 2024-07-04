@@ -46,8 +46,6 @@ export default function UserEditFeed() {
         });
         const updateData = await updateResponse.json();
 
-        console.log(updateData);
-
         if (updateResponse.status !== 200) {
             notifyError("Something went wrong");
         } else {

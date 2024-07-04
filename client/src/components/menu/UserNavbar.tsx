@@ -43,7 +43,6 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
             .then((response) => response.json())
             .then((data) => {
                 setRequest(data);
-                console.log({ data, thisUser: thisUser.id });
             });
 
         fetch(`${url}/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
