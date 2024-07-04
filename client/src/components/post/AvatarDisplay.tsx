@@ -7,6 +7,7 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import { deletePost, updatePost } from "../../redux/slices/postSlice";
 import { deletePostOfCurrentUser, updatePostOfCurrentUser } from "../../redux/slices/currentUserSlice";
 import { notifyError, notifySuccess } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function AvatarDisplay({ user, status, post }: { user: IUser, status?: string, post?: IPost }) {
 
@@ -18,9 +19,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	const [updatedAtDate, setUpdatedAtDate] = useState<Date | null>();
 	const dispatch = useAppDispatch();
 	const { checkAccessToken } = useCheck();
-
-	const url = import.meta.env.VITE_URL;
-
+	
 	useEffect(() => {
 
 		if (post) {

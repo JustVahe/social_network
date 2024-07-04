@@ -3,10 +3,9 @@ import AvatarDisplay from "./AvatarDisplay";
 import CommentList from "./CommentList";
 import Likes from "./Likes";
 import CommentBar from "./../forms/CommentBar";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Post({ postData, user, status }: { postData: IPost, user?: IUser, status?: string }) {
-
-	const url = import.meta.env.VITE_URL;
 
 	return (
 		<div className="w-full flex flex-col gap-[15px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">

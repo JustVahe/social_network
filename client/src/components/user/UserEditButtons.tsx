@@ -4,13 +4,13 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setHeaderImg } from "../../redux/slices/currentUserSlice";
 import { notifyError, notifySuccess } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function UserEditButtons({ id }: { id: ID }) {
     
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const formData = new FormData();
-    const url = import.meta.env.VITE_URL;
 
 
     const coverImageEditHandler = async (eventTarget: HTMLInputElement) => {

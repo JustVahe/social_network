@@ -5,6 +5,7 @@ import { selectRooms, setRooms } from "../../redux/slices/roomsSlice";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useEffect } from "react";
 import { setRoom } from "../../redux/slices/roomSlice";
+import { url } from "../../utils/enviromentConfig";
 
 export default function MessagesComponent() {
 
@@ -12,8 +13,6 @@ export default function MessagesComponent() {
 	const currentUser = useAppSelector(selectCurrentUser);
 
 	const dispatch = useAppDispatch();
-
-	const url = import.meta.env.VITE_URL;
 
 	useEffect(() => {
 		fetch(`${url}/rooms?user_id=` + currentUser?.id)

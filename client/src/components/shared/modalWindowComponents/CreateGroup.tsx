@@ -5,14 +5,13 @@ import { selectCurrentUser } from "../../../redux/slices/currentUserSlice";
 import { IFriend } from "../../../types";
 import { notifyError } from "../../../utils/toastification";
 import { addRoom } from "../../../redux/slices/roomsSlice";
+import { url } from "../../../utils/enviromentConfig";
 
 export default function CreateGroup({ setModalType }: { setModalType?: React.Dispatch<React.SetStateAction<string | boolean>> }) {
 
     const [friends, setFriends] = useState<IFriend[] | undefined>();
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
-
-    const url = import.meta.env.VITE_URL;
 
     const [selectedList, setSelectedList] = useState<boolean[]>();
     const [name, setName] = useState("");

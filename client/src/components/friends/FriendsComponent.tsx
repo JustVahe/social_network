@@ -5,6 +5,7 @@ import { IFriend, IRequest, IUser } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import RequestRow from "./RequestRow";
+import { url } from "../../utils/enviromentConfig";
 
 export default function FriendsComponent({ user }: { user: IUser }) {
 	const [friends, setFriends] = useState<IFriend[] | undefined>();
@@ -17,7 +18,6 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 	const [requestToggle, setRequestToggle] = useState<"from_me" | "to_me">("from_me");
 
 	const { checkAccessToken } = useCheck();
-	const url = import.meta.env.VITE_URL;
 
 	useEffect(() => {
 

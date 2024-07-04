@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Reply({ reply }: { reply: IReply }) {
 
     const [thisReply, setThisComment] = useState<IReply | undefined>();
     const currentUser = useAppSelector(selectCurrentUser);
-
-    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
 

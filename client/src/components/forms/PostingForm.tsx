@@ -6,7 +6,7 @@ import { IPost } from "../../types";
 import { addPost } from "../../redux/slices/postSlice";
 import { notifyError } from "../../utils/toastification";
 import { useHandlers } from "../../utils/hooks/handlers";
-
+import { url } from "../../utils/enviromentConfig";
 
 export default function PostingForm() {
 
@@ -16,8 +16,6 @@ export default function PostingForm() {
 	const [message, setMessage] = useState<string>();
 	const [files, setFiles] = useState<FileList | null>();
 	const textareaRef = useRef(null);
-
-	const url = import.meta.env.VITE_URL;
 
 	const dispatch = useAppDispatch();
 	const formData = new FormData();

@@ -3,13 +3,13 @@ import { useAppDispatch, useAppSelector } from '../../redux/typedHooks';
 import { selectCurrentUser, sortPostsOfCurrentUser } from '../../redux/slices/currentUserSlice';
 import { ID } from "../../types";
 import { notifySuccess } from "../toastification";
+import { url } from "../enviromentConfig";
 
 export const useHandlers = () => {
 
     const { checkAccessToken } = useCheck()
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
-    const url = import.meta.env.VITE_URL;
 
     const sortHandler = async () => {
 

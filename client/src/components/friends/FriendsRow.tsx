@@ -2,6 +2,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { deleteFriendOfCurrrentUser } from "../../redux/slices/usersFriends";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { IFriend, IUser } from "../../types";
+import { url } from "../../utils/enviromentConfig";
 import { useHandlers } from "../../utils/hooks/handlers";
 
 export default function FriendsRow({ item, setFriends, outerUser }:
@@ -15,7 +16,6 @@ export default function FriendsRow({ item, setFriends, outerUser }:
     const { unfriendHandler } = useHandlers();
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch  = useAppDispatch();
-    const url = import.meta.env.VITE_URL;
 
     return (
         <div className="bg-white p-5 flex justify-between border border-slate-100">

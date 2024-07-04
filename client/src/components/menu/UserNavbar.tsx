@@ -11,6 +11,7 @@ import { useHandlers } from '../../utils/hooks/handlers';
 import { FaMessage } from 'react-icons/fa6';
 import { setRoom } from '../../redux/slices/roomSlice';
 import { addRoom } from '../../redux/slices/roomsSlice';
+import { url } from '../../utils/enviromentConfig';
 
 export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
@@ -19,8 +20,6 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
-
-    const url = import.meta.env.VITE_URL;
 
     const [dropdownToggle, setDropdownToggle] = useState(false);
     const [request, setRequest] = useState<IRequest>(); 

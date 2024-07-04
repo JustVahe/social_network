@@ -1,12 +1,12 @@
 import { setMessagesOfTheRoom, setRoom } from "../../redux/slices/roomSlice";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { IRoom, IConnection } from "../../types";
+import { url } from "../../utils/enviromentConfig";
 import FriendButton from "../buttons/FriendButton";
 
 export default function MessageLabel({ room }: { room: IRoom & IConnection }) {
 
 	const dispatch = useAppDispatch();
-	const url = import.meta.env.VITE_URL;
 
 	return (
 		<button onClick={() => {

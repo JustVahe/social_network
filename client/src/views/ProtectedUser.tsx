@@ -11,12 +11,12 @@ import { useEffect } from "react";
 import { useCheck } from "../utils/hooks/useCheck.ts";
 import ProtectedPhotoFeed from "../components/protectedUser/ProtectedPhotoFeed.tsx";
 import UserEditFeed from "../components/feed/UserEditFeed.tsx";
+import { url } from "../utils/enviromentConfig.ts";
 
 export default function ProtectedUser({ page }: { page: string }) {
 
 	const currentUser = useAppSelector(selectCurrentUser);
 	const { checkAccessToken } = useCheck();
-	const url = import.meta.env.VITE_URL;
 
 	useEffect(() => {
 		checkAccessToken();

@@ -1,8 +1,7 @@
 import { IMessage } from "../../types";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Message({ align, message }: { align: string, message: IMessage }) {
-
-	const url = import.meta.env.VITE_URL;
 
 	return (
 		message &&

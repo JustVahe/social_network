@@ -3,6 +3,7 @@ import { selectRoom } from "../../../redux/slices/roomSlice";
 import { useAppSelector } from "../../../redux/typedHooks"
 import { useEffect, useState } from "react";
 import { IChat } from "../../../types";
+import { url } from "../../../utils/enviromentConfig";
 
 export default function ChatDetails({ setModalType }: {
     setModalType?: React.Dispatch<React.SetStateAction<string | boolean>>
@@ -10,7 +11,6 @@ export default function ChatDetails({ setModalType }: {
 
     const room = useAppSelector(selectRoom);
     const [chat, setChat] = useState<IChat | undefined>();
-    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
 

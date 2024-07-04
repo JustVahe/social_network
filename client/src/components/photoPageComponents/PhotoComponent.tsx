@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ID, IPhoto } from "../../types";
 import Image from "../shared/Image";
+import { url } from "../../utils/enviromentConfig";
 
 export default function PhotoComponent({ id }: { id: ID}) {
 

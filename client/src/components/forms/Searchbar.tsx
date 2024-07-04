@@ -1,12 +1,12 @@
 import { ChangeEvent, useState } from "react"
 import FriendLabel from "../feed/FriendLabel";
 import { IUser } from "../../types";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Searchbar({ searchToggle, setSearchToggle }: { searchToggle: boolean, setSearchToggle?:React.Dispatch<React.SetStateAction<boolean>> }) {
 
 	const [users, setUsers] = useState<IUser[] | undefined>();
-	const url = import.meta.env.VITE_URL;
-
+	
 	const searchHandler = async (event : ChangeEvent ) => {
 		const eventTarget = event.target as HTMLInputElement;
 		if (eventTarget.value?.trim().length != 0) {

@@ -5,6 +5,7 @@ import { useAppSelector } from '../../redux/typedHooks'
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice'
 import { useState } from 'react'
 import ModalWindow from './ModalWindow'
+import { url } from '../../utils/enviromentConfig'
 
 export interface ModalResponse {
     type: string,
@@ -22,7 +23,6 @@ export default function Image({ image, alt, containerStyles, imageStyles, setMod
 
     const currentUser = useAppSelector(selectCurrentUser);
     const [modalType, setModalType] = useState<boolean | string>(false);
-    const url = import.meta.env.VITE_URL;
 
     return (
         <>

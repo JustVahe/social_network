@@ -1,6 +1,7 @@
 import { addFriendToCurrentUser, setUsersFriends } from "../../redux/slices/usersFriends";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { IFriend, IRequest, IUser } from "../../types";
+import { url } from "../../utils/enviromentConfig";
 import { useHandlers } from "../../utils/hooks/handlers";
 
 interface IParams { 
@@ -14,8 +15,6 @@ export default function FriendsRow({ item, type, setFriends, setRequests }: IPar
     const { friendAddingHandler, requestDeclineHandler } = useHandlers();
     const user: IUser = type === "from" ? item.to : item.from;
     const dispatch = useAppDispatch();
-
-    const url = import.meta.env.VITE_URL;
 
     return (
         user &&

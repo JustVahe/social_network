@@ -7,6 +7,7 @@ import AdminDropdown from "../buttons/AdminDropdown"
 import Searchbar from "../forms/Searchbar"
 import { IUser } from "../../types"
 import { useCheck } from "../../utils/hooks/useCheck"
+import { url } from "../../utils/enviromentConfig"
 
 export default function Navbar() {
 
@@ -16,8 +17,6 @@ export default function Navbar() {
 
     const currentUser: IUser | null = useAppSelector(selectCurrentUser);
     const { checkAccessToken } = useCheck();
-
-    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
         checkAccessToken();

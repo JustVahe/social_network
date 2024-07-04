@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../../redux/typedHooks";
 import { deletePost } from "../../../redux/slices/postSlice";
 import { deletePostOfCurrentUser } from "../../../redux/slices/currentUserSlice";
 import { ModalResponse } from "../Image";
+import { url } from "../../../utils/enviromentConfig";
 
 interface IProps {
     setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
@@ -16,7 +17,6 @@ export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, 
 
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
-    const url = import.meta.env.VITE_URL;
 
     const deleteHandler = async () => {
 

@@ -3,6 +3,7 @@ import { selectCurrentUser, setUser } from '../../redux/slices/currentUserSlice'
 import { ChangeEvent, useState } from 'react';
 import { useCheck } from '../../utils/hooks/useCheck';
 import { notifyError, notifySuccess } from '../../utils/toastification';
+import { url } from '../../utils/enviromentConfig';
 
 export default function UserEditFeed() {
 
@@ -13,9 +14,7 @@ export default function UserEditFeed() {
     const [usernameChange, setUserameChange] = useState(false);
     const [emailChange, setEmailChange] = useState(false);
     const [descriptionChange, setDescriptionChange] = useState(false);
-
-    const url = import.meta.env.VITE_URL;
-
+    
     const dispatch = useAppDispatch();
     const { checkAccessToken } = useCheck();
 

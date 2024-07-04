@@ -6,14 +6,13 @@ import { FaX } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Comment({ comment }: { comment: IComment }) {
 
     const [thisComment, setThisComment] = useState<IComment | undefined>();
     const [replyToggle, setReplyToggle] = useState<boolean>(false);
     const currentUser = useAppSelector(selectCurrentUser);
-
-    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
 

@@ -10,13 +10,13 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
 import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
 import { useCheck } from "../utils/hooks/useCheck.ts";
+import { url } from "../utils/enviromentConfig.ts";
 
 export default function User({ page }: { page: string }) {
 
 	const { username } = useParams();
 	const thisUser = useAppSelector(selectThisUser);
 	const dispatch = useAppDispatch();
-	const url = import.meta.env.VITE_URL;
 
 	const { checkAccessToken } = useCheck();
 

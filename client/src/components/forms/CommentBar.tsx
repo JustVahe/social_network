@@ -8,6 +8,7 @@ import { addComment } from "../../redux/slices/commentSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { updatePost } from "../../redux/slices/postSlice";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { url } from "../../utils/enviromentConfig";
 
 export default function CommentBar({ postData }: { postData?: IPost }) {
 
@@ -15,9 +16,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
-
-    const url = import.meta.env.VITE_URL;
-
+    
     const commentSendingHandler = async (event: FormEvent) => {
 
         event.preventDefault();

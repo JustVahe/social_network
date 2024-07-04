@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
+import { url } from "../enviromentConfig";
 
 export const useCheck = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const url = import.meta.env.VITE_URL;
 
     const tokenRefreshHandler = async () => {
 

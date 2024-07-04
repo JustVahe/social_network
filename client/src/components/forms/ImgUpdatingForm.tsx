@@ -4,6 +4,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { IPhoto } from "../../types";
 import { notifyError, notifySuccess } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto, setModalType: React.Dispatch<React.SetStateAction<boolean | string>>}) {
 
@@ -11,8 +12,6 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
     const currentUser = useAppSelector(selectCurrentUser);
     const { checkAccessToken } = useCheck();
     const formData = new FormData();
-
-    const url = import.meta.env.VITE_URL;
 
     const photoUploadHandler = async () => {
 

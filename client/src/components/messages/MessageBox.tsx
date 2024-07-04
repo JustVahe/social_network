@@ -11,6 +11,7 @@ import { notifySuccess } from "../../utils/toastification";
 import { deleteRoom, selectRooms } from "../../redux/slices/roomsSlice";
 import { IChat, IMessage } from "../../types";
 import ModalWindow from "../shared/ModalWindow";
+import { url } from "../../utils/enviromentConfig";
 
 export default function MessageBox() {
 
@@ -21,7 +22,6 @@ export default function MessageBox() {
 	const rooms = useAppSelector(selectRooms);
 
 	const messageBoxRef = useRef(null);
-	const url = import.meta.env.VITE_URL;
 
 	const [chat, setChat] = useState<IChat | undefined>();
 	const [optionsToggle, setOptionsToggle] = useState<boolean>(false);

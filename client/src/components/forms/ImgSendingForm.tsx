@@ -3,6 +3,7 @@ import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { notifyError, notifySuccess } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function ImgSendingForm() {
 
@@ -10,8 +11,6 @@ export default function ImgSendingForm() {
     const currentUser = useAppSelector(selectCurrentUser);
     const { checkAccessToken } = useCheck();
     const formData = new FormData;
-
-    const url = import.meta.env.VITE_URL;
 
     const photoUploadHandler = async () => {
 

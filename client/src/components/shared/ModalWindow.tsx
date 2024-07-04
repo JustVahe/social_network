@@ -10,6 +10,7 @@ import { ModalResponse } from "./Image";
 import CreateGroup from "./modalWindowComponents/CreateGroup";
 import ChatDetails from "./modalWindowComponents/ChatDetails";
 import ChatEdit from "./modalWindowComponents/ChatEdit";
+import { url } from "../../utils/enviromentConfig";
 
 export default function ModalWindow({ type, image, setModalType, setModalResponse }:
     {
@@ -21,7 +22,6 @@ export default function ModalWindow({ type, image, setModalType, setModalRespons
 
     const currentUser = useAppSelector(selectCurrentUser);
     useLockBodyScroll();
-    const url = import.meta.env.VITE_URL;
     
     return (
         <div className="w-screen h-screen pointer-events-none fixed z-50 top-0 left-0  bg-zinc-800/70 backdrop-blur-md">

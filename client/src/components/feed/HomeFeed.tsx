@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { addPosts, selectPost, setPost } from "../../redux/slices/postSlice";
 import PostLoading from "../post/PostLoading";
+import { url } from "../../utils/enviromentConfig";
 
 export default function HomeFeed() {
 
     const posts = useAppSelector(selectPost);
     const dispatch = useAppDispatch();
-
-    const url = import.meta.env.VITE_URL
 
     const [offset, setOffset] = useState(0);
 

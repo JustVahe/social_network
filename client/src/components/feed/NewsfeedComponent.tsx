@@ -1,14 +1,12 @@
 import Post from "../post/Post";
 import { ID, IPost } from "../../types";
 import { useEffect, useState } from "react";
+import { url } from "../../utils/enviromentConfig";
+
 
 export default function NewsfeedComponent({ id }: { id?: ID }) {
 
 	const [posts, setPosts] = useState<IPost[] | null>();
-
-	const url = import.meta.env.VITE_URL;
-
-	console.log(url);
 	
 	useEffect(() => {
 

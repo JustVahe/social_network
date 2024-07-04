@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { notifyError } from "../../utils/toastification";
 import { IChat, IMessage, IRoom } from "../../types";
 import { getSocket } from "../../utils/hooks/socket";
+import { url } from "../../utils/enviromentConfig";
 
 export default function MessageSendingBar({ setMessages }: {
 	setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>
@@ -17,8 +18,6 @@ export default function MessageSendingBar({ setMessages }: {
 	const [socket] = useState(getSocket());
 
 	const dispatch = useAppDispatch();
-
-	const url = import.meta.env.VITE_URL;
 
 	const currentUser = useAppSelector(selectCurrentUser);
 	const room = useAppSelector(selectRoom);

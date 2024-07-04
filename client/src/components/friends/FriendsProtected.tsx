@@ -3,13 +3,12 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { selectUsersFriends, setUsersFriends } from "../../redux/slices/usersFriends";
+import { url } from "../../utils/enviromentConfig";
 
 export default function FriendsProtected() {
     const usersFriends = useAppSelector(selectUsersFriends);
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
-
-    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
         if (currentUser?.id) {

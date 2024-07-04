@@ -6,6 +6,8 @@ import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
 import { notifyError } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
+
 export default function SignIn() {
 
     const [email, setEmail] = useState<string | undefined>();
@@ -13,8 +15,6 @@ export default function SignIn() {
     const [emailError, setEmailError] = useState<ValidationError | undefined>();
     const [passwordError, setPasswordError] = useState<ValidationError | undefined>();
     const [generalError, setGeneralError] = useState<Error | undefined>();
-
-    const url = import.meta.env.VITE_URL;
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();

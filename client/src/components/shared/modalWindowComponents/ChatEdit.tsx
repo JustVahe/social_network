@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { IChat } from "../../../types";
 import { notifyError, notifySuccess } from "../../../utils/toastification";
 import { FaImage } from "react-icons/fa";
+import { url } from "../../../utils/enviromentConfig";
 
 export default function ChatEdit({ setModalType }: { setModalType?: React.Dispatch<React.SetStateAction<string | boolean>> }) {
 
@@ -16,8 +17,6 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
     const [avatarButtonToggle, setAvatarButtonToggle] = useState<boolean>(false);
 
     const avatar = new FormData();
-    const url = import.meta.env.VITE_URL;
-
     useEffect(() => {
 
         fetch(`${url}/chats/` + room?.chat_id)

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser, setUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Redirect() {
 
@@ -14,7 +15,6 @@ export default function Redirect() {
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector(selectCurrentUser);
-    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
 

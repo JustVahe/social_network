@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useCheck } from '../../utils/hooks/useCheck';
 import { IUser } from '../../types';
 import { notifyError, notifySuccess } from '../../utils/toastification';
+import { url } from '../../utils/enviromentConfig';
 
 export default function ProtectedUserNavbar() {
 
@@ -18,7 +19,6 @@ export default function ProtectedUserNavbar() {
     const dispatch = useAppDispatch();
 
     const formData = new FormData();
-    const url = import.meta.env.VITE_URL;
 
     async function avatarUploadHandle(eventTarget: HTMLInputElement) {
 

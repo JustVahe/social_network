@@ -6,6 +6,7 @@ import { notifyError, notifySuccess } from '../../utils/toastification'
 import { useAppDispatch, useAppSelector } from '../../redux/typedHooks'
 import { updateComment } from '../../redux/slices/commentSlice'
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice'
+import { url } from '../../utils/enviromentConfig'
 
 export default function ReplyList({ thisComment, replyToggle, setReplyToggle, setThisComment }:
     {
@@ -20,8 +21,6 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
     const [message, setMessage] = useState<string | undefined>();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
-
-    const url = import.meta.env.VITE_URL;
 
     const replyHandler = async (event: FormEvent) => {
 
