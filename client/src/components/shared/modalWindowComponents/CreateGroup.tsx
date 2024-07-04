@@ -12,12 +12,14 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
 
+    const url = import.meta.env.VITE_URL;
+
     const [selectedList, setSelectedList] = useState<boolean[]>();
     const [name, setName] = useState("");
 
     useEffect(() => {
 
-        fetch("/api/friends/" + currentUser?.id)
+        fetch(`${url}/friends/` + currentUser?.id)
             .then(res => res.json())
             .then(data => {
                 setFriends(data);
@@ -34,7 +36,7 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
 
             if (name && name.trim().length !== 0) {
 
-                const chatData = await (await fetch("/api/chats/", {
+                const chatData = await (await fetch(`${url}/chats/`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
@@ -45,7 +47,7 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
                 selectedList.forEach(async (item, index) => {
                     if (item) {
 
-                        await (await fetch("/api/connections/", {
+                        await (await fetch(`${url}/connections/`, {
                             method: "POST",
                             headers: {
                                 "Content-type": "application/json"
@@ -59,7 +61,7 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
                     }
                 })
 
-                const connectionData = await (await fetch("/api/connections/", {
+                const connectionData = await (await fetch(`${url}/connections/`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"

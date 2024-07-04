@@ -5,11 +5,12 @@ import { IUser } from "../../types";
 export default function Searchbar({ searchToggle, setSearchToggle }: { searchToggle: boolean, setSearchToggle?:React.Dispatch<React.SetStateAction<boolean>> }) {
 
 	const [users, setUsers] = useState<IUser[] | undefined>();
+	const url = import.meta.env.VITE_URL;
 
 	const searchHandler = async (event : ChangeEvent ) => {
 		const eventTarget = event.target as HTMLInputElement;
 		if (eventTarget.value?.trim().length != 0) {
-			const searchResponse = await fetch("/api/users?filter=name&value="+eventTarget.value.toLowerCase());
+			const searchResponse = await fetch(`${url}/users?filter=name&value=`+eventTarget.value.toLowerCase());
 			const searchData = await searchResponse.json();
 			setUsers(searchData);
 		} else {

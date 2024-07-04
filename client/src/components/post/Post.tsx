@@ -6,6 +6,8 @@ import CommentBar from "./../forms/CommentBar";
 
 export default function Post({ postData, user, status }: { postData: IPost, user?: IUser, status?: string }) {
 
+	const url = import.meta.env.VITE_URL;
+
 	return (
 		<div className="w-full flex flex-col gap-[15px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">
 			{
@@ -16,7 +18,7 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 						postData.files.map(
 							item => {
 								if (item.type === "image") {
-									return <img key={item.id} src={"/api/public" + item.path} alt="post"></img>
+									return <img key={item.id} src={`${url}/public` + item.path} alt="post"></img>
 								}
 							}
 						)

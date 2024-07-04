@@ -22,12 +22,13 @@ export default function Image({ image, alt, containerStyles, imageStyles, setMod
 
     const currentUser = useAppSelector(selectCurrentUser);
     const [modalType, setModalType] = useState<boolean | string>(false);
+    const url = import.meta.env.VITE_URL;
 
     return (
         <>
             <div className={containerStyles + " relative"}>
                 <img
-                    src={"/api/public/" + image.path}
+                    src={`${url}/public/` + image.path}
                     alt={alt}
                     className={"w-full h-full object-cover " + imageStyles}
                 />

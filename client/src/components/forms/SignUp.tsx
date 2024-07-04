@@ -18,6 +18,8 @@ export default function SignUp() {
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
 
+    const url = import.meta.env.VITE_URL;
+
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -47,7 +49,7 @@ export default function SignUp() {
                 setPasswordError(undefined);
                 setEmailError(undefined);
 
-                const response = await fetch("/api/auth/register", {
+                const response = await fetch(`${url}/auth/register`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"

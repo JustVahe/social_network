@@ -6,15 +6,16 @@ import { notifySuccess } from "../toastification";
 
 export const useHandlers = () => {
 
-    const { checkAccessToken } = useCheck();
+    const { checkAccessToken } = useCheck()
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
+    const url = import.meta.env.VITE_URL;
 
     const sortHandler = async () => {
 
         await checkAccessToken();
 
-        const sortResponse = await fetch("/api/posts/?user_id=" + currentUser?.id);
+        const sortResponse = await fetch(`${url}/posts/?user_id=` + currentUser?.id);
         const sortData = await sortResponse.json();
 
         dispatch(sortPostsOfCurrentUser(sortData));
@@ -22,7 +23,7 @@ export const useHandlers = () => {
 
     const friendRequestAddingHandler = async (from_id: ID, to_id: ID) => {
 
-        const requestResponse = await fetch("/api/requests/", {
+        const requestResponse = await fetch(`${url}/requests/`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -38,7 +39,7 @@ export const useHandlers = () => {
 
     const friendAddingHandler = async (request_id: string) => {
 
-        const friendResponse = await fetch("/api/friends/" + request_id, {
+        const friendResponse = await fetch(`${url}/friends/` + request_id, {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -53,7 +54,7 @@ export const useHandlers = () => {
 
     const unfriendHandler = async (friend_id: string) => {
 
-        const deleteResponse = await fetch("/api/friends/" + friend_id, { method: "DELETE" });
+        const deleteResponse = await fetch(`${url}/friends/` + friend_id, { method: "DELETE" });
         const deleteData = await deleteResponse.json();
         notifySuccess(deleteData as string);
 
@@ -61,7 +62,7 @@ export const useHandlers = () => {
 
     const requestDeclineHandler = async (request_id: ID) => {
 
-        const declineResponse = await fetch("/api/requests/" + request_id , {
+        const declineResponse = await fetch(`${url}/requests/` + request_id , {
             method : "PUT"
         });
         const declineData = await declineResponse.json();

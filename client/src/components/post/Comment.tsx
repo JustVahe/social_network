@@ -13,9 +13,11 @@ export default function Comment({ comment }: { comment: IComment }) {
     const [replyToggle, setReplyToggle] = useState<boolean>(false);
     const currentUser = useAppSelector(selectCurrentUser);
 
+    const url = import.meta.env.VITE_URL;
+
     useEffect(() => {
 
-        fetch("/api/comments/" + comment.id)
+        fetch(`${url}/comments/` + comment.id)
             .then(response => response.json())
             .then(data => {
                 setThisComment(data)
@@ -27,7 +29,7 @@ export default function Comment({ comment }: { comment: IComment }) {
         <>
             {
                 thisComment && <div className="w-[90%] flex gap-[10px] items-start">
-                    <img src={"/api/public/" + thisComment.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
+                    <img src={"${url}/public/" + thisComment.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">
                             {

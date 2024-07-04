@@ -6,10 +6,14 @@ export default function NewsfeedComponent({ id }: { id?: ID }) {
 
 	const [posts, setPosts] = useState<IPost[] | null>();
 
+	const url = import.meta.env.VITE_URL;
+
+	console.log(url);
+	
 	useEffect(() => {
 
 		if (id) {
-			fetch("/api/posts/?user_id=" + id)
+			fetch(`${url}/posts/?user_id=` + id)
 				.then((res) => res.json())
 				.then((data: IPost[]) => {
 					setPosts(data.sort((a, b) => {

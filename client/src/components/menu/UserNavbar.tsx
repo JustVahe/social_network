@@ -20,6 +20,8 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
 
+    const url = import.meta.env.VITE_URL;
+
     const [dropdownToggle, setDropdownToggle] = useState(false);
     const [request, setRequest] = useState<IRequest>(); 
     const [friend, setFriend] = useState<IFriend>();
@@ -28,7 +30,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
     useEffect(() => {
 
-        fetch("/api/requests/" + currentUser?.id, {
+        fetch(`${url}/requests/` + currentUser?.id, {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -43,7 +45,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                 console.log({data, thisUser : thisUser.id});
             });
 
-        fetch(`/api/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
+        fetch(`${url}/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
             .then(response => response.json())
             .then(data => {
                 setFriend(data);
@@ -87,11 +89,11 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                     <button
                         onClick={async () => {
 
-                            const findRoom = await ((await fetch(`/api/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
+                            const findRoom = await ((await fetch(`${url}/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
                             
                             if (thisUser.id) {
                                 if (!findRoom) {
-                                    const roomData = await (await fetch("/api/rooms", {
+                                    const roomData = await (await fetch(`${url}/rooms`, {
                                         method: "POST",
                                         headers: {
                                             "Content-type": "application/json"
@@ -149,7 +151,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
             <div
                 className="shadow-sm shadow-zinc-300 w-[100px] h-[100px] md:w-[140px] md:h-[140px] lg:w-[190px] lg:h-[190px] bg-white rounded-full grid place-items-center absolute top-[-90px] left-[35%] sm:left-[40%] md:top-[-60px] md:left-[70px] lg:top-[-130px] lg:left-[150px]">
                 <img
-                    src={"/api/public" + thisUser?.avatar}
+                    src={`${url}/public` + thisUser?.avatar}
                     className="rounded-full object-cover object-top w-20 h-20 
                     md:w-[120px] md:h-[120px] lg:w-[170px] lg:h-[170px] relative"
                     alt="avatar" />

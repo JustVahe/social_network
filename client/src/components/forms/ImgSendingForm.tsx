@@ -11,6 +11,8 @@ export default function ImgSendingForm() {
     const { checkAccessToken } = useCheck();
     const formData = new FormData;
 
+    const url = import.meta.env.VITE_URL;
+
     const photoUploadHandler = async () => {
 
         await checkAccessToken();
@@ -21,7 +23,7 @@ export default function ImgSendingForm() {
                 formData.append("files", file);
             });
 
-            const fileResponse = await fetch(`/api/files/${currentUser.id}`, {
+            const fileResponse = await fetch(`${url}/files/${currentUser.id}`, {
                 method: "POST",
                 body: formData
             });

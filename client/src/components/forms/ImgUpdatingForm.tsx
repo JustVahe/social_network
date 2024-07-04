@@ -12,6 +12,8 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
     const { checkAccessToken } = useCheck();
     const formData = new FormData();
 
+    const url = import.meta.env.VITE_URL;
+
     const photoUploadHandler = async () => {
 
         await checkAccessToken();
@@ -21,7 +23,7 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
             formData.append("user_id", image.user_id as string);
             formData.append("file", file);
 
-            const fileResponse = await fetch(`/api/files/${image.id}`, {
+            const fileResponse = await fetch(`${url}/files/${image.id}`, {
                 method: "PUT",
                 body: formData
             });

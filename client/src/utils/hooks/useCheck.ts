@@ -7,12 +7,13 @@ export const useCheck = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const url = import.meta.env.VITE_URL;
 
     const tokenRefreshHandler = async () => {
 
         try {
 
-            const response = await fetch("/api/auth/refresh", {
+            const response = await fetch(`${url}/auth/refresh`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -39,7 +40,7 @@ export const useCheck = () => {
 
     const checkAccessToken = async () => {
 
-        const response = await fetch("/api/auth/verify", {
+        const response = await fetch(`${url}/auth/verify`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${localStorage.authorization}`

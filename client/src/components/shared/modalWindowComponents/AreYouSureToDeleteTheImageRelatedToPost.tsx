@@ -6,31 +6,33 @@ import { deletePost } from "../../../redux/slices/postSlice";
 import { deletePostOfCurrentUser } from "../../../redux/slices/currentUserSlice";
 import { ModalResponse } from "../Image";
 
-export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, setModalResponse, image }:
-    {
-        setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
-        setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>,
-        image: IPhoto
-    }) {
+interface IProps {
+    setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
+    setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>,
+    image: IPhoto
+}
+
+export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, setModalResponse, image }:IProps) {
 
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
+    const url = import.meta.env.VITE_URL;
 
     const deleteHandler = async () => {
 
         await checkAccessToken();
 
-        const postRequest = await fetch("/api/posts/" + image.post_id);
+        const postRequest = await fetch(`${url}/posts/` + image.post_id);
         const post = await postRequest.json();
 
         if (post && image) {
 
-            const deleteRequest = await fetch("/api/posts/" + image.post_id, { method: "DELETE" });
+            const deleteRequest = await fetch(`${url}/posts/` + image.post_id, { method: "DELETE" });
             const data = await deleteRequest.json();
 
             post.files.forEach(async (item: IPhoto) => {
 
-                const fileDeleteRequest = await fetch("/api/files/" + item.id, { method: "DELETE" });
+                const fileDeleteRequest = await fetch(`${url}/files/` + item.id, { method: "DELETE" });
                 const fileDeleteData = await fileDeleteRequest.json();
 
                 if (fileDeleteRequest.status !== 200) {

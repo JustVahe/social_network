@@ -16,13 +16,14 @@ export default function User({ page }: { page: string }) {
 	const { username } = useParams();
 	const thisUser = useAppSelector(selectThisUser);
 	const dispatch = useAppDispatch();
+	const url = import.meta.env.VITE_URL;
 
 	const { checkAccessToken } = useCheck();
 
 	useEffect(() => {
 		checkAccessToken();
 
-		fetch("/api/users/?username=" + username)
+		fetch(`${url}/users/?username=` + username)
 			.then((res) => res.json())
 			.then((data) => {
 				dispatch(setThisUser(data));
@@ -36,7 +37,7 @@ export default function User({ page }: { page: string }) {
 			<Navbar />
 			<header className="w-full h-[530px] overflow-hidden relative">
 				<img
-					src={"/api/public" + thisUser?.headerImg}
+					src={`${url}/public` + thisUser?.headerImg}
 					className="object-cover w-full h-[530px] object-top"
 					alt="cover_image"
 				/>

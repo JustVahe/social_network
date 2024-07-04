@@ -17,6 +17,8 @@ export default function Navbar() {
     const currentUser: IUser | null = useAppSelector(selectCurrentUser);
     const { checkAccessToken } = useCheck();
 
+    const url = import.meta.env.VITE_URL;
+
     useEffect(() => {
         checkAccessToken();
         // eslint-disable-next-line
@@ -60,7 +62,7 @@ export default function Navbar() {
                         </div>
                         <div className="w-[100px] flex justify-between items-center">
                             <div onClick={() => setUserToggle(prev => !prev)} className="relative">
-                                <img src={"/api/public/" + currentUser.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
+                                <img src={`${url}/public/` + currentUser.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
                                 <AdminDropdown userToggle={userToggle} />
                             </div>
                             <button onClick={() => setDropdown(prev => !prev)}

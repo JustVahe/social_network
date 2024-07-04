@@ -9,9 +9,11 @@ export default function FriendsProtected() {
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
 
+    const url = import.meta.env.VITE_URL;
+
     useEffect(() => {
         if (currentUser?.id) {
-            fetch("/api/friends/" + currentUser?.id)
+            fetch(`${url}/friends/` + currentUser?.id)
                 .then((response) => response.json())
                 .then((data) => {
                     dispatch(setUsersFriends(data));

@@ -14,6 +14,8 @@ export default function UserEditFeed() {
     const [emailChange, setEmailChange] = useState(false);
     const [descriptionChange, setDescriptionChange] = useState(false);
 
+    const url = import.meta.env.VITE_URL;
+
     const dispatch = useAppDispatch();
     const { checkAccessToken } = useCheck();
 
@@ -39,7 +41,7 @@ export default function UserEditFeed() {
 
         await checkAccessToken();
 
-        const updateResponse = await fetch("/api/users/" + currentUser?.id, {
+        const updateResponse = await fetch(`${url}/users/` + currentUser?.id, {
             method: "PUT",
             body: formData
         });
@@ -68,13 +70,13 @@ export default function UserEditFeed() {
                         bg-[#fdfdfd] rounded-full relative top-[-50px] shadow-sm shadow-zinc-300">
                         <img
                             className=" block object-cover w-full h-full rounded-full"
-                            src={"/api/public/" + currentUser.avatar}
+                            src={`${url}/public/` + currentUser.avatar}
                             alt="user_avatar" />
                     </div>
                     <div className=' w-full h-full col-span-2 row-span-2 p-[10px] relative'>
                         <img
                             className="block object-cover w-full h-full rounded-md"
-                            src={"/api/public/" + currentUser.headerImg}
+                            src={`${url}/public/` + currentUser.headerImg}
                             alt="user_avatar" />
                     </div>
                 </div>

@@ -5,10 +5,10 @@ import FriendButton from "../buttons/FriendButton";
 export default function FriendLabel({ friend, setSearchToggle }: { friend: IUser, setSearchToggle?: React.Dispatch<React.SetStateAction<boolean>> }) {
 
     const { username, name, surname, avatar, status, email } = friend;
-
+    const url = import.meta.env.VITE_URL
     return (
         <div className="w-full flex gap-[15px]">
-            <FriendButton status={status} src={"/api/public/" + avatar} />
+            <FriendButton status={status} src={`${url}/public/` + avatar} />
             <div>
                 <Link to={`/${username}/home`}>
                     <p onClick={() => {

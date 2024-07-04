@@ -16,6 +16,8 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
 
+    const url = import.meta.env.VITE_URL;
+
     const commentSendingHandler = async (event: FormEvent) => {
 
         event.preventDefault();
@@ -32,7 +34,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
                         user_id: currentUser?.id,
                         post_id: postData.id
                     }
-                    const commentResponse = await fetch("/api/comments", {
+                    const commentResponse = await fetch(`${url}/comments`, {
                         method: "POST",
                         headers: {
                             'Content-type': "application/json"
@@ -44,7 +46,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
 
                     if (commentResponse.status === 200) {
 
-                        fetch("/api/posts/" + postData.id)
+                        fetch(`${url}/posts/` + postData.id)
                             .then((res) => res.json())
                             .then(data => {
                                 dispatch(updatePost(data));

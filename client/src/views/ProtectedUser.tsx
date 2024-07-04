@@ -16,6 +16,7 @@ export default function ProtectedUser({ page }: { page: string }) {
 
 	const currentUser = useAppSelector(selectCurrentUser);
 	const { checkAccessToken } = useCheck();
+	const url = import.meta.env.VITE_URL;
 
 	useEffect(() => {
 		checkAccessToken();
@@ -27,7 +28,7 @@ export default function ProtectedUser({ page }: { page: string }) {
 			<Navbar />
 			<header className="w-full h-[530px] overflow-hidden relative">
 				<img
-					src={"/api/public" + currentUser.headerImg}
+					src={`${url}/public` + currentUser.headerImg}
 					className="object-cover w-full h-[530px] object-top"
 					alt="cover_image"
 				/>

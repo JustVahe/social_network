@@ -10,6 +10,7 @@ export default function UserEditButtons({ id }: { id: ID }) {
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const formData = new FormData();
+    const url = import.meta.env.VITE_URL;
 
 
     const coverImageEditHandler = async (eventTarget: HTMLInputElement) => {
@@ -19,7 +20,7 @@ export default function UserEditButtons({ id }: { id: ID }) {
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
             
-            const headerResponse = await fetch(`/api/files/${id}/header`, {
+            const headerResponse = await fetch(`${url}/files/${id}/header`, {
                 method: "PUT",
                 body: formData
             });
@@ -31,7 +32,7 @@ export default function UserEditButtons({ id }: { id: ID }) {
                 notifySuccess(headerData);
             }
 
-            const getResponse = await fetch(`/api/users/${id}`);
+            const getResponse = await fetch(`${url}/users/${id}`);
             const getData :IUser = await getResponse.json();
             dispatch(setHeaderImg(getData.headerImg));
 

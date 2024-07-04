@@ -17,12 +17,13 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 	const [requestToggle, setRequestToggle] = useState<"from_me" | "to_me">("from_me");
 
 	const { checkAccessToken } = useCheck();
+	const url = import.meta.env.VITE_URL;
 
 	useEffect(() => {
 
 		checkAccessToken();
 
-		fetch("/api/friends/" + user.id)
+		fetch(`${url}/friends/` + user.id)
 			.then((res) => {
 				return res.json()
 			})
@@ -30,13 +31,13 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 				setFriends(data);
 			})
 
-		fetch("/api/requests/" + user.id + "?toggle=from_me&status=pending")
+		fetch(`${url}/requests/` + user.id + "?toggle=from_me&status=pending")
 			.then((res) => res.json())
 			.then(data => {
 				setRequestsFromMe(data);
 			})
 
-		fetch("/api/requests/" + user.id + "?toggle=to_me&status=pending")
+		fetch(`${url}/requests/` + user.id + "?toggle=to_me&status=pending")
 			.then((res) => res.json())
 			.then(data => setRequestsToMe(data))
 

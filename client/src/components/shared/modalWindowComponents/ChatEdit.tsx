@@ -16,10 +16,11 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
     const [avatarButtonToggle, setAvatarButtonToggle] = useState<boolean>(false);
 
     const avatar = new FormData();
+    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
 
-        fetch("/api/chats/" + room?.chat_id)
+        fetch(`${url}/chats/` + room?.chat_id)
             .then(res => res.json())
             .then(data => setChat(data));
 
@@ -29,7 +30,7 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
 
         if (chat && setModalType) {
 
-            const chatUpdateResponse = await fetch("/api/chats/" + chat?.id, {
+            const chatUpdateResponse = await fetch(`${url}/chats/` + chat?.id, {
                 method: "PUT",
                 headers: {
                     "Content-type": "application/json"
@@ -56,7 +57,7 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
 
             avatar.append('file', eventTarget.files[0]);
 
-            const updateResponse = await fetch("/api/chats/avatar/" + chat.id, {
+            const updateResponse = await fetch(`${url}/chats/avatar/` + chat.id, {
                 method: "PUT",
                 body: avatar
             });
@@ -68,7 +69,7 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
                 notifySuccess(updateData);
             }
 
-            const chatData = await fetch("/api/chats/" + room?.chat_id).then(res => res.json());
+            const chatData = await fetch(`${url}/chats/` + room?.chat_id).then(res => res.json());
             console.log(chatData);
             setChat(chatData);
 
@@ -132,7 +133,7 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
                                 name="file"
                                 id="chat_avatar"
                                 className="hidden" />
-                            <img src={"/api/public" + chat.avatar} alt="avatar" className="object-cover w-full h-full" />
+                            <img src={`${url}/public` + chat.avatar} alt="avatar" className="object-cover w-full h-full" />
                         </div>
                     </div>
                 </div>

@@ -10,11 +10,11 @@ export default function SignIn() {
 
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
-
     const [emailError, setEmailError] = useState<ValidationError | undefined>();
     const [passwordError, setPasswordError] = useState<ValidationError | undefined>();
-
     const [generalError, setGeneralError] = useState<Error | undefined>();
+
+    const url = import.meta.env.VITE_URL;
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -44,7 +44,7 @@ export default function SignIn() {
                 setEmailError(undefined);
                 setPasswordError(undefined);
 
-                const response = await fetch("/api/auth/login", {
+                const response = await fetch(`${url}/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"

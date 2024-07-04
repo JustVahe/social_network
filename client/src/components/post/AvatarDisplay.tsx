@@ -19,6 +19,8 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	const dispatch = useAppDispatch();
 	const { checkAccessToken } = useCheck();
 
+	const url = import.meta.env.VITE_URL;
+
 	useEffect(() => {
 
 		if (post) {
@@ -46,12 +48,12 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 		if (post) {
 
-			const deleteRequest = await fetch("/api/posts/" + post.id, { method: "DELETE" });
+			const deleteRequest = await fetch(`${url}/posts/` + post.id, { method: "DELETE" });
 			const data = await deleteRequest.json();
 
 			post.files.forEach(async (item) => {
 
-				const fileDeleteRequest = await fetch("/api/files/" + item.id, { method: "DELETE" });
+				const fileDeleteRequest = await fetch(`${url}/files/` + item.id, { method: "DELETE" });
 				const fileDeleteData = await fileDeleteRequest.json();
 
 				if (fileDeleteRequest.status !== 200) {
@@ -82,7 +84,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 		if (post) {
 
-			const updateResponse = await fetch("/api/posts/" + post.id,
+			const updateResponse = await fetch(`${url}/posts/` + post.id,
 				{
 					method: "PUT",
 					headers: {
@@ -95,7 +97,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 			const updateData = await updateResponse.json();
 
-			const newPost = await (await fetch(`/api/posts/${updateData.id}`)).json();
+			const newPost = await (await fetch(`${url}/posts/${updateData.id}`)).json();
 			dispatch(updatePost(newPost));
 			dispatch(updatePostOfCurrentUser(newPost));
 
@@ -111,7 +113,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	return (
 		user &&
 		<div className="w-full flex items-center gap-[10px] relative">
-			<img src={"/api/public" + user.avatar} alt="avatar" className="w-[45px] h-[45px] object-cover object-top rounded-full" />
+			<img src={`${url}/public` + user.avatar} alt="avatar" className="w-[45px] h-[45px] object-cover object-top rounded-full" />
 			<div>
 				<p className="text-sm-14 font-bold text-sky-600">{
 					user.name + " " + user.surname

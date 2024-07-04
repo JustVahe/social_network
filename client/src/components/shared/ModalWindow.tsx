@@ -21,6 +21,7 @@ export default function ModalWindow({ type, image, setModalType, setModalRespons
 
     const currentUser = useAppSelector(selectCurrentUser);
     useLockBodyScroll();
+    const url = import.meta.env.VITE_URL;
     
     return (
         <div className="w-screen h-screen pointer-events-none fixed z-50 top-0 left-0  bg-zinc-800/70 backdrop-blur-md">
@@ -30,7 +31,7 @@ export default function ModalWindow({ type, image, setModalType, setModalRespons
                     <button onClick={() => setModalType(false)} className="absolute top-2.5 right-2.5 bg-sky-600/40 rounded-md backdrop-blur-md text-white p-2.5 transition hover:bg-sky-600">
                         <FaX />
                     </button>
-                    <img src={"/api/public/" + image.path} alt="photo" className="object-cover w-full h-full object-top" />
+                    <img src={`${url}/public/` + image.path} alt="photo" className="object-cover w-full h-full object-top" />
                     {
                         currentUser?.id === image.user_id &&
                         <div className="bg-zinc-800/40 backdrop-blur-md p-2.5 flex gap-2.5 w-full absolute bottom-0">

@@ -18,6 +18,7 @@ export default function ProtectedUserNavbar() {
     const dispatch = useAppDispatch();
 
     const formData = new FormData();
+    const url = import.meta.env.VITE_URL;
 
     async function avatarUploadHandle(eventTarget: HTMLInputElement) {
 
@@ -26,7 +27,7 @@ export default function ProtectedUserNavbar() {
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
 
-            const updateResponse = await fetch(`/api/files/${currentUser?.id}/avatar`, {
+            const updateResponse = await fetch(`${url}/files/${currentUser?.id}/avatar`, {
                 method: "PUT",
                 body: formData
             });
@@ -38,7 +39,7 @@ export default function ProtectedUserNavbar() {
                 notifySuccess(updateData);
             }
 
-            const getResponse = await fetch(`/api/users/${currentUser?.id}`);
+            const getResponse = await fetch(`${url}/users/${currentUser?.id}`);
             const getData: IUser = await getResponse.json();
             dispatch(setAvatar(getData.avatar));
 
@@ -101,7 +102,7 @@ export default function ProtectedUserNavbar() {
                     onMouseEnter={() => setAvatarToggle(true)} onMouseLeave={() => setAvatarToggle(false)}
                     className="shadow-sm shadow-zinc-300 w-[100px] h-[100px] md:w-[140px] md:h-[140px] lg:w-[190px] lg:h-[190px] bg-white rounded-full grid place-items-center absolute top-[-90px] left-[35%] sm:left-[40%] md:top-[-60px] md:left-[70px] lg:top-[-130px] lg:left-[150px]">
                     <img
-                        src={"/api/public" + currentUser?.avatar}
+                        src={`${url}/public` + currentUser?.avatar}
                         className="rounded-full object-cover object-top w-20 h-20 
                     md:w-[120px] md:h-[120px] lg:w-[170px] lg:h-[170px] relative"
                         alt="avatar" />

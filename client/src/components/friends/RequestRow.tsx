@@ -15,11 +15,13 @@ export default function FriendsRow({ item, type, setFriends, setRequests }: IPar
     const user: IUser = type === "from" ? item.to : item.from;
     const dispatch = useAppDispatch();
 
+    const url = import.meta.env.VITE_URL;
+
     return (
         user &&
         <div className="bg-white p-5 flex justify-between border border-slate-100">
             <div className="flex gap-[20px]">
-                <img src={"/api/public/" + user.avatar} alt={user.username} className="w-[60px] h-[60px] object-top object-cover" />
+                <img src={`${url}/public/` + user.avatar} alt={user.username} className="w-[60px] h-[60px] object-top object-cover" />
                 <div className="flex flex-col gap-[10px]">
                     <p className="text-md text-zinc-700 font-medium">{user.name} {user.surname}</p>
                     <p className="text-sm-14 text-sky-600 font-bold">@{user.username}</p>
@@ -30,7 +32,7 @@ export default function FriendsRow({ item, type, setFriends, setRequests }: IPar
                     <button
                         onClick={async () => {
                                 await requestDeclineHandler(item.id);
-                                fetch("/api/requests/" + item.id + "?toggle=to_me&status=pending")
+                                fetch(`${url}/requests/` + item.id + "?toggle=to_me&status=pending")
                                     .then((res) => {
                                         return res.json()
                                     })

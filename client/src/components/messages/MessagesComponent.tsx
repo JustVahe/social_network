@@ -13,8 +13,10 @@ export default function MessagesComponent() {
 
 	const dispatch = useAppDispatch();
 
+	const url = import.meta.env.VITE_URL;
+
 	useEffect(() => {
-		fetch("/api/rooms?user_id=" + currentUser?.id)
+		fetch(`${url}/rooms?user_id=` + currentUser?.id)
 			.then(res => res.json())
 			.then(data => {
 				dispatch(setRoom(data[0]))

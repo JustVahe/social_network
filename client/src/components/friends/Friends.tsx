@@ -9,9 +9,11 @@ export default function Friends({ user }: { user: IUser }) {
     const friends = useAppSelector(selectThisUsersFriends);
     const dispatch = useAppDispatch();
 
+    const url = import.meta.env.VITE_URL;
+
     useEffect(() => {
         if (user.id) {
-          fetch("/api/friends/" + user.id)
+          fetch(`${url}/friends/` + user.id)
                 .then((response) => response.json())
                 .then((data) => {
                     dispatch(setThisUsersFriends(data));

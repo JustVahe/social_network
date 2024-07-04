@@ -9,6 +9,8 @@ export default function HomeFeed() {
     const posts = useAppSelector(selectPost);
     const dispatch = useAppDispatch();
 
+    const url = import.meta.env.VITE_URL
+
     const [offset, setOffset] = useState(0);
 
     const postObserver = new IntersectionObserver((entries) => {
@@ -31,7 +33,7 @@ export default function HomeFeed() {
     }
 
     useEffect(() => {
-        fetch(`/api/posts/?limit=${5}&offset=${0}`)
+        fetch(`${url}/posts/?limit=${5}&offset=${0}`)
             .then((res) => res.json())
             .then(data => {
                 dispatch(setPost(data));
@@ -41,7 +43,7 @@ export default function HomeFeed() {
 
     useEffect(() => {
         if (offset !== 0) {
-            fetch(`/api/posts/?limit=${5}&offset=${offset}`)
+            fetch(`${url}/posts/?limit=${5}&offset=${offset}`)
                 .then((res) => res.json())
                 .then(data => {
                     dispatch(addPosts(data));

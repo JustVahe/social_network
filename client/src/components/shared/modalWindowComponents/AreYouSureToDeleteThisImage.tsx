@@ -11,12 +11,13 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
     }) {
 
     const { checkAccessToken } = useCheck();
+    const url = import.meta.env.VITE_URL;
 
     const deleteHandler = async () => {
 
         await checkAccessToken();
 
-        const fileDeleteRequest = await fetch("/api/files/" + image.id, { method: "DELETE" });
+        const fileDeleteRequest = await fetch(`${url}/files/` + image.id, { method: "DELETE" });
         const fileDeleteData = await fileDeleteRequest.json()
 
         if (fileDeleteRequest.status !== 200) {

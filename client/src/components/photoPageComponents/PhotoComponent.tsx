@@ -8,7 +8,7 @@ export default function PhotoComponent({ id }: { id: ID}) {
 
     useEffect(() => {
 
-        fetch("/api/files/" + id)
+        fetch(`${url}/files/` + id)
             .then((res) => res.json())
             .then(data => {
                 setPhotos(data);

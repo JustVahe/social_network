@@ -14,6 +14,7 @@ export default function Redirect() {
     const dispatch = useAppDispatch();
 
     const currentUser = useAppSelector(selectCurrentUser);
+    const url = import.meta.env.VITE_URL;
 
     useEffect(() => {
 
@@ -24,7 +25,7 @@ export default function Redirect() {
             try {
                 if (!isAuth) navigate("/signIn");
                 else {
-                    const loginResponse = await fetch("/api/dashboard", {
+                    const loginResponse = await fetch(`${url}/dashboard`, {
                         method: "GET",
                         headers: {
                             "Authorization": `Bearer ${localStorage.authorization}`

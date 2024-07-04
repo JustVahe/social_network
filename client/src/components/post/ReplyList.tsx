@@ -21,6 +21,8 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
 
+    const url = import.meta.env.VITE_URL;
+
     const replyHandler = async (event: FormEvent) => {
 
         await checkAccessToken();
@@ -33,7 +35,7 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
                 message
             }
 
-            const replyResponse = await fetch("/api/replies/", {
+            const replyResponse = await fetch(`${url}/replies/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -47,7 +49,7 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
                 notifyError("Something went wrong");
             }
 
-            const repliesData: IComment = await (await fetch("/api/comments/" + thisComment.id)).json();
+            const repliesData: IComment = await (await fetch(`${url}/comments/` + thisComment.id)).json();
 
             dispatch(updateComment(repliesData));
             setThisComment(repliesData);
