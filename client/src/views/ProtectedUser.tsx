@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { useCheck } from "../utils/hooks/useCheck.ts";
 import ProtectedPhotoFeed from "../components/protectedUser/ProtectedPhotoFeed.tsx";
 import UserEditFeed from "../components/feed/UserEditFeed.tsx";
-import { imageUrl, url } from "../utils/enviromentConfig.ts";
+import { imageUrl } from "../utils/enviromentConfig.ts";
 
 export default function ProtectedUser({ page }: { page: string }) {
 
