@@ -11,7 +11,7 @@ const server = http.createServer(app);
 connectSocket(server);
 
 app.use(express.json());
-app.use("/public", express.static(path.join(process.env.SUPABASE_IMAGE_DIR, "../public")));
+app.use("/public", express.static(path.join(process.env.SUPABASE_IMAGE_DIR)));
 app.use(cors({
     origin: process.env.CORS,
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
