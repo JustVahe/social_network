@@ -6,7 +6,7 @@ import { IPost } from "../../types";
 import { addPost } from "../../redux/slices/postSlice";
 import { notifyError } from "../../utils/toastification";
 import { useHandlers } from "../../utils/hooks/handlers";
-
+import { url } from "../../utils/enviromentConfig";
 
 export default function PostingForm() {
 
@@ -29,7 +29,7 @@ export default function PostingForm() {
 		}
 
 		const postBody = { message };
-		const postResponse = await fetch("/api/posts/" + currentUser?.id, {
+		const postResponse = await fetch(`${url}/posts/` + currentUser?.id, {
 			method: "POST",
 			headers: {
 				"Content-type": "application/json"
@@ -44,13 +44,13 @@ export default function PostingForm() {
 					formData.append("files", file);
 				})
 				formData.append("post_id", data.id as string);
-				await fetch(`/api/files/${currentUser?.id}/post`, {
+				await fetch(`${url}/files/${currentUser?.id}/post`, {
 					method: "POST",
 					body: formData
 				});
 			}
 
-			const postRequest = await fetch(`/api/posts/${data.id}`);
+			const postRequest = await fetch(`${url}/posts/${data.id}`);
 			const post: IPost = await postRequest.json();
 
 			dispatch(addPostToCurrentUser(post));
@@ -64,7 +64,7 @@ export default function PostingForm() {
 	
 	return (
 		<div className="w-full min-h-[160px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] flex gap-5 justify-between rounded-md">
-			<img src={"/api/public/" + currentUser?.avatar} alt="avatar" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
+			<img src={`${url}/public/` + currentUser?.avatar} alt="avatar" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
 			<div className="flex flex-col flex-grow w-full xl:max-w-[440px] lg:w-[85%] md:w-full min-h-[110px] bg-white border border-zinc-100 rounded-md p-[10px] relative">
 				<textarea
 					ref={textareaRef}

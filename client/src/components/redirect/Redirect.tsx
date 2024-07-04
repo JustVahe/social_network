@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser, setUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Redirect() {
 
@@ -24,7 +25,7 @@ export default function Redirect() {
             try {
                 if (!isAuth) navigate("/signIn");
                 else {
-                    const loginResponse = await fetch("/api/dashboard", {
+                    const loginResponse = await fetch(`${url}/dashboard`, {
                         method: "GET",
                         headers: {
                             "Authorization": `Bearer ${localStorage.authorization}`

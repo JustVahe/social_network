@@ -8,6 +8,7 @@ import { addComment } from "../../redux/slices/commentSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { updatePost } from "../../redux/slices/postSlice";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { url } from "../../utils/enviromentConfig";
 
 export default function CommentBar({ postData }: { postData?: IPost }) {
 
@@ -15,7 +16,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
-
+    
     const commentSendingHandler = async (event: FormEvent) => {
 
         event.preventDefault();
@@ -32,7 +33,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
                         user_id: currentUser?.id,
                         post_id: postData.id
                     }
-                    const commentResponse = await fetch("/api/comments", {
+                    const commentResponse = await fetch(`${url}/comments`, {
                         method: "POST",
                         headers: {
                             'Content-type': "application/json"
@@ -44,7 +45,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
 
                     if (commentResponse.status === 200) {
 
-                        fetch("/api/posts/" + postData.id)
+                        fetch(`${url}/posts/` + postData.id)
                             .then((res) => res.json())
                             .then(data => {
                                 dispatch(updatePost(data));

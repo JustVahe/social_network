@@ -4,6 +4,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { IPhoto } from "../../types";
 import { notifyError, notifySuccess } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto, setModalType: React.Dispatch<React.SetStateAction<boolean | string>>}) {
 
@@ -21,7 +22,7 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
             formData.append("user_id", image.user_id as string);
             formData.append("file", file);
 
-            const fileResponse = await fetch(`/api/files/${image.id}`, {
+            const fileResponse = await fetch(`${url}/files/${image.id}`, {
                 method: "PUT",
                 body: formData
             });

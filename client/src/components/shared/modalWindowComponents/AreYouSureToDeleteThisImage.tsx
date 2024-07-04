@@ -2,6 +2,7 @@ import { FaX } from "react-icons/fa6";
 import { ModalResponse } from "../Image";
 import { IPhoto } from "../../../types";
 import { useCheck } from "../../../utils/hooks/useCheck";
+import { url } from "../../../utils/enviromentConfig";
 
 export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image }:
     {
@@ -16,7 +17,7 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
 
         await checkAccessToken();
 
-        const fileDeleteRequest = await fetch("/api/files/" + image.id, { method: "DELETE" });
+        const fileDeleteRequest = await fetch(`${url}/files/` + image.id, { method: "DELETE" });
         const fileDeleteData = await fileDeleteRequest.json()
 
         if (fileDeleteRequest.status !== 200) {

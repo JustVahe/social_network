@@ -5,6 +5,7 @@ import { selectCurrentUser } from "../../../redux/slices/currentUserSlice";
 import { IFriend } from "../../../types";
 import { notifyError } from "../../../utils/toastification";
 import { addRoom } from "../../../redux/slices/roomsSlice";
+import { url } from "../../../utils/enviromentConfig";
 
 export default function CreateGroup({ setModalType }: { setModalType?: React.Dispatch<React.SetStateAction<string | boolean>> }) {
 
@@ -17,7 +18,7 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
 
     useEffect(() => {
 
-        fetch("/api/friends/" + currentUser?.id)
+        fetch(`${url}/friends/` + currentUser?.id)
             .then(res => res.json())
             .then(data => {
                 setFriends(data);
@@ -34,7 +35,7 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
 
             if (name && name.trim().length !== 0) {
 
-                const chatData = await (await fetch("/api/chats/", {
+                const chatData = await (await fetch(`${url}/chats/`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"
@@ -45,7 +46,7 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
                 selectedList.forEach(async (item, index) => {
                     if (item) {
 
-                        await (await fetch("/api/connections/", {
+                        await (await fetch(`${url}/connections/`, {
                             method: "POST",
                             headers: {
                                 "Content-type": "application/json"
@@ -59,7 +60,7 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
                     }
                 })
 
-                const connectionData = await (await fetch("/api/connections/", {
+                const connectionData = await (await fetch(`${url}/connections/`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"

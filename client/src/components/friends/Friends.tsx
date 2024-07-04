@@ -3,6 +3,7 @@ import { IUser } from "../../types";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectThisUsersFriends, setThisUsersFriends } from "../../redux/slices/thisUsersFriends";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Friends({ user }: { user: IUser }) {
 
@@ -11,7 +12,7 @@ export default function Friends({ user }: { user: IUser }) {
 
     useEffect(() => {
         if (user.id) {
-          fetch("/api/friends/" + user.id)
+          fetch(`${url}/friends/` + user.id)
                 .then((response) => response.json())
                 .then((data) => {
                     dispatch(setThisUsersFriends(data));

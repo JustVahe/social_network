@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { IUser } from "../../types";
 import FriendButton from "../buttons/FriendButton";
+import { url } from "../../utils/enviromentConfig";
 
 export default function FriendLabel({ friend, setSearchToggle }: { friend: IUser, setSearchToggle?: React.Dispatch<React.SetStateAction<boolean>> }) {
 
@@ -8,7 +9,7 @@ export default function FriendLabel({ friend, setSearchToggle }: { friend: IUser
 
     return (
         <div className="w-full flex gap-[15px]">
-            <FriendButton status={status} src={"/api/public/" + avatar} />
+            <FriendButton status={status} src={`${url}/public/` + avatar} />
             <div>
                 <Link to={`/${username}/home`}>
                     <p onClick={() => {

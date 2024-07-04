@@ -6,14 +6,14 @@ import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
 import { notifyError } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
+
 export default function SignIn() {
 
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
-
     const [emailError, setEmailError] = useState<ValidationError | undefined>();
     const [passwordError, setPasswordError] = useState<ValidationError | undefined>();
-
     const [generalError, setGeneralError] = useState<Error | undefined>();
 
     const dispatch = useAppDispatch();
@@ -44,7 +44,7 @@ export default function SignIn() {
                 setEmailError(undefined);
                 setPasswordError(undefined);
 
-                const response = await fetch("/api/auth/login", {
+                const response = await fetch(`${url}/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"

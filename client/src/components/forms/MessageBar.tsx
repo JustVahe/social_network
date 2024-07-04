@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { notifyError } from "../../utils/toastification";
 import { IChat, IMessage, IRoom } from "../../types";
 import { getSocket } from "../../utils/hooks/socket";
+import { url } from "../../utils/enviromentConfig";
 
 export default function MessageSendingBar({ setMessages }: {
 	setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>
@@ -60,7 +61,7 @@ export default function MessageSendingBar({ setMessages }: {
 			if (approvedChat) {
 
 				const messageData = await (
-					await fetch("/api/messages/?room_id=" + approvedChat?.id, {
+					await fetch(`${url}/messages/?room_id=` + approvedChat?.id, {
 						method: "POST",
 						headers: {
 							"Content-type": "application/json"
@@ -69,7 +70,7 @@ export default function MessageSendingBar({ setMessages }: {
 					})
 				).json();
 
-				const wholeMessageData = await (await fetch("/api/messages/" + messageData.id)).json();
+				const wholeMessageData = await (await fetch(`${url}/messages/` + messageData.id)).json();
 
 				setMessages((messages) => {
 					return [...messages, wholeMessageData];
@@ -80,7 +81,7 @@ export default function MessageSendingBar({ setMessages }: {
 
 			} else {
 				const messageData = await (
-					await fetch("/api/messages/?room_id=" + approvedRoom?.id, {
+					await fetch(`/${url}/messages/?room_id=` + approvedRoom?.id, {
 						method: "POST",
 						headers: {
 							"Content-type": "application/json"
@@ -89,7 +90,7 @@ export default function MessageSendingBar({ setMessages }: {
 					})
 				).json();
 
-				const wholeMessageData = await (await fetch("/api/messages/" + messageData.id)).json();
+				const wholeMessageData = await (await fetch(`/${url}/messages/` + messageData.id)).json();
 
 				setMessages((messages) => {
 					return [...messages, wholeMessageData];

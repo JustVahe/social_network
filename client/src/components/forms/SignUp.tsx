@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
 import { notifyError } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function SignUp() {
     const [nameError, setNameError] = useState<ValidationError | undefined>();
@@ -47,7 +48,7 @@ export default function SignUp() {
                 setPasswordError(undefined);
                 setEmailError(undefined);
 
-                const response = await fetch("/api/auth/register", {
+                const response = await fetch(`${url}/auth/register`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json"

@@ -10,6 +10,7 @@ import { ModalResponse } from "./Image";
 import CreateGroup from "./modalWindowComponents/CreateGroup";
 import ChatDetails from "./modalWindowComponents/ChatDetails";
 import ChatEdit from "./modalWindowComponents/ChatEdit";
+import { url } from "../../utils/enviromentConfig";
 
 export default function ModalWindow({ type, image, setModalType, setModalResponse }:
     {
@@ -30,7 +31,7 @@ export default function ModalWindow({ type, image, setModalType, setModalRespons
                     <button onClick={() => setModalType(false)} className="absolute top-2.5 right-2.5 bg-sky-600/40 rounded-md backdrop-blur-md text-white p-2.5 transition hover:bg-sky-600">
                         <FaX />
                     </button>
-                    <img src={"/api/public/" + image.path} alt="photo" className="object-cover w-full h-full object-top" />
+                    <img src={`${url}/public/` + image.path} alt="photo" className="object-cover w-full h-full object-top" />
                     {
                         currentUser?.id === image.user_id &&
                         <div className="bg-zinc-800/40 backdrop-blur-md p-2.5 flex gap-2.5 w-full absolute bottom-0">

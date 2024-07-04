@@ -2,6 +2,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { deleteFriendOfCurrrentUser } from "../../redux/slices/usersFriends";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { IFriend, IUser } from "../../types";
+import { url } from "../../utils/enviromentConfig";
 import { useHandlers } from "../../utils/hooks/handlers";
 
 export default function FriendsRow({ item, setFriends, outerUser }:
@@ -19,7 +20,7 @@ export default function FriendsRow({ item, setFriends, outerUser }:
     return (
         <div className="bg-white p-5 flex justify-between border border-slate-100">
             <div className="flex gap-[20px]">
-                <img src={"/api/public/" + user.avatar} alt={user.username} className="w-[60px] h-[60px] object-top object-cover" />
+                <img src={`${url}/public/` + user.avatar} alt={user.username} className="w-[60px] h-[60px] object-top object-cover" />
                 <div className="flex flex-col gap-[10px]">
                     <p className="text-md text-zinc-700 font-medium">{user.name} {user.surname}</p>
                     <p className="text-sm-14 text-sky-600 font-bold">@{user.username}</p>

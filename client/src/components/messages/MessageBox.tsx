@@ -11,6 +11,7 @@ import { notifySuccess } from "../../utils/toastification";
 import { deleteRoom, selectRooms } from "../../redux/slices/roomsSlice";
 import { IChat, IMessage } from "../../types";
 import ModalWindow from "../shared/ModalWindow";
+import { url } from "../../utils/enviromentConfig";
 
 export default function MessageBox() {
 
@@ -33,13 +34,13 @@ export default function MessageBox() {
 
 			if (room.chat) {
 
-				fetch("/api/chats/" + room.chat_id)
+				fetch(`${url}/chats/` + room.chat_id)
 					.then(res => res.json())
 					.then(data => {
 						setChat(data);
 					});
 
-				fetch("/api/messages/?room_id=" + room.chat_id)
+				fetch(`${url}/messages/?room_id=` + room.chat_id)
 					.then(res => res.json())
 					.then(data => {
 						setMessages(data.sort((a: IMessage, b: IMessage) => {
@@ -51,7 +52,7 @@ export default function MessageBox() {
 
 			} else if (!room.chat_id && room?.id) {
 
-				fetch("/api/messages/?room_id=" + room?.id)
+				fetch(`${url}/messages/?room_id=` + room?.id)
 					.then(res => res.json())
 					.then(data => {
 						setMessages(data.sort((a: IMessage, b: IMessage) => {
@@ -85,15 +86,15 @@ export default function MessageBox() {
 
 		if (room && rooms) {
 			if (room.chat && chat) {
-				const chatDeleteData = await (await fetch("/api/connections/" + room.id, { method: "DELETE" })).json();
+				const chatDeleteData = await (await fetch(`${url}/connections/` + room.id, { method: "DELETE" })).json();
 				if (chat.connections.length <= 3 ) {
-					await fetch("/api/chats/"+chat.id , {method: "DELETE"});
+					await fetch(`${url}/chats/`+chat.id , {method: "DELETE"});
 				}
 				notifySuccess(chatDeleteData);
 				dispatch(deleteRoom(room));
 				dispatch(setRoom(rooms[0]));
 			} else {
-				const roomDeleteData = await (await fetch("/api/rooms/" + room.id, { method: "DELETE" })).json();
+				const roomDeleteData = await (await fetch(`${url}/rooms/` + room.id, { method: "DELETE" })).json();
 				notifySuccess(roomDeleteData);
 				dispatch(deleteRoom(room));
 				dispatch(setRoom(rooms[0]));
@@ -139,7 +140,7 @@ export default function MessageBox() {
 				{room.user_b ?
 					<div className="flex justify-between w-full items-center">
 						<div className="flex gap-[10px]">
-							<img src={"/api/public" + room.user_b.avatar} alt="message_to_this_user" className="w-[45px] h-[45px] object-cover object-top" />
+							<img src={`${url}/public` + room.user_b.avatar} alt="message_to_this_user" className="w-[45px] h-[45px] object-cover object-top" />
 							<div>
 								<Link to={`/${room.user_b.username}/home`}>
 									<p className="text-sm-14 font-bold text-zinc-700">{room.user_b.name} {room.user_b.surname}</p>
@@ -153,7 +154,7 @@ export default function MessageBox() {
 					</div>
 					: room.chat ? <div className="flex justify-between w-full items-center">
 						<div className="flex gap-[10px]">
-							<img src={"/api/public" + room.chat.avatar} alt="message_to_this_user" className="w-[45px] h-45px] object-cover object-top" />
+							<img src={`${url}/public` + room.chat.avatar} alt="message_to_this_user" className="w-[45px] h-45px] object-cover object-top" />
 							<div>
 								<p className="text-sm-14 font-bold text-zinc-700">{room.chat.name}</p>
 								<p className="text-sm-14 font-light text-zinc-700">{chat && chat.connections.length} users</p>

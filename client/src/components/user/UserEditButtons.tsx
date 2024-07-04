@@ -4,6 +4,7 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setHeaderImg } from "../../redux/slices/currentUserSlice";
 import { notifyError, notifySuccess } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function UserEditButtons({ id }: { id: ID }) {
     
@@ -19,7 +20,7 @@ export default function UserEditButtons({ id }: { id: ID }) {
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
             
-            const headerResponse = await fetch(`/api/files/${id}/header`, {
+            const headerResponse = await fetch(`${url}/files/${id}/header`, {
                 method: "PUT",
                 body: formData
             });
@@ -31,7 +32,7 @@ export default function UserEditButtons({ id }: { id: ID }) {
                 notifySuccess(headerData);
             }
 
-            const getResponse = await fetch(`/api/users/${id}`);
+            const getResponse = await fetch(`${url}/users/${id}`);
             const getData :IUser = await getResponse.json();
             dispatch(setHeaderImg(getData.headerImg));
 

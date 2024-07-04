@@ -5,6 +5,7 @@ import { selectRooms, setRooms } from "../../redux/slices/roomsSlice";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useEffect } from "react";
 import { setRoom } from "../../redux/slices/roomSlice";
+import { url } from "../../utils/enviromentConfig";
 
 export default function MessagesComponent() {
 
@@ -14,7 +15,7 @@ export default function MessagesComponent() {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		fetch("/api/rooms?user_id=" + currentUser?.id)
+		fetch(`${url}/rooms?user_id=` + currentUser?.id)
 			.then(res => res.json())
 			.then(data => {
 				dispatch(setRoom(data[0]))

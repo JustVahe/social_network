@@ -5,6 +5,7 @@ import { IFriend, IRequest, IUser } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import RequestRow from "./RequestRow";
+import { url } from "../../utils/enviromentConfig";
 
 export default function FriendsComponent({ user }: { user: IUser }) {
 	const [friends, setFriends] = useState<IFriend[] | undefined>();
@@ -22,7 +23,7 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 
 		checkAccessToken();
 
-		fetch("/api/friends/" + user.id)
+		fetch(`${url}/friends/` + user.id)
 			.then((res) => {
 				return res.json()
 			})
@@ -30,13 +31,13 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 				setFriends(data);
 			})
 
-		fetch("/api/requests/" + user.id + "?toggle=from_me&status=pending")
+		fetch(`${url}/requests/` + user.id + "?toggle=from_me&status=pending")
 			.then((res) => res.json())
 			.then(data => {
 				setRequestsFromMe(data);
 			})
 
-		fetch("/api/requests/" + user.id + "?toggle=to_me&status=pending")
+		fetch(`${url}/requests/` + user.id + "?toggle=to_me&status=pending")
 			.then((res) => res.json())
 			.then(data => setRequestsToMe(data))
 

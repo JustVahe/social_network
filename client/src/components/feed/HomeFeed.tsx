@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { addPosts, selectPost, setPost } from "../../redux/slices/postSlice";
 import PostLoading from "../post/PostLoading";
+import { url } from "../../utils/enviromentConfig";
 
 export default function HomeFeed() {
 
@@ -31,7 +32,7 @@ export default function HomeFeed() {
     }
 
     useEffect(() => {
-        fetch(`/api/posts/?limit=${5}&offset=${0}`)
+        fetch(`${url}/posts/?limit=${5}&offset=${0}`)
             .then((res) => res.json())
             .then(data => {
                 dispatch(setPost(data));
@@ -41,7 +42,7 @@ export default function HomeFeed() {
 
     useEffect(() => {
         if (offset !== 0) {
-            fetch(`/api/posts/?limit=${5}&offset=${offset}`)
+            fetch(`${url}/posts/?limit=${5}&offset=${offset}`)
                 .then((res) => res.json())
                 .then(data => {
                     dispatch(addPosts(data));

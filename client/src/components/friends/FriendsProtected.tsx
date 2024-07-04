@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { selectUsersFriends, setUsersFriends } from "../../redux/slices/usersFriends";
+import { url } from "../../utils/enviromentConfig";
 
 export default function FriendsProtected() {
     const usersFriends = useAppSelector(selectUsersFriends);
@@ -11,7 +12,7 @@ export default function FriendsProtected() {
 
     useEffect(() => {
         if (currentUser?.id) {
-            fetch("/api/friends/" + currentUser?.id)
+            fetch(`${url}/friends/` + currentUser?.id)
                 .then((response) => response.json())
                 .then((data) => {
                     dispatch(setUsersFriends(data));

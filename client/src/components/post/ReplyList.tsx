@@ -6,6 +6,7 @@ import { notifyError, notifySuccess } from '../../utils/toastification'
 import { useAppDispatch, useAppSelector } from '../../redux/typedHooks'
 import { updateComment } from '../../redux/slices/commentSlice'
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice'
+import { url } from '../../utils/enviromentConfig'
 
 export default function ReplyList({ thisComment, replyToggle, setReplyToggle, setThisComment }:
     {
@@ -33,7 +34,7 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
                 message
             }
 
-            const replyResponse = await fetch("/api/replies/", {
+            const replyResponse = await fetch(`${url}/replies/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -47,7 +48,7 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
                 notifyError("Something went wrong");
             }
 
-            const repliesData: IComment = await (await fetch("/api/comments/" + thisComment.id)).json();
+            const repliesData: IComment = await (await fetch(`${url}/comments/` + thisComment.id)).json();
 
             dispatch(updateComment(repliesData));
             setThisComment(repliesData);

@@ -5,6 +5,7 @@ import { useAppSelector } from '../../redux/typedHooks'
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice'
 import { useState } from 'react'
 import ModalWindow from './ModalWindow'
+import { url } from '../../utils/enviromentConfig'
 
 export interface ModalResponse {
     type: string,
@@ -27,7 +28,7 @@ export default function Image({ image, alt, containerStyles, imageStyles, setMod
         <>
             <div className={containerStyles + " relative"}>
                 <img
-                    src={"/api/public/" + image.path}
+                    src={`${url}/public/` + image.path}
                     alt={alt}
                     className={"w-full h-full object-cover " + imageStyles}
                 />

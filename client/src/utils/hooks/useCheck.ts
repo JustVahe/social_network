@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
+import { url } from "../enviromentConfig";
 
 export const useCheck = () => {
 
@@ -12,7 +13,7 @@ export const useCheck = () => {
 
         try {
 
-            const response = await fetch("/api/auth/refresh", {
+            const response = await fetch(`${url}/auth/refresh`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -39,7 +40,7 @@ export const useCheck = () => {
 
     const checkAccessToken = async () => {
 
-        const response = await fetch("/api/auth/verify", {
+        const response = await fetch(`${url}/auth/verify`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${localStorage.authorization}`

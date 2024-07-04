@@ -3,6 +3,7 @@ import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { notifyError, notifySuccess } from "../../utils/toastification";
+import { url } from "../../utils/enviromentConfig";
 
 export default function ImgSendingForm() {
 
@@ -21,7 +22,7 @@ export default function ImgSendingForm() {
                 formData.append("files", file);
             });
 
-            const fileResponse = await fetch(`/api/files/${currentUser.id}`, {
+            const fileResponse = await fetch(`${url}/files/${currentUser.id}`, {
                 method: "POST",
                 body: formData
             });

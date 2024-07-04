@@ -1,15 +1,16 @@
 import { ChangeEvent, useState } from "react"
 import FriendLabel from "../feed/FriendLabel";
 import { IUser } from "../../types";
+import { url } from "../../utils/enviromentConfig";
 
 export default function Searchbar({ searchToggle, setSearchToggle }: { searchToggle: boolean, setSearchToggle?:React.Dispatch<React.SetStateAction<boolean>> }) {
 
 	const [users, setUsers] = useState<IUser[] | undefined>();
-
+	
 	const searchHandler = async (event : ChangeEvent ) => {
 		const eventTarget = event.target as HTMLInputElement;
 		if (eventTarget.value?.trim().length != 0) {
-			const searchResponse = await fetch("/api/users?filter=name&value="+eventTarget.value.toLowerCase());
+			const searchResponse = await fetch(`${url}/users?filter=name&value=`+eventTarget.value.toLowerCase());
 			const searchData = await searchResponse.json();
 			setUsers(searchData);
 		} else {
