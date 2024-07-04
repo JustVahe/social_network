@@ -23,6 +23,9 @@ export default function ProtectedUser({ page }: { page: string }) {
 		//eslint-disable-next-line
 	}, []);
 
+	console.log(currentUser);
+	
+
 	return currentUser && (
 		<>
 			<Navbar />
