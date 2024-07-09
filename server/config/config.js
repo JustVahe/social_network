@@ -7,11 +7,7 @@ module.exports = {
     "database": process.env.databaseName,
     "host": process.env.serverHost,
     "dialect": process.env.serverDialect,
-    dialectOptions: {
-      ssl: {
-        require: 'true'
-      }
-    },
+
     "logging": false
   },
   "test": {

@@ -3,8 +3,9 @@ import MessagesComponent from "./MessagesComponent";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import {connect} from "socket.io-client";
+import { url } from "../../utils/enviromentConfig";
 
-connect("https://social-network-85xf.onrender.com");
+connect(url);
 
 export default function MessagesFeed() {
     

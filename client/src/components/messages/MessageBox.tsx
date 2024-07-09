@@ -11,7 +11,7 @@ import { notifySuccess } from "../../utils/toastification";
 import { deleteRoom, selectRooms } from "../../redux/slices/roomsSlice";
 import { IChat, IMessage } from "../../types";
 import ModalWindow from "../shared/ModalWindow";
-import { url } from "../../utils/enviromentConfig";
+import { imageUrl, url } from "../../utils/enviromentConfig";
 
 export default function MessageBox() {
 
@@ -140,7 +140,7 @@ export default function MessageBox() {
 				{room.user_b ?
 					<div className="flex justify-between w-full items-center">
 						<div className="flex gap-[10px]">
-							<img src={`${url}/public` + room.user_b.avatar} alt="message_to_this_user" className="w-[45px] h-[45px] object-cover object-top" />
+							<img src={imageUrl + room.user_b.avatar} alt="message_to_this_user" className="w-[45px] h-[45px] object-cover object-top" />
 							<div>
 								<Link to={`/${room.user_b.username}/home`}>
 									<p className="text-sm-14 font-bold text-zinc-700">{room.user_b.name} {room.user_b.surname}</p>
@@ -154,7 +154,7 @@ export default function MessageBox() {
 					</div>
 					: room.chat ? <div className="flex justify-between w-full items-center">
 						<div className="flex gap-[10px]">
-							<img src={`${url}/public` + room.chat.avatar} alt="message_to_this_user" className="w-[45px] h-45px] object-cover object-top" />
+							<img src={imageUrl + room.chat.avatar} alt="message_to_this_user" className="w-[45px] h-45px] object-cover object-top" />
 							<div>
 								<p className="text-sm-14 font-bold text-zinc-700">{room.chat.name}</p>
 								<p className="text-sm-14 font-light text-zinc-700">{chat && chat.connections.length} users</p>

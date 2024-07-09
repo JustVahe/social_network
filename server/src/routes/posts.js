@@ -7,17 +7,13 @@ router.get("/", async (request, response) => {
 
         const { user_id, limit, offset } = request.query;
 
-        console.log({limit, offset});
-
         if (user_id) {
             const posts = await Post.findAll({
                 where: { user_id },
                 include: ["user", "comments", "files"]
             });
             return response.status(200).json(posts);
-        }
-
-        if (limit && offset) {
+        }else if (limit && offset) {
 
             const posts = await Post.findAll({
                 include: {

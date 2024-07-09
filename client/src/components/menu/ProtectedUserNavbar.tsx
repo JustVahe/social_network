@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useCheck } from '../../utils/hooks/useCheck';
 import { IUser } from '../../types';
 import { notifyError, notifySuccess } from '../../utils/toastification';
-import { url } from '../../utils/enviromentConfig';
+import { imageUrl, url } from '../../utils/enviromentConfig';
 
 export default function ProtectedUserNavbar() {
 
@@ -102,7 +102,7 @@ export default function ProtectedUserNavbar() {
                     onMouseEnter={() => setAvatarToggle(true)} onMouseLeave={() => setAvatarToggle(false)}
                     className="shadow-sm shadow-zinc-300 w-[100px] h-[100px] md:w-[140px] md:h-[140px] lg:w-[190px] lg:h-[190px] bg-white rounded-full grid place-items-center absolute top-[-90px] left-[35%] sm:left-[40%] md:top-[-60px] md:left-[70px] lg:top-[-130px] lg:left-[150px]">
                     <img
-                        src={`${url}/public` + currentUser?.avatar}
+                        src={`${imageUrl}` + currentUser?.avatar}
                         className="rounded-full object-cover object-top w-20 h-20 
                     md:w-[120px] md:h-[120px] lg:w-[170px] lg:h-[170px] relative"
                         alt="avatar" />
