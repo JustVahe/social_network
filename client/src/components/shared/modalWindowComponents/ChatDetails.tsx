@@ -3,7 +3,7 @@ import { selectRoom } from "../../../redux/slices/roomSlice";
 import { useAppSelector } from "../../../redux/typedHooks"
 import { useEffect, useState } from "react";
 import { IChat } from "../../../types";
-import { url } from "../../../utils/enviromentConfig";
+import { imageUrl, url } from "../../../utils/enviromentConfig";
 
 export default function ChatDetails({ setModalType }: {
     setModalType?: React.Dispatch<React.SetStateAction<string | boolean>>
@@ -41,7 +41,7 @@ export default function ChatDetails({ setModalType }: {
                     </div>
                     <div className="w-full flex items-start">
                         <div className="w-[100px] h-[100px]">
-                            <img src={`${url}/public` + chat.avatar} alt="avatar" className="object-cover w-full h-full" />
+                            <img src={imageUrl + chat.avatar} alt="avatar" className="object-cover w-full h-full" />
                         </div>
                         <div className="w-full flex flex-col gap-2.5 p-2.5">
                             <h4 className="font-bold text-sm">Users:</h4>
@@ -49,7 +49,7 @@ export default function ChatDetails({ setModalType }: {
                                 chat.connections && chat.connections.map((item, index) =>
                                     <div key={index} className="w-full bg-zinc-100 shadow rounded-md flex gap-2.5 shadow-zinc-700/30 p-2.5">
                                         <img
-                                            src={`${url}/public` + item.user.avatar}
+                                            src={imageUrl + item.user.avatar}
                                             alt="user"
                                             className="w-[30px] h-[30px] rounded-full object-cover" />
                                         <div className="text-sm-13">

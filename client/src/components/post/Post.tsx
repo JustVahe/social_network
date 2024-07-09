@@ -3,7 +3,7 @@ import AvatarDisplay from "./AvatarDisplay";
 import CommentList from "./CommentList";
 import Likes from "./Likes";
 import CommentBar from "./../forms/CommentBar";
-import { url } from "../../utils/enviromentConfig";
+import { imageUrl } from "../../utils/enviromentConfig";
 
 export default function Post({ postData, user, status }: { postData: IPost, user?: IUser, status?: string }) {
 
@@ -17,7 +17,7 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 						postData.files.map(
 							item => {
 								if (item.type === "image") {
-									return <img key={item.id} src={`${url}/public` + item.path} alt="post"></img>
+									return <img key={item.id} src={imageUrl + item.path} alt="post"></img>
 								}
 							}
 						)

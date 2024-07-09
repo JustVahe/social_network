@@ -6,7 +6,7 @@ import { IPost } from "../../types";
 import { addPost } from "../../redux/slices/postSlice";
 import { notifyError } from "../../utils/toastification";
 import { useHandlers } from "../../utils/hooks/handlers";
-import { url } from "../../utils/enviromentConfig";
+import { imageUrl, url } from "../../utils/enviromentConfig";
 
 export default function PostingForm() {
 
@@ -39,19 +39,29 @@ export default function PostingForm() {
 		const data: IPost = await postResponse.json();
 
 		if (data) {
+
 			if (files) {
+
 				Array.from(files).forEach(file => {
 					formData.append("files", file);
 				})
 				formData.append("post_id", data.id as string);
-				await fetch(`${url}/files/${currentUser?.id}/post`, {
+
+				const res = await fetch(`${url}/files/${currentUser?.id}/post`, {
 					method: "POST",
 					body: formData
 				});
+
+				const resData = await res.json();
+
+				console.log(resData);
+				
 			}
 
 			const postRequest = await fetch(`${url}/posts/${data.id}`);
 			const post: IPost = await postRequest.json();
+
+			console.log(post);
 
 			dispatch(addPostToCurrentUser(post));
 			dispatch(addPost(post));
@@ -59,12 +69,13 @@ export default function PostingForm() {
 			setFiles(undefined);
 
 			await sortHandler();
+
 		}
 	}
-	
+
 	return (
 		<div className="w-full min-h-[160px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] flex gap-5 justify-between rounded-md">
-			<img src={`${url}/public/` + currentUser?.avatar} alt="avatar" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
+			<img src={`${imageUrl}/` + currentUser?.avatar} alt="avatar" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
 			<div className="flex flex-col flex-grow w-full xl:max-w-[440px] lg:w-[85%] md:w-full min-h-[110px] bg-white border border-zinc-100 rounded-md p-[10px] relative">
 				<textarea
 					ref={textareaRef}

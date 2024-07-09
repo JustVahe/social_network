@@ -3,7 +3,7 @@ import { selectCurrentUser, setUser } from '../../redux/slices/currentUserSlice'
 import { ChangeEvent, useState } from 'react';
 import { useCheck } from '../../utils/hooks/useCheck';
 import { notifyError, notifySuccess } from '../../utils/toastification';
-import { url } from '../../utils/enviromentConfig';
+import { imageUrl, url } from '../../utils/enviromentConfig';
 
 export default function UserEditFeed() {
 
@@ -67,13 +67,13 @@ export default function UserEditFeed() {
                         bg-[#fdfdfd] rounded-full relative top-[-50px] shadow-sm shadow-zinc-300">
                         <img
                             className=" block object-cover w-full h-full rounded-full"
-                            src={`${url}/public/` + currentUser.avatar}
+                            src={imageUrl + currentUser.avatar}
                             alt="user_avatar" />
                     </div>
                     <div className=' w-full h-full col-span-2 row-span-2 p-[10px] relative'>
                         <img
                             className="block object-cover w-full h-full rounded-md"
-                            src={`${url}/public/` + currentUser.headerImg}
+                            src={imageUrl + currentUser.headerImg}
                             alt="user_avatar" />
                     </div>
                 </div>

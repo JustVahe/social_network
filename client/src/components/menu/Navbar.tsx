@@ -7,7 +7,7 @@ import AdminDropdown from "../buttons/AdminDropdown"
 import Searchbar from "../forms/Searchbar"
 import { IUser } from "../../types"
 import { useCheck } from "../../utils/hooks/useCheck"
-import { url } from "../../utils/enviromentConfig"
+import { imageUrl, url } from "../../utils/enviromentConfig"
 
 export default function Navbar() {
 
@@ -61,7 +61,7 @@ export default function Navbar() {
                         </div>
                         <div className="w-[100px] flex justify-between items-center">
                             <div onClick={() => setUserToggle(prev => !prev)} className="relative">
-                                <img src={`${url}/public/` + currentUser.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
+                                <img src={imageUrl + currentUser.avatar} alt="admin" className="w-[45px] h-[45px] rounded-full object-cover object-top" />
                                 <AdminDropdown userToggle={userToggle} />
                             </div>
                             <button onClick={() => setDropdown(prev => !prev)}

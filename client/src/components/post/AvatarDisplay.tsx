@@ -7,7 +7,7 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import { deletePost, updatePost } from "../../redux/slices/postSlice";
 import { deletePostOfCurrentUser, updatePostOfCurrentUser } from "../../redux/slices/currentUserSlice";
 import { notifyError, notifySuccess } from "../../utils/toastification";
-import { url } from "../../utils/enviromentConfig";
+import { imageUrl, url } from "../../utils/enviromentConfig";
 
 export default function AvatarDisplay({ user, status, post }: { user: IUser, status?: string, post?: IPost }) {
 
@@ -112,7 +112,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	return (
 		user &&
 		<div className="w-full flex items-center gap-[10px] relative">
-			<img src={`${url}/public` + user.avatar} alt="avatar" className="w-[45px] h-[45px] object-cover object-top rounded-full" />
+			<img src={imageUrl + user.avatar} alt="avatar" className="w-[45px] h-[45px] object-cover object-top rounded-full" />
 			<div>
 				<p className="text-sm-14 font-bold text-sky-600">{
 					user.name + " " + user.surname

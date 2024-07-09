@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Server } = require("socket.io")
 
 const connectSocket = (server) => {
@@ -34,5 +35,7 @@ const connectSocket = (server) => {
     });
 
 }
+
+
 
 module.exports = connectSocket;

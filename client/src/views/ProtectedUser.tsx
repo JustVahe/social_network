@@ -23,15 +23,12 @@ export default function ProtectedUser({ page }: { page: string }) {
 		//eslint-disable-next-line
 	}, []);
 
-	console.log(currentUser);
-	
-
 	return currentUser && (
 		<>
 			<Navbar />
 			<header className="w-full h-[530px] overflow-hidden relative">
 				<img
-					src={`${imageUrl}/public` + currentUser.headerImg}
+					src={`${imageUrl}` + currentUser.headerImg}
 					className="object-cover w-full h-[530px] object-top"
 					alt="cover_image"
 				/>

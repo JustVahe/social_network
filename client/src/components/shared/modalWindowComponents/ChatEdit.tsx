@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { IChat } from "../../../types";
 import { notifyError, notifySuccess } from "../../../utils/toastification";
 import { FaImage } from "react-icons/fa";
-import { url } from "../../../utils/enviromentConfig";
+import { imageUrl, url } from "../../../utils/enviromentConfig";
 
 export default function ChatEdit({ setModalType }: { setModalType?: React.Dispatch<React.SetStateAction<string | boolean>> }) {
 
@@ -131,7 +131,7 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
                                 name="file"
                                 id="chat_avatar"
                                 className="hidden" />
-                            <img src={`${url}/public` + chat.avatar} alt="avatar" className="object-cover w-full h-full" />
+                            <img src={imageUrl + chat.avatar} alt="avatar" className="object-cover w-full h-full" />
                         </div>
                     </div>
                 </div>

@@ -1,10 +1,11 @@
 const router = require("express").Router();
-const { File, User } = require("../../models/index");
+const { File, User, Post } = require("../../models/index");
 const { headerImgStorage, avatarStorage, postStorage, photoStorage, onePhotoSendingStorage } = require("../utils/storages")
 const multer = require("multer");
 const fs = require("fs");
 const supabase = require("../utils/supabaseClient");
 const { imageFilter } = require("../utils/fileFilters");
+const { decode } = require("base64-arraybuffer")
 
 const uploadHeader = multer({
     storage: headerImgStorage,
@@ -32,7 +33,6 @@ router.get("/:user_id", async (request, response) => {
     try {
 
         const { user_id } = request.params;
-
         const files = await File.findAll({
             where: { user_id }
         })
@@ -52,6 +52,7 @@ router.put("/:user_id/header/",
     (request, response) => {
         uploadHeader(request, response, async (error) => {
             if (error) {
+                console.log(error);
                 return response.status(400).json("This file is not an image, please send another file!");
             }
             try {
@@ -61,16 +62,29 @@ router.put("/:user_id/header/",
                     where: { id: user_id },
                 });
 
-                const {data, error} = supabase.storage.from("assets")
-                    .list(`${user_id}/images/headerImg/${request.file.originalname}`,request.file);
+                const fileBase64 = decode(request.file.buffer.toString("base64"));
+                const files = await supabase.storage.from("assets").list(`${user_id}/images/headerImg/`);
 
-                if(data) {
-                    return response.status(500).json(data);
+                if (files.data.length >= 1) {
+                    await supabase.storage.from('avatars').remove(['folder/avatar1.png']);
+                    const { error } = await supabase.storage.from("assets")
+                        .upload(`${user_id}/images/headerImg/${request.file.originalname}`, fileBase64, {
+                            upsert: true
+                        });
+                    if (error) return response.status(400).json({ message: error.message });
+                } else {
+                    const { error } = await supabase.storage.from("assets")
+                        .upload(`${user_id}/images/headerImg/${request.file.originalname}`, fileBase64, {
+                            upsert: true
+                        });
+                    if (error) return response.status(400).json({ message: error.message });
                 }
 
                 user.headerImg = `/assets/${user_id}/images/headerImg/${request.file.originalname}`;
                 user.save();
+
                 return response.status(200).json("Cover image upload is complete");
+
             } catch (error) {
                 console.log({ error: error });
                 return response.status(500).json({ message: error.message });
@@ -85,18 +99,36 @@ router.put("/:user_id/avatar/",
     (request, response) => {
         uploadAvatar(request, response, async (error) => {
             if (error) {
+                console.log(error);
                 return response.status(400).json("This file is not an image, please send another file!");
             }
             try {
+
                 const { user_id } = request.params;
-                const user = await User.findOne(
-                    {
-                        where: { id: user_id },
-                    }
-                );
+                const user = await User.findOne({ where: { id: user_id }, });
+
+                const fileBase64 = decode(request.file.buffer.toString("base64"));
+                const files = await supabase.storage.from("assets").list(`${user_id}/images/avatar/`);
+
+                if (files.data.length >= 1) {
+                    await supabase.storage.from('avatars').remove(['folder/avatar1.png']);
+                    const { error } = await supabase.storage.from("assets")
+                        .upload(`${user_id}/images/avatar/${request.file.originalname}`, fileBase64, {
+                            upsert: true
+                        });
+                    if (error) return response.status(400).json({ message: error.message });
+                } else {
+                    const { error } = await supabase.storage.from("assets")
+                        .upload(`${user_id}/images/avatar/${request.file.originalname}`, fileBase64, {
+                            upsert: true
+                        });
+                    if (error) return response.status(400).json({ message: error.message });
+                }
+
                 user.avatar = `/assets/${user_id}/images/avatar/${request.file.originalname}`;
                 user.save();
                 return response.status(200).json("Avatar upload is complete");
+
             } catch (error) {
                 console.log(error);
                 return response.status(500).json(error.message);
@@ -123,19 +155,22 @@ router.post("/:user_id/post/",
                 files.forEach(async (file) => {
 
                     const path = `/assets/${user_id}/images/posts/${file.originalname}`;
-                    const type = file.mimetype.split("/")[0];
+                    const [type] = file.mimetype.split("/");
 
-                    const newFile = await File.create({
-                        user_id,
-                        post_id,
-                        path,
-                        type
-                    });
+                    const fileBase64 = decode(file.buffer.toString("base64"));
 
-                })
+                    const { error } = await supabase.storage.from("assets")
+                        .upload(`${user_id}/images/posts/${file.originalname}`, fileBase64, {
+                            upsert: true
+                        });
 
-                return response.status(200).json("Files have been sent successfully");
+                    if (error) return response.status(400).json({ message: error.message });
 
+                    const newFile = await File.create({ user_id, post_id, path, type });
+                });
+
+                const post = await Post.findAll({where : {id: post_id}, include: {all:true}});
+                return response.status(200).json(post);
 
             } catch (error) {
 
@@ -179,7 +214,7 @@ router.post("/:user_id",
     }
 );
 
-router.put("/:id", async (request, response) => { 
+router.put("/:id", async (request, response) => {
     uploadPhoto(request, response, async (error) => {
         if (error) {
             return response.status(400).json(error);
@@ -230,17 +265,12 @@ router.delete("/:id", async (request, response) => {
             where: { id }
         });
 
-        const path = `${__dirname}../../../public/${file.path}`;
-
         file.destroy();
 
-        fs.unlink(path, (error) => {
-            if (error) {
-                return response.status(400).json("File is not deleted");
-            } else {
-                return response.status(200).json("File is successfully deleted");
-            }
-        });
+        const { error } = await supabase.storage.from("assets")
+            .remove(`${user_id}/images/posts/${file.originalname}`);
+
+        if (error) return response.status(400).json("File is not deleted");
 
     } catch (error) {
         console.log(error);

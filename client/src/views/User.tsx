@@ -37,7 +37,7 @@ export default function User({ page }: { page: string }) {
 			<Navbar />
 			<header className="w-full h-[530px] overflow-hidden relative">
 				<img
-					src={`${url}/public` + thisUser?.headerImg}
+					src={`${url}` + thisUser?.headerImg}
 					className="object-cover w-full h-[530px] object-top"
 					alt="cover_image"
 				/>
