@@ -7,7 +7,7 @@ import AdminDropdown from "../buttons/AdminDropdown"
 import Searchbar from "../forms/Searchbar"
 import { IUser } from "../../types"
 import { useCheck } from "../../utils/hooks/useCheck"
-import { imageUrl, url } from "../../utils/enviromentConfig"
+import { imageUrl } from "../../utils/enviromentConfig"
 
 export default function Navbar() {
 

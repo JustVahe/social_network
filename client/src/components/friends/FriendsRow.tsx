@@ -2,7 +2,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { deleteFriendOfCurrrentUser } from "../../redux/slices/usersFriends";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { IFriend, IUser } from "../../types";
-import { imageUrl, url } from "../../utils/enviromentConfig";
+import { imageUrl } from "../../utils/enviromentConfig";
 import { useHandlers } from "../../utils/hooks/handlers";
 
 export default function FriendsRow({ item, setFriends, outerUser }:
