@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectRooms, setRooms, undefineRooms } from "../../redux/slices/roomsSlice";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useEffect, useState } from "react";
-import { setRoom } from "../../redux/slices/roomSlice";
 import { url } from "../../utils/enviromentConfig";
 import { FaMessage } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
