@@ -20,6 +20,34 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
     const { username } = useParams();
     const navigate = useNavigate();
 
+    const messageAdddingHandler = async () => {
+
+        const findRoom = await ((await fetch(`${url}/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
+
+        if (thisUser.id) {
+            if (!findRoom) {
+                const roomData = await (await fetch(`${url}/rooms`, {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_a_id: currentUser?.id,
+                        user_b_id: thisUser.id
+                    })
+                })).json();
+
+                dispatch(addRoom(roomData));
+                dispatch(setRoom(roomData));
+            } else {
+                dispatch(setRoom(findRoom));
+            }
+        }
+
+        navigate("/dashboard/messages");
+
+    }
+
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
 
@@ -84,33 +112,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                                 : <AddFriend from={currentUser as IUser} to={thisUser} setRequest={setRequest} />
                     }
                     <button
-                        onClick={async () => {
-
-                            const findRoom = await ((await fetch(`${url}/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
-
-                            if (thisUser.id) {
-                                if (!findRoom) {
-                                    const roomData = await (await fetch(`${url}/rooms`, {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-type": "application/json"
-                                        },
-                                        body: JSON.stringify({
-                                            user_a_id: currentUser?.id,
-                                            user_b_id: thisUser.id
-                                        })
-                                    })).json();
-
-                                    dispatch(addRoom(roomData));
-                                    dispatch(setRoom(roomData));
-                                } else {
-                                    dispatch(setRoom(findRoom));
-                                }
-                            }
-
-                            navigate("/dashboard/messages");
-
-                        }}
+                        onClick={messageAdddingHandler}
                         className="hidden md:flex md:gap-[10px] w-[200px] md:items-center 
                                 md:justify-center md:p-[5px] md:transition md:text-white 
                                 md:font-bold md:rounded-md md:bg-sky-600">

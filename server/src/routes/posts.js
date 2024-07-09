@@ -10,7 +10,11 @@ router.get("/", async (request, response) => {
         if (user_id) {
             const posts = await Post.findAll({
                 where: { user_id },
-                include: ["user", "comments", "files"]
+                include: {
+                    all: true,
+                    nested: true
+                },
+                order: [['updatedAt', 'DESC']]
             });
             return response.status(200).json(posts);
         }else if (limit && offset) {
@@ -29,7 +33,8 @@ router.get("/", async (request, response) => {
         }
 
         const posts = await Post.findAll({
-            include: ["user", "comments", "files"]
+            include: ["user", "comments", "files"],
+            order: [['updatedAt', 'DESC']]
         });
         return response.status(200).json(posts);
 
@@ -55,7 +60,8 @@ router.get("/:id", async (request, response) => {
             include: {
                 all: true,
                 nested: true
-            }
+            },
+            order: [['updatedAt', 'DESC']]
         });
 
         return response.status(200).json(thisPost);

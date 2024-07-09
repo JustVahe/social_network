@@ -19,7 +19,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	const [updatedAtDate, setUpdatedAtDate] = useState<Date | null>();
 	const dispatch = useAppDispatch();
 	const { checkAccessToken } = useCheck();
-	
+
 	useEffect(() => {
 
 		if (post) {
@@ -52,7 +52,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 			post.files.forEach(async (item) => {
 
-				const fileDeleteRequest = await fetch(`${url}/files/` + item.id, { method: "DELETE" });
+				const fileDeleteRequest = await fetch(`${url}/files/${item.id}?user_id=${user.id}` , { method: "DELETE" });
 				const fileDeleteData = await fileDeleteRequest.json();
 
 				if (fileDeleteRequest.status !== 200) {
@@ -130,9 +130,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 						setUpdateToggle(false);
 					}}
 					className="w-[20px] h-[20px] text-zinc-700 ml-auto">
-					{
-						optionsTogggle ? <FaX /> : <FaEllipsisV />
-					}
+					{ optionsTogggle ? <FaX /> : <FaEllipsisV /> }
 				</button>
 			}
 			{

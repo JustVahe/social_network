@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { url } from "../../utils/enviromentConfig";
+import { imageUrl, url } from "../../utils/enviromentConfig";
 
 export default function Reply({ reply }: { reply: IReply }) {
 
@@ -25,7 +25,7 @@ export default function Reply({ reply }: { reply: IReply }) {
         <>
             {
                 thisReply && <div className="w-[90%] flex gap-[10px] items-start">
-                    <img src={`${url}/public/` + thisReply.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
+                    <img src={imageUrl + thisReply.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">
                             {

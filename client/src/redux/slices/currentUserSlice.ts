@@ -27,20 +27,15 @@ export const currentUserSlice = createSlice({
 				state.value.headerImg = action.payload;
 			}
 		},
-		sortPostsOfCurrentUser: (state, action: PayloadAction<IPost[]>) => {
+		setPostsOfCurrentUser: (state, action: PayloadAction<IPost[]>) => {
 			if (state.value) {
-				const sortedPayload = action.payload.sort((a:IPost , b:IPost) => {
-					const firstDate = new Date(a.updatedAt)[Symbol.toPrimitive]("number");
-					const secondDate = new Date(b.updatedAt)[Symbol.toPrimitive]("number");
-					return secondDate - firstDate;
-				});
-				state.value.posts = sortedPayload;
+				state.value.posts = action.payload;
 			}
 		},
 		addPostToCurrentUser: (state, action: PayloadAction<IPost>) => {
 			if (state.value) {
 				const lastState = state.value.posts;
-				state.value.posts = [...lastState, action.payload];
+				state.value.posts = [action.payload, ...lastState];
 			}
 		},
 		deletePostOfCurrentUser: (state, action: PayloadAction<ID>) => {
@@ -70,7 +65,7 @@ export const {
 	deletePostOfCurrentUser,
 	updatePostOfCurrentUser,
 	addPhotoToCurrentUser,
-	sortPostsOfCurrentUser,
+	setPostsOfCurrentUser,
 } = currentUserSlice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.currentUser.value;

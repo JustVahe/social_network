@@ -68,6 +68,10 @@ export default function MessageBox() {
 		//eslint-disable-next-line
 	}, [room?.id]);
 
+
+	console.log(messages);
+	
+
 	useEffect(() => {
 
 		const current = (messageBoxRef.current as unknown) as Element;
@@ -108,7 +112,7 @@ export default function MessageBox() {
 		setModalType(type);
 		setOptionsToggle(false)
 	}
-
+	
 	return (
 		room &&
 		<div className="mt-6 sm:mt-0 col-span-5 sm:col-span-3 xl:col-span-4 relative">

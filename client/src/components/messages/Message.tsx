@@ -2,7 +2,6 @@ import { IMessage } from "../../types";
 import { imageUrl } from "../../utils/enviromentConfig";
 
 export default function Message({ align, message }: { align: string, message: IMessage }) {
-
 	return (
 		message &&
 		<div className={"w-full flex gap-[10px] pb-[10px] " + (align === "right" ? "flex-row-reverse" : "")} >

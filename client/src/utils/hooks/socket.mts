@@ -1,6 +1,7 @@
 import { connect } from "socket.io-client";
+import { url } from "../enviromentConfig";
 
-const socket = connect("http://localhost:8246");
+const socket = connect(url);
 
 export const getSocket = () => {
     return socket;

@@ -6,7 +6,7 @@ import { FaX } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { url } from "../../utils/enviromentConfig";
+import { imageUrl, url } from "../../utils/enviromentConfig";
 
 export default function Comment({ comment }: { comment: IComment }) {
 
@@ -28,7 +28,7 @@ export default function Comment({ comment }: { comment: IComment }) {
         <>
             {
                 thisComment && <div className="w-[90%] flex gap-[10px] items-start">
-                    <img src={`${url}/public/` + thisComment.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
+                    <img src={imageUrl + thisComment.user.avatar} alt="avatar" className="rounded-full w-[30px] h-[30px] object-cover object-top" />
                     <div className="border border-gray-200  p-[10px]">
                         <div className="flex gap-[10px]">
                             {

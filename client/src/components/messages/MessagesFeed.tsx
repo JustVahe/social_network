@@ -2,10 +2,6 @@ import Shortcuts from "../menu/Shortcuts";
 import MessagesComponent from "./MessagesComponent";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import {connect} from "socket.io-client";
-import { url } from "../../utils/enviromentConfig";
-
-connect(url);
 
 export default function MessagesFeed() {
     

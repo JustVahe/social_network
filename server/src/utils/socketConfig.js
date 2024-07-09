@@ -15,6 +15,7 @@ const connectSocket = (server) => {
 
         socket.on("join_room", (data) => {
             socket.join(data.id); 
+            console.log("Joined : " + data.user_a.username);
             socket.emit("receive_approved_room", data);
         });
 

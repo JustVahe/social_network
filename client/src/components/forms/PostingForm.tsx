@@ -47,28 +47,29 @@ export default function PostingForm() {
 				})
 				formData.append("post_id", data.id as string);
 
-				const res = await fetch(`${url}/files/${currentUser?.id}/post`, {
+				await fetch(`${url}/files/${currentUser?.id}/post`, {
 					method: "POST",
 					body: formData
 				});
 
-				const resData = await res.json();
+				const postRequest = await fetch(`${url}/posts/${data.id}`);
+				const post: IPost = await postRequest.json();
 
-				console.log(resData);
-				
+				dispatch(addPostToCurrentUser(post));
+				dispatch(addPost(post));
+				setMessage("");
+				setFiles(undefined);
+
+				await sortHandler();
+			} else {
+
+				const postRequest = await fetch(`${url}/posts/${data.id}`);
+				const post: IPost = await postRequest.json();
+
+				dispatch(addPostToCurrentUser(post));
+				dispatch(addPost(post));
+				setMessage("");
 			}
-
-			const postRequest = await fetch(`${url}/posts/${data.id}`);
-			const post: IPost = await postRequest.json();
-
-			console.log(post);
-
-			dispatch(addPostToCurrentUser(post));
-			dispatch(addPost(post));
-			setMessage("");
-			setFiles(undefined);
-
-			await sortHandler();
 
 		}
 	}
