@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
 import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
 import { useCheck } from "../utils/hooks/useCheck.ts";
-import { url } from "../utils/enviromentConfig.ts";
+import { imageUrl, url } from "../utils/enviromentConfig.ts";
 
 export default function User({ page }: { page: string }) {
 
@@ -37,7 +37,7 @@ export default function User({ page }: { page: string }) {
 			<Navbar />
 			<header className="w-full h-[530px] overflow-hidden relative">
 				<img
-					src={`${url}` + thisUser?.headerImg}
+					src={`${imageUrl}` + thisUser?.headerImg}
 					className="object-cover w-full h-[530px] object-top"
 					alt="cover_image"
 				/>

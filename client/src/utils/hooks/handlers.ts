@@ -1,6 +1,6 @@
 import { useCheck } from "./useCheck";
 import { useAppDispatch, useAppSelector } from '../../redux/typedHooks';
-import { selectCurrentUser, sortPostsOfCurrentUser } from '../../redux/slices/currentUserSlice';
+import { selectCurrentUser, setPostsOfCurrentUser } from '../../redux/slices/currentUserSlice';
 import { ID } from "../../types";
 import { notifySuccess } from "../toastification";
 import { url } from "../enviromentConfig";
@@ -18,7 +18,7 @@ export const useHandlers = () => {
         const sortResponse = await fetch(`${url}/posts/?user_id=` + currentUser?.id);
         const sortData = await sortResponse.json();
 
-        dispatch(sortPostsOfCurrentUser(sortData));
+        dispatch(setPostsOfCurrentUser(sortData));
     }
 
     const friendRequestAddingHandler = async (from_id: ID, to_id: ID) => {

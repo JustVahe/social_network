@@ -69,13 +69,17 @@ router.put("/:user_id/header/",
                     await supabase.storage.from('avatars').remove(['folder/avatar1.png']);
                     const { error } = await supabase.storage.from("assets")
                         .upload(`${user_id}/images/headerImg/${request.file.originalname}`, fileBase64, {
-                            upsert: true
+                            cacheControl: '300',
+                            upsert: true,
+                            contentType: request.file.mimetype
                         });
                     if (error) return response.status(400).json({ message: error.message });
                 } else {
                     const { error } = await supabase.storage.from("assets")
                         .upload(`${user_id}/images/headerImg/${request.file.originalname}`, fileBase64, {
-                            upsert: true
+                            cacheControl: '300',
+                            upsert: true,
+                            contentType: request.file.mimetype
                         });
                     if (error) return response.status(400).json({ message: error.message });
                 }
@@ -114,13 +118,17 @@ router.put("/:user_id/avatar/",
                     await supabase.storage.from('avatars').remove(['folder/avatar1.png']);
                     const { error } = await supabase.storage.from("assets")
                         .upload(`${user_id}/images/avatar/${request.file.originalname}`, fileBase64, {
-                            upsert: true
+                            cacheControl: '300',
+                            upsert: true,
+                            contentType: request.file.mimetype
                         });
                     if (error) return response.status(400).json({ message: error.message });
                 } else {
                     const { error } = await supabase.storage.from("assets")
                         .upload(`${user_id}/images/avatar/${request.file.originalname}`, fileBase64, {
-                            upsert: true
+                            cacheControl: '300',
+                            upsert: true,
+                            contentType: request.file.mimetype
                         });
                     if (error) return response.status(400).json({ message: error.message });
                 }
@@ -157,19 +165,24 @@ router.post("/:user_id/post/",
                     const path = `/assets/${user_id}/images/posts/${file.originalname}`;
                     const [type] = file.mimetype.split("/");
 
+                    await File.create({ user_id, post_id, path, type });
+
                     const fileBase64 = decode(file.buffer.toString("base64"));
 
-                    const { error } = await supabase.storage.from("assets")
+                    const { data, error } = await supabase.storage.from("assets")
                         .upload(`${user_id}/images/posts/${file.originalname}`, fileBase64, {
-                            upsert: true
+                            cacheControl: '300',
+                            upsert: true,
+                            contentType: file.mimetype
                         });
+
+                    console.log(data);
 
                     if (error) return response.status(400).json({ message: error.message });
 
-                    const newFile = await File.create({ user_id, post_id, path, type });
                 });
 
-                const post = await Post.findAll({where : {id: post_id}, include: {all:true}});
+                const post = await Post.findAll({ where: { id: post_id }, include: { all: true } });
                 return response.status(200).json(post);
 
             } catch (error) {
@@ -197,11 +210,23 @@ router.post("/:user_id",
                     const path = `/assets/${user_id}/images/${file.originalname}`;
                     const type = file.mimetype.split("/")[0];
 
+                    const fileBase64 = decode(file.buffer.toString("base64"));
+
+                    const { data, error } = await supabase.storage.from("assets")
+                        .upload(`${user_id}/images/${file.originalname}`, fileBase64, {
+                            cacheControl: '300',
+                            upsert: true,
+                            contentType: file.mimetype
+                        });
+
+                    if (error) return response.status(400).json({ message: error.message });
+
                     const newFile = await File.create({
                         user_id,
                         path,
                         type
                     });
+
                 });
 
                 return response.status(200).json("Files have been successfully uploaded");
@@ -225,9 +250,7 @@ router.put("/:id", async (request, response) => {
             const { id } = request.params;
             const { user_id } = request.body;
 
-            const file = await File.findOne({
-                where: { id }
-            });
+            const file = await File.findOne({ where: { id } });
 
             const path = `${__dirname}../../../public/${file.path}`;
             const newPath = `/assets/${user_id}/images/${requestFile.originalname}`;
@@ -260,6 +283,7 @@ router.delete("/:id", async (request, response) => {
     try {
 
         const { id } = request.params;
+        const { user_id } = request.query;
 
         const file = await File.findOne({
             where: { id }
@@ -281,4 +305,3 @@ router.delete("/:id", async (request, response) => {
 
 
 module.exports = router;
-

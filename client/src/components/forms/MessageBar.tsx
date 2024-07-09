@@ -5,7 +5,7 @@ import { selectRoom } from "../../redux/slices/roomSlice";
 import { useEffect, useState } from "react";
 import { notifyError } from "../../utils/toastification";
 import { IChat, IMessage, IRoom } from "../../types";
-import { getSocket } from "../../utils/hooks/socket";
+import { getSocket } from "../../utils/hooks/socket.mts";
 import { url } from "../../utils/enviromentConfig";
 
 export default function MessageSendingBar({ setMessages }: {
@@ -21,7 +21,7 @@ export default function MessageSendingBar({ setMessages }: {
 
 	const currentUser = useAppSelector(selectCurrentUser);
 	const room = useAppSelector(selectRoom);
-
+	
 	useEffect(() => {
 
 		if (room?.chat) {
@@ -39,10 +39,8 @@ export default function MessageSendingBar({ setMessages }: {
 		});
 
 		socket.on("receive_message", (data) => {
-			setMessages((messages) => {
-				return [...messages, data];
-			});
-
+			console.log("received");
+			setMessages((messages) => [...messages, data]);
 		});
 
 		//eslint-disable-next-line
@@ -76,11 +74,11 @@ export default function MessageSendingBar({ setMessages }: {
 				});
 
 				socket.emit("send_message_to_chat", wholeMessageData);
-				setMessage("");
+				setMessage("");			
 
 			} else {
 				const messageData = await (
-					await fetch(`/${url}/messages/?room_id=` + approvedRoom?.id, {
+					await fetch(`${url}/messages/?room_id=` + approvedRoom?.id, {
 						method: "POST",
 						headers: {
 							"Content-type": "application/json"
@@ -89,7 +87,7 @@ export default function MessageSendingBar({ setMessages }: {
 					})
 				).json();
 
-				const wholeMessageData = await (await fetch(`/${url}/messages/` + messageData.id)).json();
+				const wholeMessageData = await (await fetch(`${url}/messages/` + messageData.id)).json();
 
 				setMessages((messages) => {
 					return [...messages, wholeMessageData];

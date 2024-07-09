@@ -14,6 +14,9 @@ export const Rooms = createSlice({
 	name: 'currentMessagingUser',
 	initialState,
 	reducers: {
+		undefineRooms: (state) => {
+			state.value = undefined;
+		},
 		setRooms: (state, action: PayloadAction<(IRoom & IConnection)[]>) => {
 			state.value = action.payload
 		},
@@ -31,6 +34,6 @@ export const Rooms = createSlice({
 	}
 })
 
-export const { setRooms, addRoom, deleteRoom } = Rooms.actions;
+export const { setRooms, addRoom, deleteRoom, undefineRooms } = Rooms.actions;
 export const selectRooms = (state: RootState) => state.rooms.value;
 export default Rooms.reducer;

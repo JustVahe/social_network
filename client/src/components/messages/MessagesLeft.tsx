@@ -30,7 +30,9 @@ export default function MessagesLeft() {
 							className="w-full rounded-md text-sm-13 p-2.5 flex justify-between items-center transition hover:bg-sky-600/90">
 							Create Group Chat <FaMessage />
 						</button>
-						<button className="w-full rounded-md text-sm-13 p-2.5 flex justify-between items-center transition hover:bg-sky-600/90">
+						<button 
+							onClick={() => setModalType("explore")}
+							className="w-full rounded-md text-sm-13 p-2.5 flex justify-between items-center transition hover:bg-sky-600/90">
 							Find Someone <FaSearch />
 						</button>
 					</>
