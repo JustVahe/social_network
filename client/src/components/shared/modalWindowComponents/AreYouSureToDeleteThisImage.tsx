@@ -69,7 +69,6 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
                         notifyPromise(deleteHandler(),{
                             pendingText: "Loading...",
                             fulfilledText: "Image successfully deleted",
-                            rejectedText: "Something went wrong : " + modalResponse?.message
                         });
                     }}
                     className="bg-sky-600 p-[5px] text-sm-14 text-white font-bold rounded-md">
