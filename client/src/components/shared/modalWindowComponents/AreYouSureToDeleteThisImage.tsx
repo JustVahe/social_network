@@ -5,7 +5,7 @@ import { useCheck } from "../../../utils/hooks/useCheck";
 import { url } from "../../../utils/enviromentConfig";
 import { notifyPromise } from "../../../utils/toastification";
 
-export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image, modalResponse }:
+export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image }:
     {
         setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
         modalResponse?: ModalResponse | undefined, 
