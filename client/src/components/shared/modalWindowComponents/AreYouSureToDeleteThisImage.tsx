@@ -66,11 +66,11 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
                 </button>
                 <button
                     onClick={() => {
-                        notifyPromise({
+                        notifyPromise(deleteHandler(),{
                             pendingText: "Loading...",
                             fulfilledText: "Image successfully deleted",
                             rejectedText: "Something went wrong : " + modalResponse?.message
-                        }, deleteHandler());
+                        });
                     }}
                     className="bg-sky-600 p-[5px] text-sm-14 text-white font-bold rounded-md">
                     Delete Anyway
