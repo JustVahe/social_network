@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { ID, IPhoto, IPost, IUser } from '../../types'
+import { IPhoto, IPost, IUser } from '../../types'
 
 export interface CurrentUserState {
 	value: IUser | null
