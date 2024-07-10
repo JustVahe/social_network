@@ -15,9 +15,10 @@ import roomsReducer from "./slices/roomsSlice";
 import friendsReducer from "./slices/friendsSlice";
 
 const persistConfig = {
-    key: "root",
+    key: "user",
     version: 1,
-    storage
+    storage,
+    whitelist: ['currentUser', 'isAuth']
 }
 
 const reducer = combineReducers({

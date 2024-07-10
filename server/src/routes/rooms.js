@@ -45,7 +45,8 @@ router.get("/", async (request, response) => {
                 },
                 where: {
                     [Op.or]: [{ user_a_id: user_id }, { user_b_id: user_id }]
-                }
+                },
+                order: [['updatedAt', 'DESC']]
             });
 
             const chats = await Connection.findAll({
@@ -53,7 +54,8 @@ router.get("/", async (request, response) => {
                     all: true,
                     nested: true
                 },
-                where: { user_id }
+                where: { user_id },
+                order: [['updatedAt', 'DESC']]
             });
 
             const modifiedRooms = [...JSON.parse(JSON.stringify(rooms)), ...JSON.parse(JSON.stringify(chats))];
