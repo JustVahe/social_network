@@ -60,12 +60,10 @@ export default function SignIn() {
                     localStorage.setItem("authorization", data.accessToken);
                     localStorage.setItem("refreshToken", data.refreshToken);
 
-                    dispatch(setIsAuth(true));
                     navigate("/");
+                    dispatch(setIsAuth(true));
                     setGeneralError(undefined);
                 }
-
-
 
             }
 

@@ -131,11 +131,10 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 							<FaEdit /> Edit Post
 						</button>
 						<button
-							onClick={() => notifyPromise({
+							onClick={() => notifyPromise(deleteHandler(),{
 								pendingText: "Loading...",
-								fulfilledText: "Post successfully deleted",
-								rejectedText: "Something went wrong"
-							}, deleteHandler())}
+								fulfilledText: "Post successfully deleted"							
+							})}
 							className="w-full p-2.5 flex gap-[5px] items-center transition hover:bg-sky-600 hover:text-white">
 							<FaTrash /> Delete Post
 						</button>
@@ -152,11 +151,10 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 							defaultValue={post?.message}
 							className="w-[70%] h-[150px] resize-none border border-zinc-400 outline-none" />
 						<button
-							onClick={() => notifyPromise({
+							onClick={() => notifyPromise(updateHandler(),{
 								pendingText: "Loading...",
-								fulfilledText: "Post successfully updated",
-								rejectedText: "Something went wrong"
-							}, updateHandler())}
+								fulfilledText: "Post successfully updated"							
+							})}
 							className="w-[28%] bg-sky-600 rounded-md text-white">
 							Update
 						</button>
