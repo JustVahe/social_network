@@ -148,7 +148,6 @@ router.put("/:user_id/avatar/",
 
 router.post("/:user_id/post/",
     async (request, response) => {
-
         uploadPost(request, response, async (error) => {
             if (error) {
                 return response.status(400).json("This file is not an image, please send another file!");
@@ -160,12 +159,9 @@ router.post("/:user_id/post/",
                 const { post_id } = request.body;
                 const files = request.files;
 
-                files.forEach(async (file) => {
-
+                for (const file of files) {
                     const path = `/assets/${user_id}/images/posts/${file.originalname}`;
                     const [type] = file.mimetype.split("/");
-
-                    await File.create({ user_id, post_id, path, type });
 
                     const fileBase64 = decode(file.buffer.toString("base64"));
 
@@ -178,11 +174,12 @@ router.post("/:user_id/post/",
 
                     if (error) return response.status(400).json({ message: error.message });
 
-                });
+                    await File.create({ user_id, post_id, path, type });
 
-                const post = await Post.findAll({ where: { id: post_id }, include: { all: true } });
-                return response.status(200).json(post);
+                }
 
+                const createdFiles = await File.findAll({ where: { post_id } });
+                return response.status(200).json(createdFiles);
             } catch (error) {
 
                 console.log(error);
@@ -203,8 +200,7 @@ router.post("/:user_id",
                 const { user_id } = request.params;
                 const files = request.files;
 
-                files.forEach(async (file) => {
-
+                for (const file of files) {
                     const path = `/assets/${user_id}/images/${file.originalname}`;
                     const type = file.mimetype.split("/")[0];
 
@@ -224,8 +220,7 @@ router.post("/:user_id",
                         path,
                         type
                     });
-
-                });
+                }
 
                 return response.status(200).json("Files have been successfully uploaded");
 
@@ -253,11 +248,7 @@ router.put("/:id", async (request, response) => {
             const path = `${__dirname}../../../public/${file.path}`;
             const newPath = `/assets/${user_id}/images/${requestFile.originalname}`;
 
-            fs.unlink(path, (error) => {
-                if (error) {
-                    return response.status(400).json("File is not deleted");
-                }
-            });
+            const { data, error } = supabase.storage.from("assets").remove()
 
             file.path = newPath;
             file.save();
@@ -281,18 +272,20 @@ router.delete("/:id", async (request, response) => {
     try {
 
         const { id } = request.params;
-        const { user_id } = request.query;
 
         const file = await File.findOne({
             where: { id }
         });
+    
 
         file.destroy();
 
-        const { error } = await supabase.storage.from("assets")
-            .remove(`${user_id}/images/posts/${file.originalname}`);
+        const [,, ...rest] = file.path.split("/");
+        const path = rest.join("/");
+        const { error } = await supabase.storage.from("assets").remove(path);
+        if (error) return response.status(400).json("File is not deleted : " + error.message);
 
-        if (error) return response.status(400).json("File is not deleted");
+        return response.status(200).json("Image successfully deleted");
 
     } catch (error) {
         console.log(error);

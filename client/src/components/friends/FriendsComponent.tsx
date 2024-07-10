@@ -6,6 +6,7 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import RequestRow from "./RequestRow";
 import { url } from "../../utils/enviromentConfig";
+import Loading from "../shared/Loading";
 
 export default function FriendsComponent({ user }: { user: IUser }) {
 	const [friends, setFriends] = useState<IFriend[] | undefined>();
@@ -39,7 +40,9 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 
 		fetch(`${url}/requests/` + user.id + "?toggle=to_me&status=pending")
 			.then((res) => res.json())
-			.then(data => setRequestsToMe(data))
+			.then(data => {
+				setRequestsToMe(data)
+			})
 
 		//eslint-disable-next-line
 	}, [dispatch, user.id])
@@ -58,7 +61,14 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 			</div>
 			{friendsToggle === "friends" ?
 				<div className="flex flex-col gap-[15px] mt-[15px]">
-					{friends && friends.map(item => <FriendsRow item={item} key={item.id} setFriends={setFriends} outerUser={user} />)}
+					{
+						friends ? (
+							friends.length !== 0 ? friends.map(item => <FriendsRow item={item} key={item.id} setFriends={setFriends} outerUser={user} />)
+								: <div className="text-sm-14 text-zinc-400 italic">This user has no friends yet</div>
+						) : <div className="w-full">
+							<Loading />
+						</div>
+					}
 				</div> :
 				<div className="flex flex-col gap-[15px] mt-[15px]">
 					<div className="w-full p-[10px] flex gap-5">
@@ -77,25 +87,36 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 					</div>
 					{
 						requestToggle === "from_me" ?
-							((requestsFromMe && requestsFromMe.length !== 0) ?
-								requestsFromMe.map(item =>
-									<RequestRow
-										item={item}
-										key={item.id}
-										type="from"
-										setFriends={setFriends}
-										setRequests={setRequestsFromMe}
-									/>)
-								: <p className="text-sm-14 text-zinc-400 italic">There's no requests from you now...</p>)
-							: ((requestsToMe && requestsToMe.length !== 0) ?
-								requestsToMe.map(item =>
-									<RequestRow
-										item={item}
-										key={item.id}
-										type="to"
-										setFriends={setFriends}
-										setRequests={setRequestsToMe} />)
-								: <p className="text-sm-14 text-zinc-400 italic">There's no requests addressed to you you now...</p>)
+							(
+								requestsFromMe ? (
+									requestsFromMe.length !== 0 ?
+										requestsFromMe.map(item =>
+											<RequestRow
+												item={item}
+												key={item.id}
+												type="from"
+												setFriends={setFriends}
+												setRequests={setRequestsFromMe}
+											/>)
+										: <p className="text-sm-14 text-zinc-400 italic">There's no requests from you now...</p>
+								) : <div className="w-full">
+									<Loading />
+								</div>
+							)
+							: (requestsToMe ?
+								(requestsToMe.length !== 0 ?
+									requestsToMe.map(item =>
+										<RequestRow
+											item={item}
+											key={item.id}
+											type="to"
+											setFriends={setFriends}
+											setRequests={setRequestsToMe} />)
+									: <p className="text-sm-14 text-zinc-400 italic">There's no requests addressed to you you now...</p>
+								) : <div className="w-full">
+									<Loading />
+								</div>
+							)
 					}
 				</div>
 			}

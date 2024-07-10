@@ -17,8 +17,7 @@ router.get("/", async (request, response) => {
                 order: [['updatedAt', 'DESC']]
             });
             return response.status(200).json(posts);
-        }else if (limit && offset) {
-
+        } else if (limit && offset) {
             const posts = await Post.findAll({
                 include: {
                     all: true,
@@ -37,8 +36,6 @@ router.get("/", async (request, response) => {
             order: [['updatedAt', 'DESC']]
         });
         return response.status(200).json(posts);
-
-
 
     } catch (error) {
 

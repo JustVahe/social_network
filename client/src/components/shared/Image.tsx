@@ -12,17 +12,17 @@ export interface ModalResponse {
     message: string
 }
 
-export default function Image({ image, alt, containerStyles, imageStyles, setModalResponse }:
+export default function Image({ image, alt, containerStyles, imageStyles }:
     {
         image: IPhoto,
         alt: string,
         containerStyles?: string,
-        imageStyles?: string,
-        setModalResponse?: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>
+        imageStyles?: string
     }) {
 
     const currentUser = useAppSelector(selectCurrentUser);
     const [modalType, setModalType] = useState<boolean | string>(false);
+    const [modalResponse, setModalResponse] = useState<ModalResponse | undefined>();
 
     return (
         <>
@@ -66,6 +66,7 @@ export default function Image({ image, alt, containerStyles, imageStyles, setMod
                     image={image} 
                     type={modalType} 
                     setModalType={setModalType} 
+                    modalResponse={modalResponse}
                     setModalResponse={setModalResponse as React.Dispatch<React.SetStateAction<ModalResponse | undefined>>} />
             }
         </>

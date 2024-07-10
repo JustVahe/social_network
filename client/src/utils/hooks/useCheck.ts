@@ -23,6 +23,10 @@ export const useCheck = () => {
                 })
             });
 
+            if (response.status !== 200) {
+                throw new Error("Unauthorized");
+            }
+
             const data = await response.json();
             localStorage.setItem("authorization", data.accessToken);
             checkAccessToken();

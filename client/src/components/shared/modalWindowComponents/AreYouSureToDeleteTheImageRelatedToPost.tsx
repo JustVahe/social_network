@@ -3,12 +3,13 @@ import { useCheck } from "../../../utils/hooks/useCheck";
 import { IPhoto } from "../../../types";
 import { useAppDispatch } from "../../../redux/typedHooks";
 import { deletePost } from "../../../redux/slices/postSlice";
-import { deletePostOfCurrentUser } from "../../../redux/slices/currentUserSlice";
 import { ModalResponse } from "../Image";
 import { url } from "../../../utils/enviromentConfig";
+import { deletePostFromCurrentUsersPosts } from "../../../redux/slices/currentUser'sPostsSlice";
 
 interface IProps {
     setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
+    modalResponse?: ModalResponse | undefined,
     setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>,
     image: IPhoto
 }
@@ -57,7 +58,7 @@ export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, 
             }
 
             dispatch(deletePost(image.post_id));
-            dispatch(deletePostOfCurrentUser(image.post_id));
+            dispatch(deletePostFromCurrentUsersPosts(image.post_id));
             setModalType(false);
 
             await checkAccessToken();

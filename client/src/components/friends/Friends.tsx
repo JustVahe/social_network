@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectThisUsersFriends, setThisUsersFriends } from "../../redux/slices/thisUsersFriends";
 import { url } from "../../utils/enviromentConfig";
+import Loading from "../shared/Loading";
 
 export default function Friends({ user }: { user: IUser }) {
 
@@ -12,13 +13,12 @@ export default function Friends({ user }: { user: IUser }) {
 
     useEffect(() => {
         if (user.id) {
-          fetch(`${url}/friends/` + user.id)
+            fetch(`${url}/friends/` + user.id)
                 .then((response) => response.json())
                 .then((data) => {
                     dispatch(setThisUsersFriends(data));
                 });
         }
-
 
     }, [user.id, user.friends, dispatch]);
 
@@ -28,7 +28,12 @@ export default function Friends({ user }: { user: IUser }) {
             <input type="text" className="w-full p-[5px] text-sm-13 border border-gray-200 mt-[20px] outline-none" placeholder="Search contacts" />
             <div className="w-full h-full no-scrollbar overflow-y-scroll flex flex-col mt-[20px] gap-5">
                 {
-                    (friends && friends.length) ? friends.map((item) => <FriendLabel friend={item.user_b} key={item.id} />) : <p className=" italic text-zinc-500 text-sm-14">This user has no friends yet...</p>
+                    friends ? (
+                        friends.length !== 0 ? friends.map((item) => <FriendLabel friend={item.user_b} key={item.id} />) :
+                            <p className=" italic text-zinc-500 text-sm-14">This user has no friends yet...</p>
+                    ) : <div className="w-full">
+                        <Loading />
+                    </div>
                 }
             </div>
         </div>

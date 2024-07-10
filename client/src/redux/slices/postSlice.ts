@@ -3,11 +3,11 @@ import { RootState } from '../store'
 import { ID, IPost } from '../../types'
 
 export interface PostState {
-	value: IPost[]
+	value: IPost[] | undefined
 }
 
 const initialState: PostState = {
-	value: []
+	value: undefined
 }
 
 export const postSlice = createSlice({
@@ -18,17 +18,25 @@ export const postSlice = createSlice({
 			state.value = action.payload;
 		},
 		addPost: (state, action: PayloadAction<IPost>) => {
-			state.value = [action.payload,...state.value];
+			if (state.value) {
+				state.value = [action.payload, ...state.value];
+			}
 		},
 		addPosts: (state, action: PayloadAction<IPost[]>) => {
-			state.value = [...state.value, ...action.payload];
+			if (state.value) {
+				state.value = [...state.value, ...action.payload];
+			}
 		},
 		deletePost: (state, action: PayloadAction<ID>) => {
-			state.value = state.value.filter(item => item.id !== action.payload);
+			if (state.value) {
+				state.value = state.value.filter(item => item.id !== action.payload);
+			}
 		},
 		updatePost: (state, action: PayloadAction<IPost>) => {
-			const thisPostIndex = state.value.findIndex(item => item.id === action.payload.id)
-			state.value.splice(thisPostIndex, 1, action.payload);
+			if (state.value) {
+				const thisPostIndex = state.value.findIndex(item => item.id === action.payload.id)
+				state.value.splice(thisPostIndex, 1, action.payload);
+			}
 		}
 	},
 })
