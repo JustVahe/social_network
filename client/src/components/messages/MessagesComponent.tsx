@@ -8,10 +8,12 @@ import { url } from "../../utils/enviromentConfig";
 import { FaMessage } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import ModalWindow from "../shared/ModalWindow";
+import { selectRoom, setRoom } from "../../redux/slices/roomSlice";
 
 export default function MessagesComponent() {
 
 	const rooms = useAppSelector(selectRooms);
+	const room = useAppSelector(selectRoom);
 	const currentUser = useAppSelector(selectCurrentUser);
 
 	const [modalType, setModalType] = useState<string | boolean>(false);
@@ -22,6 +24,9 @@ export default function MessagesComponent() {
 		fetch(`${url}/rooms?user_id=` + currentUser?.id)
 			.then(res => res.json())
 			.then(data => {
+				if (!room) {
+					dispatch(setRoom(data[0]));
+				}
 				dispatch(setRooms(data));
 			})
 		//elint-disble-next-line

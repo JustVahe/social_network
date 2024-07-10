@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { FaX } from "react-icons/fa6";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { deletePost, updatePost } from "../../redux/slices/postSlice";
-import { deletePostOfCurrentUser, updatePostOfCurrentUser } from "../../redux/slices/currentUserSlice";
-import { notifyError, notifySuccess } from "../../utils/toastification";
+import { notifyError, notifyPromise } from "../../utils/toastification";
 import { imageUrl, url } from "../../utils/enviromentConfig";
+import { deletePostFromCurrentUsersPosts, updatePostFromCurrentUsersPosts } from "../../redux/slices/currentUser'sPostsSlice";
 
 export default function AvatarDisplay({ user, status, post }: { user: IUser, status?: string, post?: IPost }) {
 
@@ -37,9 +37,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 		}
 
-
-
-	}, [post])
+	}, [post]);
 
 	const deleteHandler = async () => {
 
@@ -47,12 +45,11 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 		if (post) {
 
-			const deleteRequest = await fetch(`${url}/posts/` + post.id, { method: "DELETE" });
-			const data = await deleteRequest.json();
+			await fetch(`${url}/posts/` + post.id, { method: "DELETE" });
 
 			post.files.forEach(async (item) => {
 
-				const fileDeleteRequest = await fetch(`${url}/files/${item.id}?user_id=${user.id}` , { method: "DELETE" });
+				const fileDeleteRequest = await fetch(`${url}/files/${item.id}?user_id=${user.id}`, { method: "DELETE" });
 				const fileDeleteData = await fileDeleteRequest.json();
 
 				if (fileDeleteRequest.status !== 200) {
@@ -61,14 +58,8 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 			})
 
-			if (deleteRequest.status === 200) {
-				notifySuccess(data);
-			} else {
-				notifyError(data);
-			}
-
 			dispatch(deletePost(post.id));
-			dispatch(deletePostOfCurrentUser(post.id));
+			dispatch(deletePostFromCurrentUsersPosts(post.id));
 			setOptionsToggle(false);
 
 			await checkAccessToken();
@@ -98,7 +89,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 			const newPost = await (await fetch(`${url}/posts/${updateData.id}`)).json();
 			dispatch(updatePost(newPost));
-			dispatch(updatePostOfCurrentUser(newPost));
+			dispatch(updatePostFromCurrentUsersPosts(newPost));
 
 			setOptionsToggle(false);
 			setUpdateToggle(false);
@@ -114,9 +105,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 		<div className="w-full flex items-center gap-[10px] relative">
 			<img src={imageUrl + user.avatar} alt="avatar" className="w-[45px] h-[45px] object-cover object-top rounded-full" />
 			<div>
-				<p className="text-sm-14 font-bold text-sky-600">{
-					user.name + " " + user.surname
-				}</p>
+				<p className="text-sm-14 font-bold text-sky-600">{user.name + " " + user.surname}</p>
 				<p className="text-sm-11 text-zinc-400">Published at:
 					{createdAtDate && <span>{" " + createdAtDate.toDateString()}</span>}
 					{updatedAtDate && <span>{" " + updatedAtDate.toDateString()}</span>}
@@ -130,7 +119,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 						setUpdateToggle(false);
 					}}
 					className="w-[20px] h-[20px] text-zinc-700 ml-auto">
-					{ optionsTogggle ? <FaX /> : <FaEllipsisV /> }
+					{optionsTogggle ? <FaX /> : <FaEllipsisV />}
 				</button>
 			}
 			{
@@ -142,7 +131,11 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 							<FaEdit /> Edit Post
 						</button>
 						<button
-							onClick={() => deleteHandler()}
+							onClick={() => notifyPromise({
+								pendingText: "Loading...",
+								fulfilledText: "Post successfully deleted",
+								rejectedText: "Something went wrong"
+							}, deleteHandler())}
 							className="w-full p-2.5 flex gap-[5px] items-center transition hover:bg-sky-600 hover:text-white">
 							<FaTrash /> Delete Post
 						</button>
@@ -159,7 +152,11 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 							defaultValue={post?.message}
 							className="w-[70%] h-[150px] resize-none border border-zinc-400 outline-none" />
 						<button
-							onClick={updateHandler}
+							onClick={() => notifyPromise({
+								pendingText: "Loading...",
+								fulfilledText: "Post successfully updated",
+								rejectedText: "Something went wrong"
+							}, updateHandler())}
 							className="w-[28%] bg-sky-600 rounded-md text-white">
 							Update
 						</button>

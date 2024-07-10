@@ -27,3 +27,20 @@ export const notifySuccess = (text: string) => {
         transition: Bounce,
     });
 }
+
+interface IPromise {
+    pendingText: string,
+    fulfilledText: string,
+    rejectedText:string
+}
+
+export const notifyPromise = ({pendingText, fulfilledText, rejectedText} : IPromise, promise: Promise<unknown> | (() => Promise<unknown>) ) => {
+    toast.promise(
+        promise,
+        {
+          pending: pendingText,
+          success: fulfilledText,
+          error: rejectedText
+        }
+    )
+}

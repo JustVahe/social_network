@@ -5,7 +5,7 @@ import Likes from "./Likes";
 import CommentBar from "./../forms/CommentBar";
 import { imageUrl } from "../../utils/enviromentConfig";
 
-export default function Post({ postData, user, status }: { postData: IPost, user?: IUser, status?: string }) {
+export default function Post({ postData, user, status }: { postData: IPost, user?: IUser | null, status?: string }) {
 
 	return (
 		<div className="w-full flex flex-col gap-[15px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">

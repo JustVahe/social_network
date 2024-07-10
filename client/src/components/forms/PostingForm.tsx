@@ -1,12 +1,13 @@
 import { FaImage } from "react-icons/fa"
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks"
-import { addPostToCurrentUser, selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useRef, useState } from "react";
 import { IPost } from "../../types";
 import { addPost } from "../../redux/slices/postSlice";
-import { notifyError } from "../../utils/toastification";
+import { notifyError, notifyPromise } from "../../utils/toastification";
 import { useHandlers } from "../../utils/hooks/handlers";
 import { imageUrl, url } from "../../utils/enviromentConfig";
+import { addPostToCurrentUsersPosts } from "../../redux/slices/currentUser'sPostsSlice";
 
 export default function PostingForm() {
 
@@ -55,7 +56,7 @@ export default function PostingForm() {
 				const postRequest = await fetch(`${url}/posts/${data.id}`);
 				const post: IPost = await postRequest.json();
 
-				dispatch(addPostToCurrentUser(post));
+				dispatch(addPostToCurrentUsersPosts(post));
 				dispatch(addPost(post));
 				setMessage("");
 				setFiles(undefined);
@@ -66,7 +67,7 @@ export default function PostingForm() {
 				const postRequest = await fetch(`${url}/posts/${data.id}`);
 				const post: IPost = await postRequest.json();
 
-				dispatch(addPostToCurrentUser(post));
+				dispatch(addPostToCurrentUsersPosts(post));
 				dispatch(addPost(post));
 				setMessage("");
 			}
@@ -127,7 +128,11 @@ export default function PostingForm() {
 							const files = eventTarget.files;
 							setFiles(files);
 						}} />
-					<button onClick={(event) => postUploadingHandler(event)} className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>
+					<button onClick={(event) => notifyPromise({
+						pendingText: "Loading...",
+						fulfilledText: "Post successfully uploaded",
+						rejectedText: "Something went wrong"
+					},postUploadingHandler(event))} className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>
 				</div>
 			</div>
 		</div>

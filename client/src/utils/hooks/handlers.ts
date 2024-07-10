@@ -71,7 +71,18 @@ export const useHandlers = () => {
 
     }
 
-    return { sortHandler, friendAddingHandler, friendRequestAddingHandler, unfriendHandler, requestDeclineHandler };
+    const resetAllStates = () => {
+
+    }
+
+    return { 
+        sortHandler, 
+        friendAddingHandler, 
+        friendRequestAddingHandler, 
+        unfriendHandler, 
+        requestDeclineHandler,
+        resetAllStates
+    };
 
 }
 

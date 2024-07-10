@@ -3,10 +3,12 @@ import { ModalResponse } from "../Image";
 import { IPhoto } from "../../../types";
 import { useCheck } from "../../../utils/hooks/useCheck";
 import { url } from "../../../utils/enviromentConfig";
+import { notifyPromise } from "../../../utils/toastification";
 
-export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image }:
+export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image, modalResponse }:
     {
         setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
+        modalResponse?: ModalResponse | undefined, 
         setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>,
         image: IPhoto
     }) {
@@ -15,25 +17,30 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
 
     const deleteHandler = async () => {
 
-        await checkAccessToken();
+        try {
+            await checkAccessToken();
 
-        const fileDeleteRequest = await fetch(`${url}/files/` + image.id, { method: "DELETE" });
-        const fileDeleteData = await fileDeleteRequest.json()
+            const fileDeleteRequest = await fetch(`${url}/files/` + image.id, { method: "DELETE" });
+            const fileDeleteData = await fileDeleteRequest.json();
 
-        if (fileDeleteRequest.status !== 200) {
-            setModalResponse({
-                type: "error",
-                message: fileDeleteData
-            });
-        } else {
-            setModalResponse({
-                type: "success",
-                message: fileDeleteData
-            })
+            if (fileDeleteRequest.status !== 200) {
+                setModalResponse({
+                    type: "error",
+                    message: fileDeleteData
+                });
+            } else {
+                setModalResponse({
+                    type: "success",
+                    message: fileDeleteData
+                })
+                setModalType(false);
+                await checkAccessToken();
+            }
+
+        } catch (error) {
+            console.log(error);
         }
-
-        await checkAccessToken();
-
+        
     }
 
 
@@ -59,7 +66,11 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
                 </button>
                 <button
                     onClick={() => {
-                        deleteHandler();
+                        notifyPromise({
+                            pendingText: "Loading...",
+                            fulfilledText: "Image successfully deleted",
+                            rejectedText: "Something went wrong : " + modalResponse?.message
+                        }, deleteHandler());
                     }}
                     className="bg-sky-600 p-[5px] text-sm-14 text-white font-bold rounded-md">
                     Delete Anyway

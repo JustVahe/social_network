@@ -13,11 +13,12 @@ import ChatEdit from "./modalWindowComponents/ChatEdit";
 import { imageUrl } from "../../utils/enviromentConfig";
 import Explore from "./modalWindowComponents/Explore";
 
-export default function ModalWindow({ type, image, setModalType, setModalResponse }:
+export default function ModalWindow({ type, image, setModalType, setModalResponse, modalResponse }:
     {
         type: string | boolean,
         image?: IPhoto,
         setModalType?: React.Dispatch<React.SetStateAction<boolean | string>>,
+        modalResponse?: ModalResponse | undefined,
         setModalResponse?: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>
     }) {
 
@@ -57,9 +58,9 @@ export default function ModalWindow({ type, image, setModalType, setModalRespons
                         </div>
                     }
                 </div> : type === "are_you_sure_to_delete_this_image_related_to_post" ?
-                    <AreYouSureToDeleteTheImageRelatedToPost setModalType={setModalType} image={image} setModalResponse={setModalResponse} />
+                    <AreYouSureToDeleteTheImageRelatedToPost setModalType={setModalType} modalResponse={modalResponse} image={image} setModalResponse={setModalResponse} />
                     : type === "are_you_sure_to_delete_this_image" ?
-                        <AreYouSureToDeleteThisImage setModalType={setModalType} image={image} setModalResponse={setModalResponse} />
+                        <AreYouSureToDeleteThisImage setModalType={setModalType} image={image} modalResponse={modalResponse} setModalResponse={setModalResponse} />
                         : type === "update_image" ?
                             <UpdateImage setModalType={setModalType} image={image} setModalResponse={setModalResponse} />
                             :

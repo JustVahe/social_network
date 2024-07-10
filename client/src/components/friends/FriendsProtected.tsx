@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { selectUsersFriends, setUsersFriends } from "../../redux/slices/usersFriends";
 import { url } from "../../utils/enviromentConfig";
+import Loading from "../shared/Loading";
 
 export default function FriendsProtected() {
     const usersFriends = useAppSelector(selectUsersFriends);
@@ -17,7 +18,7 @@ export default function FriendsProtected() {
                 .then((data) => {
                     dispatch(setUsersFriends(data));
                 }
-            );
+                );
         }
 
     }, [currentUser?.id, dispatch]);
@@ -28,7 +29,12 @@ export default function FriendsProtected() {
             <input type="text" className="w-full p-[5px] text-sm-13 border border-gray-200 mt-[20px] outline-none" placeholder="Search contacts" />
             <div className="w-full h-full no-scrollbar overflow-y-scroll flex flex-col mt-[20px] gap-5">
                 {
-                    usersFriends && usersFriends.map((item) => item.user_b && <FriendLabel friend={item.user_b} key={item.id} />)
+                    usersFriends ? (
+                        usersFriends.length !== 0 ? usersFriends.map((item) => <FriendLabel friend={item.user_b} key={item.id} />) :
+                            <p className=" italic text-zinc-500 text-sm-14">This user has no friends yet...</p>
+                    ) : <div className="w-full">
+                        <Loading />
+                    </div>
                 }
             </div>
         </div>

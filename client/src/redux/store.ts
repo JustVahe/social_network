@@ -12,12 +12,13 @@ import usersFriendsReducer from "./slices/usersFriends";
 import thisUsersFriendsReducer from "./slices/thisUsersFriends";
 import roomReducer from "./slices/roomSlice"
 import roomsReducer from "./slices/roomsSlice";
-import friendsReducer from "./slices/friendsSlice";
+import friendsReducer from "./slices/currentUser'sPostsSlice";
 
 const persistConfig = {
-    key: "root",
+    key: "user",
     version: 1,
-    storage
+    storage,
+    whitelist: ['currentUser', 'isAuth']
 }
 
 const reducer = combineReducers({
@@ -32,7 +33,7 @@ const reducer = combineReducers({
     thisUsersFriends: thisUsersFriendsReducer,
     room: roomReducer,
     rooms: roomsReducer,
-    friends: friendsReducer
+    currentUsersPosts: friendsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer);
