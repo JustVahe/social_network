@@ -18,13 +18,11 @@ const ProtectedHomeRoute = () => {
         //eslint-disable-next-line
     }, []);
 
-    if (!isAuth) {
-        return <Navigate to="/signIn" state={{ from: location }} replace />
-    } else if (!currentUser) {
+    if (!isAuth || !currentUser) {
         return <div className="fixed w-full h-screen bg-sky-600 grid place-items-center">
             <div className="loader"></div>
         </div>
-    }
+    } 
     return <Navigate to="/dashboard" state={{ from: location }} replace />;
 
 };
