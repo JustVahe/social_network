@@ -3,7 +3,7 @@ import { ID, IUser } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setHeaderImg } from "../../redux/slices/currentUserSlice";
-import { notifyError, notifySuccess } from "../../utils/toastification";
+import { notifyPromise } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
 
 export default function UserEditButtons({ id }: { id: ID }) {
@@ -11,7 +11,6 @@ export default function UserEditButtons({ id }: { id: ID }) {
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const formData = new FormData();
-
 
     const coverImageEditHandler = async (eventTarget: HTMLInputElement) => {
         
@@ -27,9 +26,7 @@ export default function UserEditButtons({ id }: { id: ID }) {
             const headerData = await headerResponse.json();
 
             if (headerResponse.status !== 200 ) {
-                notifyError(headerData);
-            }else {
-                notifySuccess(headerData);
+                throw new Error(headerData);
             }
 
             const getResponse = await fetch(`${url}/users/${id}`);
@@ -48,7 +45,10 @@ export default function UserEditButtons({ id }: { id: ID }) {
             </button>
             <input onChange={(event) => {
                 const eventTarget = event.target as HTMLInputElement;
-                coverImageEditHandler(eventTarget);
+                notifyPromise(coverImageEditHandler(eventTarget),{
+                    pendingText: "Loading",
+                    fulfilledText: "Cover image successfully uploaded"
+                })
             }} type="file" id="file" className="hidden" />
             <label htmlFor="file" className="transition hover:text-white"><FaImage /></label>
         </div>

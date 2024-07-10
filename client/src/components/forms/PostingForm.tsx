@@ -128,11 +128,10 @@ export default function PostingForm() {
 							const files = eventTarget.files;
 							setFiles(files);
 						}} />
-					<button onClick={(event) => notifyPromise({
+					<button onClick={(event) => notifyPromise(postUploadingHandler(event),{
 						pendingText: "Loading...",
-						fulfilledText: "Post successfully uploaded",
-						rejectedText: "Something went wrong"
-					},postUploadingHandler(event))} className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>
+						fulfilledText: "Post successfully uploaded"
+					})} className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>
 				</div>
 			</div>
 		</div>

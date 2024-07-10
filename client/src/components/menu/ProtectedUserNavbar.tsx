@@ -6,15 +6,16 @@ import { selectCurrentUser, setAvatar } from '../../redux/slices/currentUserSlic
 import 'react-toastify/dist/ReactToastify.css';
 import { useCheck } from '../../utils/hooks/useCheck';
 import { IUser } from '../../types';
-import { notifyError, notifySuccess } from '../../utils/toastification';
+import { notifyPromise } from '../../utils/toastification';
 import { imageUrl, url } from '../../utils/enviromentConfig';
 
 export default function ProtectedUserNavbar() {
 
     const [dropdownToggle, setDropdownToggle] = useState(false);
-    
+
     const { checkAccessToken } = useCheck();
     const [avatarToggle, setAvatarToggle] = useState<boolean>(false);
+    const [avatarError, setAvatarError] = useState<string | undefined>();
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
 
@@ -22,28 +23,32 @@ export default function ProtectedUserNavbar() {
 
     async function avatarUploadHandle(eventTarget: HTMLInputElement) {
 
-        if (eventTarget.files) {
+        try {
+            if (eventTarget.files) {
 
-            await checkAccessToken();
-            formData.append('file', eventTarget.files[0]);
+                await checkAccessToken();
+                formData.append('file', eventTarget.files[0]);
 
-            const updateResponse = await fetch(`${url}/files/${currentUser?.id}/avatar`, {
-                method: "PUT",
-                body: formData
-            });
-            const updateData = await updateResponse.json();
+                const updateResponse = await fetch(`${url}/files/${currentUser?.id}/avatar`, {
+                    method: "PUT",
+                    body: formData
+                });
+                const updateData = await updateResponse.json();
 
-            if (updateResponse.status !== 200) {
-                notifyError(updateData);
-            } else {
-                notifySuccess(updateData);
+                if (updateResponse.status !== 200) {
+                    setAvatarError(updateData);
+                    throw new Error(updateData);
+                }
+
+                const getResponse = await fetch(`${url}/users/${currentUser?.id}`);
+                const getData: IUser = await getResponse.json();
+                dispatch(setAvatar(getData.avatar));
+
             }
-
-            const getResponse = await fetch(`${url}/users/${currentUser?.id}`);
-            const getData: IUser = await getResponse.json();
-            dispatch(setAvatar(getData.avatar));
-
+        } catch (error) {
+            throw new Error("400");
         }
+
 
     }
 
@@ -114,7 +119,18 @@ export default function ProtectedUserNavbar() {
                     </label>
                     <input onChange={(event) => {
                         const eventTarget = event.target as HTMLInputElement;
-                        avatarUploadHandle(eventTarget);
+                        if (avatarError) {
+                            notifyPromise(avatarUploadHandle(eventTarget),{
+                                pendingText: "Loading...",
+                                fulfilledText: "Avatar Successfully updated",
+                            })   
+                        } else {
+                            notifyPromise(avatarUploadHandle(eventTarget),{
+                                pendingText: "Loading...",
+                                fulfilledText: "Avatar Successfully updated",
+                            });
+                        }
+                                             
                     }} type="file" id='avatar' className='hidden' />
                 </div>
             </div>

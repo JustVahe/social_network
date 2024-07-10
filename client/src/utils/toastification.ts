@@ -29,18 +29,22 @@ export const notifySuccess = (text: string) => {
 }
 
 interface IPromise {
-    pendingText: string,
-    fulfilledText: string,
-    rejectedText:string
+    pendingText: string | undefined,
+    fulfilledText: string | undefined
 }
 
-export const notifyPromise = ({pendingText, fulfilledText, rejectedText} : IPromise, promise: Promise<unknown> | (() => Promise<unknown>) ) => {
+export const notifyPromise = (promise: Promise<unknown> | (() => Promise<unknown>), {pendingText, fulfilledText} : IPromise ) => {
     toast.promise(
         promise,
         {
           pending: pendingText,
           success: fulfilledText,
-          error: rejectedText
+          error: {
+            render({data}) {
+                const error = data as Error;
+                return error.message;
+            }
+          }
         }
     )
 }
