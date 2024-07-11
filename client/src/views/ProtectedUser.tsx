@@ -7,21 +7,27 @@ import { useAppSelector } from "../redux/typedHooks.ts";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice.ts";
 import ProtectedUserFeed from "../components/protectedUser/ProtectedUserFeed.tsx";
 import ProtectedUserNavbar from "../components/menu/ProtectedUserNavbar.tsx";
-import { useEffect } from "react";
-import { useCheck } from "../utils/hooks/useCheck.ts";
 import ProtectedPhotoFeed from "../components/protectedUser/ProtectedPhotoFeed.tsx";
 import UserEditFeed from "../components/feed/UserEditFeed.tsx";
 import { imageUrl } from "../utils/enviromentConfig.ts";
+import { useEffect, useState } from "react";
 
 export default function ProtectedUser({ page }: { page: string }) {
 
 	const currentUser = useAppSelector(selectCurrentUser);
-	const { checkAccessToken } = useCheck();
+	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
-		checkAccessToken();
-		//eslint-disable-next-line
-	}, []);
+
+		if (window.innerWidth <= 640) {
+			console.log("window.innerWidth");
+			console.log(isMobile);
+			setIsMobile(false)
+		} else {
+			setIsMobile(true)
+		}
+
+	}, [window.innerWidth]);
 
 	return currentUser && (
 		<>

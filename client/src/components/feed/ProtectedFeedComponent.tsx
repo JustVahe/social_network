@@ -1,7 +1,6 @@
 import Post from "../post/Post";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { useEffect } from "react";
 import { selectCurrrentUsersPosts, setCurrentUsersPosts } from "../../redux/slices/currentUser'sPostsSlice";
 import { url } from "../../utils/enviromentConfig";
@@ -9,13 +8,11 @@ import Loading from "../shared/Loading";
 
 export default function ProtectedFeedComponent() {
 
-    const { checkAccessToken } = useCheck();
     const currentUser = useAppSelector(selectCurrentUser);
     const dispatch = useAppDispatch();
     const currentUsersPosts = useAppSelector(selectCurrrentUsersPosts);
 
     useEffect(() => {
-        checkAccessToken();
 
         fetch(`${url}/posts?user_id=${currentUser?.id}`)
             .then(res => res.json())

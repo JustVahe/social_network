@@ -9,29 +9,29 @@ router.get("/", async (request, response) => {
         const { user_id, target_id } = request.query;
 
         if (user_id && target_id) {
+
+            console.log({ user_id, target_id });
+
             const room = await Room.findOne({
                 include: {
                     all: true
                 },
                 where: {
-                    [Op.or]: [{ user_a_id: user_id }, { user_b_id: user_id }],
-                    [Op.or]: [{ user_a_id: target_id }, { user_b_id: target_id }]
+                    [Op.or]: {
+                        [Op.and]: [{ user_a_id: user_id }, { user_b_id: target_id }],
+                        [Op.and]: [{ user_a_id: target_id }, { user_b_id: user_id }]
+                    }
                 }
             });
 
             if (room) {
                 const modifiedRoom = JSON.parse(JSON.stringify(room));
-
                 if (modifiedRoom.user_b_id === user_id) {
-
                     const tempVar = modifiedRoom.user_a;
                     modifiedRoom.user_a = modifiedRoom.user_b;
                     modifiedRoom.user_b = tempVar;
-
                     [modifiedRoom.user_a_id, modifiedRoom.user_b_id] = [modifiedRoom.user_b_id, modifiedRoom.user_a_id];
-
                 }
-
                 return response.status(200).json(modifiedRoom);
             } else {
                 return response.status(200).json(room);
@@ -59,20 +59,16 @@ router.get("/", async (request, response) => {
             });
 
             const modifiedRooms = [...JSON.parse(JSON.stringify(rooms)), ...JSON.parse(JSON.stringify(chats))];
-
             modifiedRooms.forEach(item => {
-
                 if (item.user_b_id && item.user_b_id === user_id) {
                     const tempVar = item.user_a;
                     item.user_a = item.user_b;
                     item.user_b = tempVar;
                     [item.user_a_id, item.user_b_id] = [item.user_b_id, item.user_a_id];
                 }
-
             });
 
             return response.status(200).json(modifiedRooms);
-
         } else {
             return response.status(200).json("At least user id is required");
         }

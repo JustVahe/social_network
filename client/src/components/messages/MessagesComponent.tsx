@@ -24,7 +24,7 @@ export default function MessagesComponent() {
 		fetch(`${url}/rooms?user_id=` + currentUser?.id)
 			.then(res => res.json())
 			.then(data => {
-				if (!room) {
+				if (!room || room.user_a.id !== currentUser?.id) {
 					dispatch(setRoom(data[0]));
 				}
 				dispatch(setRooms(data));
@@ -40,9 +40,7 @@ export default function MessagesComponent() {
 				</span>
 				All Messages
 			</p>
-			{
-				modalType && <ModalWindow type={modalType} setModalType={setModalType} />
-			}
+			{modalType && <ModalWindow type={modalType} setModalType={setModalType} />}
 			{
 				rooms ? (
 					rooms.length === 0 ? <div className="w-full flex justify-between items-center">
@@ -53,7 +51,7 @@ export default function MessagesComponent() {
 								className="w-[160px] rounded-md bg-sky-600 text-white text-sm-13 p-[5px] flex justify-between items-center transition hover:bg-sky-700">
 								Create Group Chat <FaMessage />
 							</button>
-							<button 
+							<button
 								onClick={() => setModalType("explore")}
 								className="w-[160px] bg-sky-600 text-white rounded-md text-sm-13 p-[5px] flex justify-between items-center transition hover:bg-sky-700">
 								Find Someone <FaSearch />
