@@ -2,11 +2,11 @@ import { FormEvent, useState } from 'react'
 import { IComment, IReply } from './../../types'
 import Reply from './Reply'
 import { useCheck } from '../../utils/hooks/useCheck'
-import { notifyError, notifySuccess } from '../../utils/toastification'
 import { useAppDispatch, useAppSelector } from '../../redux/typedHooks'
 import { updateComment } from '../../redux/slices/commentSlice'
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice'
 import { url } from '../../utils/enviromentConfig'
+import { notifyPromise } from '../../utils/toastification'
 
 export default function ReplyList({ thisComment, replyToggle, setReplyToggle, setThisComment }:
     {
@@ -21,6 +21,7 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
     const [message, setMessage] = useState<string | undefined>();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
+    const [ok, setOk] = useState(true);
 
     const replyHandler = async (event: FormEvent) => {
 
@@ -34,19 +35,13 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
                 message
             }
 
-            const replyResponse = await fetch(`${url}/replies/`, {
+            await fetch(`${url}/replies/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify(body)
             });
-
-            if (replyResponse.status === 200) {
-                notifySuccess(`You replied to the comment of '${thisComment.user.username}'`);
-            } else {
-                notifyError("Something went wrong");
-            }
 
             const repliesData: IComment = await (await fetch(`${url}/comments/` + thisComment.id)).json();
 
@@ -58,6 +53,22 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
         }
 
         await checkAccessToken();
+
+    }
+
+    const replyAddingToggler = async (event: FormEvent) => {
+
+        try {
+            
+            if (ok) {
+                setOk(false);
+                await replyHandler(event);
+                setOk(true);
+            }
+
+        } catch (error) {
+            throw error;
+        }
 
     }
 
@@ -73,7 +84,12 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
                         type="text"
                         className='border border-gray-200 rounded-sm p-[5px]' />
                     <button
-                        onClick={replyHandler}
+                        onClick={(event) => {
+                            notifyPromise(replyAddingToggler(event),{
+                                pendingText: "Loading...",
+                                fulfilledText: `You replied to ${thisComment.user.username}`
+                            })
+                        }}
                         className='bg-sky-600 rounded-md p-[5px] text-white'>
                         Reply
                     </button>

@@ -1,6 +1,5 @@
 const router = require("express").Router();
-const { File, User, Post } = require("../../models/index");
-const { headerImgStorage, avatarStorage, postStorage, photoStorage, onePhotoSendingStorage } = require("../utils/storages")
+const { File, User } = require("../../models/index");
 const multer = require("multer");
 const fs = require("fs");
 const supabase = require("../utils/supabaseClient");
@@ -8,23 +7,23 @@ const { imageFilter } = require("../utils/fileFilters");
 const { decode } = require("base64-arraybuffer")
 
 const uploadHeader = multer({
-    storage: headerImgStorage,
+    storage: multer.memoryStorage(),
     fileFilter: imageFilter
 }).single('file');
 const uploadAvatar = multer({
-    storage: avatarStorage,
+    storage: multer.memoryStorage(),
     fileFilter: imageFilter
 }).single('file');
 const uploadPost = multer({
-    storage: postStorage,
+    storage: multer.memoryStorage(),
     fileFilter: imageFilter
 }).array("files", 10);
 const uploadPhotos = multer({
-    storage: photoStorage,
+    storage: multer.memoryStorage(),
     fileFilter: imageFilter
 }).array("files", 10);
 const uploadPhoto = multer({
-    storage: onePhotoSendingStorage,
+    storage: multer.memoryStorage(),
     fileFilter: imageFilter
 }).single("file");
 
@@ -245,17 +244,25 @@ router.put("/:id", async (request, response) => {
 
             const file = await File.findOne({ where: { id } });
 
-            const path = `${__dirname}../../../public/${file.path}`;
+            const [, , ...rest] = file.path.split("/");
+            const path = rest.join("/");
             const newPath = `/assets/${user_id}/images/${requestFile.originalname}`;
 
-            const { data, error } = supabase.storage.from("assets").remove()
+            const { removeError } = await supabase.storage.from("assets").remove(path);
+            if (removeError) return response.status(400).json("File is not deleted : " + error.message);
 
             file.path = newPath;
             file.save();
 
-            fs.appendFile(requestFile.path, 'Hello content!', function (err) {
-                if (err) throw err;
-            });
+            const fileBase64 = decode(requestFile.buffer.toString("base64"));
+
+            const { error } = await supabase.storage.from("assets")
+                .upload(`${user_id}/images/${requestFile.originalname}`, fileBase64, {
+                    cacheControl: '300',
+                    upsert: true,
+                    contentType: requestFile.mimetype
+                });
+            if (error) return response.status(400).json({ message: error.message });
 
             return response.status(200).json("Image is successfully updated");
 
@@ -276,11 +283,10 @@ router.delete("/:id", async (request, response) => {
         const file = await File.findOne({
             where: { id }
         });
-    
 
         file.destroy();
 
-        const [,, ...rest] = file.path.split("/");
+        const [, , ...rest] = file.path.split("/");
         const path = rest.join("/");
         const { error } = await supabase.storage.from("assets").remove(path);
         if (error) return response.status(400).json("File is not deleted : " + error.message);
