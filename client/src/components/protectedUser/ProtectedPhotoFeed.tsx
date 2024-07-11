@@ -1,12 +1,28 @@
-import { useAppSelector } from "../../redux/typedHooks";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import ProtectedShortcuts from "../menu/ProtectedShortcuts";
 import ProtectedPhotoComponent from "./ProtectedPhotoComponent";
 import FriendsProtected from "../friends/FriendsProtected";
+import { useEffect } from "react";
+import { url } from "../../utils/enviromentConfig";
+import { setCurrentUsersPhotos } from "../../redux/slices/currentUsersPhotosSlice";
 
 export default function ProtectedPhotoFeed() {
 
     const currentUser = useAppSelector(selectCurrentUser);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+
+        setTimeout(() => {
+            fetch(`${url}/files/` + currentUser?.id)
+                .then((res) => res.json())
+                .then(data => {
+                    dispatch(setCurrentUsersPhotos(data));
+                });
+        }, 500)
+
+    }, [])
 
     return (
         currentUser &&

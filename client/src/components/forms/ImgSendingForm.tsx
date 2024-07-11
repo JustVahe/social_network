@@ -1,44 +1,61 @@
 import { useState } from "react"
-import { useAppSelector } from "../../redux/typedHooks";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
-import { notifyError, notifySuccess } from "../../utils/toastification";
+import { notifyPromise } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
+import { addPhotoToCurrentUser } from "../../redux/slices/currentUsersPhotosSlice";
 
 export default function ImgSendingForm() {
 
-    const [files, setFiles] = useState<FileList | null>(); 
+    const [files, setFiles] = useState<FileList | null>();
     const currentUser = useAppSelector(selectCurrentUser);
     const { checkAccessToken } = useCheck();
     const formData = new FormData;
+    const [ok, setOk] = useState(true);
+    const dispatch = useAppDispatch();
 
     const photoUploadHandler = async () => {
 
         await checkAccessToken();
 
-        if (currentUser && files) {
-            
-            Array.from(files).forEach(file => {
-                formData.append("files", file);
-            });
+        try {
+            if (currentUser && files) {
 
-            const fileResponse = await fetch(`${url}/files/${currentUser.id}`, {
-                method: "POST",
-                body: formData
-            });
+                Array.from(files).forEach(file => {
+                    formData.append("files", file);
+                });
 
-            const newFileData = await fileResponse.json();
+                const fileUploadResponse = await fetch(`${url}/files/${currentUser.id}`, {
+                    method: "POST",
+                    body: formData
+                });
+                const fileUploadData = await fileUploadResponse.json();
 
-            if (fileResponse.status !== 200) {
-                notifyError(newFileData);
-            } else {
-                notifySuccess(newFileData);
+                dispatch(addPhotoToCurrentUser(fileUploadData));
+                setFiles(null);
+                await checkAccessToken();
+
+            } else if (!files) {
+                throw new Error("Please add your images")
             }
+        }
+        catch (error) {
+            console.log(error);
+            throw error;
+        }
 
-            setFiles(null);
+    }
+    const photoUploadToggler = async () => {
 
-            await checkAccessToken();
-
+        try {
+            if (ok) {
+                setOk(false);
+                await photoUploadHandler();
+                setOk(true);
+            }
+        } catch (error) {
+            throw error;
         }
 
     }
@@ -53,18 +70,23 @@ export default function ImgSendingForm() {
                         className="w-[120px] p-2.5 cursor-pointer bg-sky-600 rounded-md text-center text-white text-sm-13 font-bold">
                         Select Images
                     </label>
-                    <input 
-                        multiple 
-                        type="file" 
-                        name="image-send" 
-                        id="image-send" 
+                    <input
+                        multiple
+                        type="file"
+                        name="image-send"
+                        id="image-send"
                         className="hidden"
                         onChange={(event) => {
                             const eventTarget = event.target as HTMLInputElement;
                             setFiles(eventTarget.files);
                         }} />
-                    <button 
-                        onClick={photoUploadHandler}
+                    <button
+                        onClick={() => {
+                            notifyPromise(photoUploadToggler(), {
+                                pendingText: "Loading",
+                                fulfilledText: "Image uploaded successfully"
+                            });
+                        }}
                         className="w-[70px] p-2.5 bg-green-600 text-white text-sm-13 font-bold rounded-md">
                         Send
                     </button>

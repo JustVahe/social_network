@@ -6,6 +6,7 @@ import { deletePost } from "../../../redux/slices/postSlice";
 import { ModalResponse } from "../Image";
 import { url } from "../../../utils/enviromentConfig";
 import { deletePostFromCurrentUsersPosts } from "../../../redux/slices/currentUser'sPostsSlice";
+import { deletePhotoOfCurrentUser } from "../../../redux/slices/currentUsersPhotosSlice";
 
 interface IProps {
     setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
@@ -59,6 +60,7 @@ export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, 
 
             dispatch(deletePost(image.post_id));
             dispatch(deletePostFromCurrentUsersPosts(image.post_id));
+            dispatch(deletePhotoOfCurrentUser(image));
             setModalType(false);
 
             await checkAccessToken();

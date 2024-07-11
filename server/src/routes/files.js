@@ -33,8 +33,9 @@ router.get("/:user_id", async (request, response) => {
 
         const { user_id } = request.params;
         const files = await File.findAll({
-            where: { user_id }
-        })
+            where: { user_id },
+            order: [['updatedAt', 'DESC']]
+        });
 
         return response.status(200).json(files);
 
@@ -164,17 +165,14 @@ router.post("/:user_id/post/",
 
                     const fileBase64 = decode(file.buffer.toString("base64"));
 
-                    const { data, error } = await supabase.storage.from("assets")
+                    const { error } = await supabase.storage.from("assets")
                         .upload(`${user_id}/images/posts/${file.originalname}`, fileBase64, {
                             cacheControl: '300',
                             upsert: true,
                             contentType: file.mimetype
                         });
-
                     if (error) return response.status(400).json({ message: error.message });
-
                     await File.create({ user_id, post_id, path, type });
-
                 }
 
                 const createdFiles = await File.findAll({ where: { post_id } });
@@ -198,6 +196,7 @@ router.post("/:user_id",
             try {
                 const { user_id } = request.params;
                 const files = request.files;
+                const newFiles = [];
 
                 for (const file of files) {
                     const path = `/assets/${user_id}/images/${file.originalname}`;
@@ -219,9 +218,11 @@ router.post("/:user_id",
                         path,
                         type
                     });
+
+                    newFiles.push(newFile);
                 }
 
-                return response.status(200).json("Files have been successfully uploaded");
+                return response.status(200).json(newFiles);
 
             } catch (error) {
                 console.log(error);
@@ -264,7 +265,9 @@ router.put("/:id", async (request, response) => {
                 });
             if (error) return response.status(400).json({ message: error.message });
 
-            return response.status(200).json("Image is successfully updated");
+            const newFile = await File.findOne({where : {id}});
+
+            return response.status(200).json(newFile);
 
         } catch (error) {
             console.log(error);

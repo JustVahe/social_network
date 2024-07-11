@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice"
 import postReducer from "./slices/postSlice"
 import commentReducer from "./slices/commentSlice"
-import photoReducer from "./slices/photoSlice"
+import photoReducer from "./slices/currentUsersPhotosSlice"
 import currentUserReducer from "./slices/currentUserSlice";
 import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
