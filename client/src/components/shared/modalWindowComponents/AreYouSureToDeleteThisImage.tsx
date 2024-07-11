@@ -4,16 +4,19 @@ import { IPhoto } from "../../../types";
 import { useCheck } from "../../../utils/hooks/useCheck";
 import { url } from "../../../utils/enviromentConfig";
 import { notifyPromise } from "../../../utils/toastification";
+import { useAppDispatch } from "../../../redux/typedHooks";
+import { deletePhotoOfCurrentUser } from "../../../redux/slices/currentUsersPhotosSlice";
 
 export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image }:
     {
         setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
-        modalResponse?: ModalResponse | undefined, 
+        modalResponse?: ModalResponse | undefined,
         setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>,
         image: IPhoto
     }) {
 
     const { checkAccessToken } = useCheck();
+    const dispatch = useAppDispatch();
 
     const deleteHandler = async () => {
 
@@ -34,13 +37,14 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
                     message: fileDeleteData
                 })
                 setModalType(false);
+                dispatch(deletePhotoOfCurrentUser(image));
                 await checkAccessToken();
             }
 
         } catch (error) {
             console.log(error);
         }
-        
+
     }
 
 
@@ -66,7 +70,7 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
                 </button>
                 <button
                     onClick={() => {
-                        notifyPromise(deleteHandler(),{
+                        notifyPromise(deleteHandler(), {
                             pendingText: "Loading...",
                             fulfilledText: "Image successfully deleted",
                         });

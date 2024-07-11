@@ -1,10 +1,11 @@
 import { useState } from "react"
-import { useAppSelector } from "../../redux/typedHooks";
+import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { IPhoto } from "../../types";
-import { notifyError, notifySuccess } from "../../utils/toastification";
+import { notifyPromise } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
+import { updatePhotoOfCurrentUser } from "../../redux/slices/currentUsersPhotosSlice";
 
 export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto, setModalType: React.Dispatch<React.SetStateAction<boolean | string>>}) {
 
@@ -12,6 +13,8 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
     const currentUser = useAppSelector(selectCurrentUser);
     const { checkAccessToken } = useCheck();
     const formData = new FormData();
+    const [ok, setOk] = useState(true);
+    const dispatch = useAppDispatch();
 
     const photoUploadHandler = async () => {
 
@@ -29,18 +32,30 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
 
             const updateImageData = await fileResponse.json();
 
+            console.log(updateImageData);
+
             if (fileResponse.status !== 200) {
-                notifyError(updateImageData);
-            } else {
-                notifySuccess(updateImageData);
+                throw new Error(updateImageData);
             }
 
             setModalType(false);
             setFile(null);
-            await checkAccessToken();
+            dispatch(updatePhotoOfCurrentUser(updateImageData));
 
         }
 
+    }
+
+    const photoUpdateToggler = async () => {
+        try {
+            if (ok) {
+                setOk(false);
+                await photoUploadHandler();
+                setOk(true);
+            }
+        } catch (error) {
+            throw error;
+        }
     }
 
     return (
@@ -66,7 +81,12 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
                             }
                         }} />
                     <button
-                        onClick={photoUploadHandler}
+                        onClick={() => {
+                            notifyPromise(photoUpdateToggler(), {
+                                pendingText: "Loading...",
+                                fulfilledText: "Image successfully uploaded"
+                            })
+                        }}
                         className="w-[70px] p-2.5 bg-green-600 text-white text-sm-13 font-bold rounded-md">
                         Send
                     </button>
