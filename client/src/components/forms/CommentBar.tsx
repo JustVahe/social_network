@@ -1,7 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { FaMessage } from "react-icons/fa6";
-// import { useAppSelector } from "../../redux/typedHooks";
-import { notifyError } from "../../utils/toastification";
 import { IPost } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { addComment } from "../../redux/slices/commentSlice";
@@ -9,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { updatePost } from "../../redux/slices/postSlice";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { url } from "../../utils/enviromentConfig";
+import { notifyPromise } from "../../utils/toastification";
 
 export default function CommentBar({ postData }: { postData?: IPost }) {
 
@@ -16,7 +15,8 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
-    
+    const [ok, setOk] = useState(true);
+
     const commentSendingHandler = async (event: FormEvent) => {
 
         event.preventDefault();
@@ -64,9 +64,22 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
             }
 
         } catch (error: unknown) {
-            const commentEmptynessError = error as Error;
-            notifyError(commentEmptynessError.message);
+            throw error;
         }
+    }
+
+    const commentAddingToggler = async (event: FormEvent) => {
+
+        try {
+            if (ok) {
+                setOk(false);
+                await commentSendingHandler(event);
+                setOk(true);
+            }
+        } catch (error) {
+            throw error;
+        }
+
     }
 
     return (
@@ -76,12 +89,15 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
                     value={commentMessage}
                     onChange={(event: ChangeEvent) => {
                         const target = event.target as HTMLInputElement;
-                        setCommentMessage(target.value);
+                        setCommentMessage(target.value)
                     }}
                     className="w-[80%] bg-transparent p-[10px] outline-none placeholder:text-sky-800"
                     placeholder="Send Comment" />
                 <button
-                    onClick={commentSendingHandler}
+                    onClick={(event) => notifyPromise(commentAddingToggler(event), {
+                        pendingText: "Loading...",
+                        fulfilledText: "Comment successfully added"
+                    })}
                     className="p-[5px] bg-sky-600 text-white rounded-md flex items-center gap-[10px]">
                     <FaMessage />
                     Send

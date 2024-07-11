@@ -3,7 +3,7 @@ import { selectCurrentUser, setUser } from '../../redux/slices/currentUserSlice'
 import { ChangeEvent, useState } from 'react';
 import { useCheck } from '../../utils/hooks/useCheck';
 import { notifyError, notifySuccess } from '../../utils/toastification';
-import { imageUrl, url } from '../../utils/enviromentConfig';
+import { url } from '../../utils/enviromentConfig';
 
 export default function UserEditFeed() {
 
@@ -61,43 +61,27 @@ export default function UserEditFeed() {
             <form
                 onSubmit={formSubmitHandler}
                 className="w-full grid grid-cols-6 gap-[10px]" id='user_edit_form'>
-                <div className="grid h-[500px] col-span-2 grid-rows-4 bg-[#fdfdfd] shadow-sm shadow-zinc-300 
-                            rounded-md mt-[75px]">
-                    <div className="col-span-2 row-span-2 w-[320px] h-[320px] place-self-center p-[10px] 
-                        bg-[#fdfdfd] rounded-full relative top-[-50px] shadow-sm shadow-zinc-300">
-                        <img
-                            className=" block object-cover w-full h-full rounded-full"
-                            src={imageUrl + currentUser.avatar}
-                            alt="user_avatar" />
-                    </div>
-                    <div className=' w-full h-full col-span-2 row-span-2 p-[10px] relative'>
-                        <img
-                            className="block object-cover w-full h-full rounded-md"
-                            src={imageUrl + currentUser.headerImg}
-                            alt="user_avatar" />
-                    </div>
-                </div>
-                <div className="flex col-span-4 flex-col gap-[25px] p-[25px] bg-[#fdfdfd] shadow-sm 
-                    shadow-zinc-300 rounded-md mt-[75px]">
-                    <div className="">
+                <div className="flex col-span-6 flex-col gap-[25px] p-[25px] bg-[#fdfdfd] shadow-sm 
+                    shadow-zinc-300 rounded-md">
+                    <div className="w-full">
                         <h2 className="text-zinc-700 text-2xl font-bold ">Personal Information</h2>
-                        <div className="flex gap-[15px] mt-[15px]">
-                            <div>
+                        <div className="flex gap-[15px] mt-[15px] flex-col sm:flex-row w-full">
+                            <div className='w-full'>
                                 <label htmlFor="user_edit_name" className="mr-[15px] text-zinc-700">Name:</label>
                                 <input
                                     onChange={changeEffectHandler}
                                     type="text"
-                                    className={"p-[5px] text-zinc-700 outline-none border rounded-md " + (nameChange ? "border-green-600" : "border-sky-600")}
+                                    className={"p-[5px] text-zinc-700 outline-none border rounded-md w-full " + (nameChange ? "border-green-600" : "border-sky-600")}
                                     name='name'
                                     id='user_edit_name'
                                     defaultValue={currentUser.name} />
                             </div>
-                            <div>
+                            <div className='w-full'>
                                 <label htmlFor="user_edit_surname" className="mr-[15px] text-zinc-700">Surname:</label>
                                 <input
                                     onChange={changeEffectHandler}
                                     type="text"
-                                    className={"p-[5px] text-zinc-700 outline-none border rounded-md " + (surnameChange ? "border-green-600" : "border-sky-600")}
+                                    className={"p-[5px] text-zinc-700 outline-none border rounded-md w-full " + (surnameChange ? "border-green-600" : "border-sky-600")}
                                     name='surname'
                                     id='user_edit_surname'
                                     defaultValue={currentUser.surname} />

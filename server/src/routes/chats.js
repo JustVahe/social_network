@@ -1,11 +1,11 @@
 const router = require("express").Router();
 const { Chat, Connection } = require("../../models/index");
 const { imageFilter } = require("../utils/fileFilters");
-const { chatAvatarStorage } = require("../utils/storages")
+const supabase = require("../utils/supabaseClient");
 const multer = require("multer");
 
 const uploadChatAvatar = multer({
-    storage: chatAvatarStorage,
+    storage: multer.memoryStorage(),
     fileFilter: imageFilter
 }).single("file");
 
@@ -53,7 +53,7 @@ router.get("/:id", async (request, response) => {
 
         const { id } = request.params;
         const chat = await Chat.findOne({ where: { id }, include: { all: true, nested: true } });
-        if(!chat) return response.status(404).json("This chat isn't found");
+        if (!chat) return response.status(404).json("This chat isn't found");
 
         return response.status(200).json(chat);
 
@@ -101,9 +101,20 @@ router.put("/avatar/:id", (request, response) => {
 
             const { id } = request.params;
             const chat = await Chat.findOne({ where: { id }, });
+            const file = request.file;
+            const fileBase64 = decode(file.buffer.toString("base64"));
 
             chat.avatar = `/assets/chats/${id}/images/avatar/${request.file.originalname}`;
             chat.save();
+
+            const { error } = await supabase.storage.from("assets")
+                .upload(`${user_id}/images/${file.originalname}`, fileBase64, {
+                    cacheControl: '300',
+                    upsert: true,
+                    contentType: file.mimetype
+                });
+
+            if (error) return response.status(400).json({ message: error.message });
 
             return response.status(200).json("Avatar upload is complete");
 
@@ -120,7 +131,7 @@ router.delete("/:id", async (request, response) => {
 
         const { id } = request.params;
         const chat = await Chat.findOne({ where: { id }, include: { all: true, nested: true } });
-        const connections = await Connection.findAll({ where: { chat_id: id }});
+        const connections = await Connection.findAll({ where: { chat_id: id } });
 
         connections.forEach(item => item.destroy());
         chat.destroy();

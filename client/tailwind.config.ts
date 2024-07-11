@@ -7,6 +7,10 @@ export default {
 		"./src/**/*.{js,ts,jsx,tsx}",
 	],
 	theme: {
+		animation: {
+			aimloader : "aimloader 1s infinite ease-in-out",
+			rotation : "rotation 1s linear infinite"
+		},
 		fontSize: {
 			"sm-11": "11px",
 			"sm-12": "12px",
@@ -27,7 +31,21 @@ export default {
 				roboto: ["Roboto", "sans-serif"]
 			},
 		},
+		keyframes: {
+			rotation: {
+				"0%": {
+					transform:" rotate(0deg)"
+				},
+				"100%": {
+					transform: "rotate(360deg)"
+				}
+			},
+			aimloader: {
+				"50%": {
+					transform: "scale(1) translate(-50%, -50%)"
+			  	}
+			}
+		}
 	},
 	plugins: [],
 } satisfies Config
-
