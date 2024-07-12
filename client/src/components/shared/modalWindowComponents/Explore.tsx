@@ -16,21 +16,24 @@ export default function Explore({ setModalType }: { setModalType?: React.Dispatc
 
     const changeHandler = async (event: ChangeEvent) => {
         const eventTarget = event.target as HTMLInputElement;
-		if (eventTarget.value?.trim().length != 0) {
-			const searchResponse = await fetch(`${url}/users?filter=name&value=`+eventTarget.value.toLowerCase());
-			const searchData = await searchResponse.json();
-			setUsers(searchData);
-		} else {
-			setUsers(undefined);
-		}
+        if (eventTarget.value?.trim().length != 0) {
+            const searchResponse = await fetch(`${url}/users?filter=name&value=` + eventTarget.value.toLowerCase());
+            const searchData = await searchResponse.json();
+            setUsers(searchData);
+        } else {
+            setUsers(undefined);
+        }
     }
 
-    const messageAdddingHandler = async (thisUser : IUser) => {
+    const messageAdddingHandler = async (thisUser: IUser) => {
 
-        const findRoom = await ((await fetch(`${url}/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
+        const findRoom = await ((await fetch(`${url}/rooms/?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
+
+        console.log({ findRoom });
 
         if (setModalType) {
             if (!findRoom) {
+
                 const roomData = await (await fetch(`${url}/rooms`, {
                     method: "POST",
                     headers: {
@@ -47,7 +50,7 @@ export default function Explore({ setModalType }: { setModalType?: React.Dispatc
             } else {
                 dispatch(setRoom(findRoom));
             }
-            
+
             setModalType(false);
         }
 
@@ -80,10 +83,10 @@ export default function Explore({ setModalType }: { setModalType?: React.Dispatc
                                 <p className="text-sm-13 text-zinc-700">@{item.username}</p>
                             </div>
                         </div>
-                        <button 
+                        <button
                             onClick={() => messageAdddingHandler(item)}
-                            className="w-[100px] bg-sky-600 rounded-md p-[5px] text-sm-13 flex gap-2.5 items-center justify-center text-white">Message <FaMessage/></button>
-                    </div>) : "" }
+                            className="w-[100px] bg-sky-600 rounded-md p-[5px] text-sm-13 flex gap-2.5 items-center justify-center text-white">Message <FaMessage /></button>
+                    </div>) : ""}
                 </div>
             </div>
         </div>

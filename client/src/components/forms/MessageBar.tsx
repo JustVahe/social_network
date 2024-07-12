@@ -8,6 +8,8 @@ import { IChat, IMessage, IRoom } from "../../types";
 import { getSocket } from "../../utils/hooks/socket.mts";
 import { url } from "../../utils/enviromentConfig";
 
+const socket = getSocket();
+
 export default function MessageSendingBar({ setMessages }: {
 	setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>
 }) {
@@ -15,7 +17,6 @@ export default function MessageSendingBar({ setMessages }: {
 	const [message, setMessage] = useState<string>("");
 	const [approvedRoom, setApprovedRoom] = useState<IRoom | undefined>();
 	const [approvedChat, setApprovedChat] = useState<IChat | undefined>();
-	const [socket] = useState(getSocket());
 
 	const dispatch = useAppDispatch();
 

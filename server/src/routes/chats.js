@@ -42,7 +42,7 @@ router.get("/", async (request, response) => {
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 });
@@ -59,7 +59,7 @@ router.get("/:id", async (request, response) => {
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 });
@@ -84,7 +84,7 @@ router.put("/:id", async (request, response) => {
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 });
@@ -120,7 +120,7 @@ router.put("/avatar/:id", (request, response) => {
 
         } catch (error) {
             console.log(error);
-            return response.status(500).json(error.message);
+            return response.status(500).json(error);
         }
     });
 });

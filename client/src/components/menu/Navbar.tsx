@@ -1,12 +1,11 @@
 import { TfiHome, TfiMenu, TfiSearch } from "react-icons/tfi"
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useAppSelector } from "../../redux/typedHooks"
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice"
 import AdminDropdown from "../buttons/AdminDropdown"
 import Searchbar from "../forms/Searchbar"
 import { IUser } from "../../types"
-import { useCheck } from "../../utils/hooks/useCheck"
 import { imageUrl } from "../../utils/enviromentConfig"
 
 export default function Navbar() {
@@ -16,12 +15,6 @@ export default function Navbar() {
     const [userToggle, setUserToggle] = useState<boolean>(false);
 
     const currentUser: IUser | null = useAppSelector(selectCurrentUser);
-    const { checkAccessToken } = useCheck();
-
-    useEffect(() => {
-        checkAccessToken();
-        // eslint-disable-next-line
-    }, [])
 
     return (
         <>
