@@ -2,20 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('posts', {
+    await queryInterface.createTable('reactions', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4
       },
+      type: {
+        type: DataTypes.ENUM("like","dislike"),
+        allowNull: false
+      },
       user_id: {
         type: DataTypes.UUID,
         allowNull: false
       },
-      message: {
-        type: DataTypes.STRING,
-        allowNull: true
+      post_id: {
+        type: DataTypes.UUID,
+        allowNull:false
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('posts');
+    await queryInterface.dropTable('reactions');
   }
 };

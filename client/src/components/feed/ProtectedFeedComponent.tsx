@@ -23,16 +23,13 @@ export default function ProtectedFeedComponent() {
         // eslint-disable-next-line
     }, [])
 
-
     return (
         <div className="2xl:max-w-[600px] xl:xl:max-w-[480px] flex flex-col gap-[20px]">
             {(currentUsersPosts) ? (
                 currentUsersPosts.length !== 0 ?
                     currentUsersPosts.map(item => <Post postData={item} key={item.id} user={currentUser} status="protected" />)
                     : <div>This user has no posts yet</div>
-            ) : <div className="w-full">
-                <Loading />
-            </div>
+            ) : <div className="w-full"><Loading /></div>
             }
         </div>
     )

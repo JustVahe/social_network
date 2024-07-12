@@ -75,13 +75,21 @@ export interface IComment {
     updatedAt: string
 }
 
+export interface IReaction {
+    id: ID,
+    type: "like" | "dislike",
+    post_id: ID,
+    user_id: ID,
+    createdAt: string,
+    updatedAt: string
+}
+
 export interface IPost {
     id: ID,
     message: string,
     files: IPhoto[],
-    likes: number,
+    reactions: IReaction[] | undefined
     watches: number,
-    dislikes: number
     user: IUser,
     comments: IComment[],
     user_id: ID,

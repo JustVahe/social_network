@@ -19,7 +19,7 @@ router.post("/", async (request, response) => {
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 })
@@ -33,7 +33,7 @@ router.get("/", async (request, response) => {
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 });

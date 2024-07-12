@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors({
     origin: process.env.CORS,
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Authorization', 'Content-Type', 'Origin'],
+    allowedHeaders: ['Authorization', 'authorization', 'Content-Type', 'Origin'],
     credentials: true,
     optionsSuccessStatus: 200,
     maxAge: -1
@@ -37,6 +37,7 @@ app.use("/messages", require("./routes/messages"));
 app.use("/rooms", require("./routes/rooms"));
 app.use("/chats", require("./routes/chats"));
 app.use("/connections", require("./routes/connections"));
+app.use("/reactions", require("./routes/reactions"));
 
 
 server.listen(PORT, () => {

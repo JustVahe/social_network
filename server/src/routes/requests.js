@@ -8,12 +8,11 @@ router.get("/", async (request, response) => {
     try {
 
         const requests = await Request.findAll();
-
         return response.status(200).json(requests);
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 })
@@ -53,7 +52,7 @@ router.get("/:id", async (request, response) => {
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 })
@@ -87,7 +86,7 @@ router.post("/:id", async (request, response) => {
 
     } catch (error) {
         console.log(error);
-        return response.status(200).json(error);
+        return response.status(500).json(error);
     }
 
 });
