@@ -17,8 +17,7 @@ const ProtectedHomeRoute = () => {
 
     useEffect(() => {
         checkAccessToken();
-
-        setTimeout(() => setOk(true), 1000);
+        setTimeout(() => setOk(true), 500);
         //eslint-disable-next-line
     }, []);
 

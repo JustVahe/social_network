@@ -17,6 +17,7 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
 
     const [reactionToggle, setReactionToggle] = useState<"like" | "dislike" | undefined>();
     const [currentReaction, setCurrentReaction] = useState<IReaction | undefined>();
+    const [ok, setOk] = useState(true);
 
     useEffect(() => {
 
@@ -83,12 +84,19 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
 
             }
 
-
             setReactionToggle(toggle);
             setCurrentReaction(reactionCreatingData);
 
         }
 
+    }
+
+    const reactingToggler = async (toggle: "like" | "dislike") => {
+        if (ok) {
+            setOk(false);
+            await reactingHandler(toggle);
+            setOk(true);
+        }
     }
 
     return (
@@ -100,20 +108,20 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
                 <FaComments />
             </button>
             <button
-                onClick={() => reactingHandler("like")}
+                onClick={() => reactingToggler("like")}
                 className="relative text-md-16 text-emerald-700">
                 <span className="absolute top-[-3px] text-sm-11 left-[18px]">
                     {likes && ((likes.length / 1000) > 1 ? `.${likes.length / 1000}k` : likes.length)}
                 </span>
-                {(reactionToggle === "like" || currentReaction?.type === "like" ) ? <FaThumbsUp /> : <FaRegThumbsUp />}
+                {(reactionToggle === "like" || currentReaction?.type === "like") ? <FaThumbsUp /> : <FaRegThumbsUp />}
             </button>
             <button
-                onClick={() => reactingHandler("dislike")}
+                onClick={() => reactingToggler("dislike")}
                 className="relative text-md-16 text-red-600">
                 <span className="absolute top-[-3px] text-sm-11 left-[18px]">
                     {dislikes && ((dislikes.length / 1000) > 1 ? `.${dislikes.length / 1000}k` : dislikes.length)}
                 </span>
-                {(reactionToggle === "dislike" || currentReaction?.type === "dislike" ) ? <FaThumbsDown /> : <FaRegThumbsDown />}
+                {(reactionToggle === "dislike" || currentReaction?.type === "dislike") ? <FaThumbsDown /> : <FaRegThumbsDown />}
             </button>
             <button className="w-[24px] h-[24px] text-white bg-black rounded-full text-center text-sm-13 grid place-items-center leading-[13px] transition hover:bg-sky-600">
                 <FaShareAlt />

@@ -2,16 +2,19 @@ import { Link } from "react-router-dom";
 import { IUser } from "../../types";
 import FriendButton from "../buttons/FriendButton";
 import { imageUrl } from "../../utils/enviromentConfig";
+import { useAppSelector } from "../../redux/typedHooks";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 
 export default function FriendLabel({ friend, setSearchToggle }: { friend: IUser, setSearchToggle?: React.Dispatch<React.SetStateAction<boolean>> }) {
 
     const { username, name, surname, avatar, status, email } = friend;
+    const currentUser = useAppSelector(selectCurrentUser);
 
     return (
         <div className="w-full flex gap-[15px]">
             <FriendButton status={status} src={imageUrl + avatar} />
             <div>
-                <Link to={`/${username}/home`}>
+                <Link to={ currentUser?.username === username ? "/dashboard" : `/${username}/home`}>
                     <p onClick={() => {
                         if (setSearchToggle) {
                             setSearchToggle(false)

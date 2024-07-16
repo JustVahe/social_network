@@ -12,6 +12,7 @@ server/.env
 dist
 dist-ssr
 *.local
+nkarner
 
 # Editor directories and files
 .vscode/*
