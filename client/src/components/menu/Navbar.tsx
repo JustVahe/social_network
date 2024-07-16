@@ -64,16 +64,16 @@ export default function Navbar() {
                         </div>
                     </nav>
                     <div className={"lg:hidden fixed w-full bg-sky-600 top-[-132px] left-0 z-10 flex flex-col transition-all " + (dropdown ? "top-[69px]" : "")}>
-                        <Link to={`/${currentUser?.username}`}>
+                        <Link to={`/dashboard`}>
                             <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Timeline</button>
                         </Link>
-                        <Link to={`/${currentUser?.username}/photos`}>
+                        <Link to={`/dashboard/photos`}>
                             <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Photos</button>
                         </Link>
-                        <Link to={`/${currentUser?.username}/friends`}>
+                        <Link to={`/dashboard/friends`}>
                             <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Friends</button>
                         </Link>
-                        <Link to={`/${currentUser?.username}/messages`}>
+                        <Link to={`/dashboard/messages`}>
                             <button className="p-[10px] w-full text-white text-md uppercase font-semibold transition-all hover:bg-sky-500">Messages</button>
                         </Link>
                     </div>
