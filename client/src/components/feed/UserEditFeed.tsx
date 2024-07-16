@@ -1,9 +1,10 @@
-import { useAppDispatch, useAppSelector } from '../../redux/typedHooks';
-import { selectCurrentUser, setUser } from '../../redux/slices/currentUserSlice';
+import { useAppSelector } from '../../redux/typedHooks';
+import { selectCurrentUser } from '../../redux/slices/currentUserSlice';
 import { ChangeEvent, useState } from 'react';
 import { useCheck } from '../../utils/hooks/useCheck';
-import { notifyError, notifySuccess } from '../../utils/toastification';
 import { url } from '../../utils/enviromentConfig';
+import { useNavigate } from 'react-router-dom';
+import { notifyPromise } from '../../utils/toastification';
 
 export default function UserEditFeed() {
 
@@ -14,8 +15,9 @@ export default function UserEditFeed() {
     const [usernameChange, setUserameChange] = useState(false);
     const [emailChange, setEmailChange] = useState(false);
     const [descriptionChange, setDescriptionChange] = useState(false);
+    const [ok, setOk] = useState(true);
     
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { checkAccessToken } = useCheck();
 
     const changeEffectHandler = (event: ChangeEvent) => {
@@ -44,13 +46,25 @@ export default function UserEditFeed() {
             method: "PUT",
             body: formData
         });
-        const updateData = await updateResponse.json();
 
         if (updateResponse.status !== 200) {
-            notifyError("Something went wrong");
+            throw new Error("Something went wrong");
         } else {
-            notifySuccess("User is successfully updated");
-            dispatch(setUser(updateData));
+            await checkAccessToken();
+            navigate("/dashboard");
+        }
+
+    }
+
+    const formSubmitToggler = async (event: React.FormEvent<HTMLFormElement>) => {
+        try {
+            if (ok) {
+                setOk(false);
+                await formSubmitHandler(event);
+                setOk(true);
+            }
+        } catch (error) {
+            throw error;
         }
 
     }
@@ -59,7 +73,12 @@ export default function UserEditFeed() {
         currentUser &&
         <div className="container my-0">
             <form
-                onSubmit={formSubmitHandler}
+                onSubmit={(event) => {
+                    notifyPromise(formSubmitToggler(event), {
+                        pendingText: "Loading...",
+                        fulfilledText: "User Details are successfully updated"
+                    })
+                }}
                 className="w-full grid grid-cols-6 gap-[10px]" id='user_edit_form'>
                 <div className="flex col-span-6 flex-col gap-[25px] p-[25px] bg-[#fdfdfd] shadow-sm 
                     shadow-zinc-300 rounded-md">
