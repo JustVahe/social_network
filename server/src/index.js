@@ -22,8 +22,6 @@ app.use(cors({
 
 const PORT = process.env.PORT || 3001;
 
-// auth route
-
 app.use("/auth", require("./routes/auth"));
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/users", require("./routes/users"));

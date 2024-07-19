@@ -24,7 +24,6 @@ router.post("/register", async (request, response) => {
             });
 
         const saltRound = 8;
-
         const salt = await bcrypt.genSalt(saltRound);
         const encryptedPassword = await bcrypt.hash(password, salt);
 

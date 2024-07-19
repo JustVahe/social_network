@@ -12,7 +12,7 @@ module.exports = async (request, response, next) => {
             return response.status(401).json("Not Authorized: Refresh token wasn't provided.");
         }
 
-        const payload = jwt.verify(refreshToken, process.env.refreshSecret);
+        const payload = jwt.verify(refreshToken, process.env.refreshSecret);    
 
         const newAccessToken = accessGenerator(payload.userId, "15m");
         return response.status(200).json({
