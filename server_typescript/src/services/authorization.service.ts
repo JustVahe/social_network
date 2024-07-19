@@ -14,69 +14,85 @@ export class AuthorizationService extends BaseService {
 
     async login(req: Request) {
 
-        const { email, password }: ILoginParameters = req.body;
+        try {
 
-        const user: IUser = await User.findOne({ where: { email } });
-        if (!user) return this.response({
-            status: false,
-            statusCode: 401,
-            data: {
-                type: "EmailError",
-                message: `User with email of ${email} doesn't found`
-            }
-        });
+            const { email, password }: ILoginParameters = req.body;
 
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (!validPassword) this.response({
-            status: false,
-            statusCode: 401,
-            data: {
-                type: "PasswordError",
+            const user: IUser = await User.findOne({ where: { email } });
+            if (!user) return this.response({
+                status: false,
+                statusCode: 401,
+                data: {
+                    type: "EmailError",
+                    message: `User with email of ${email} doesn't found`
+                }
+            });
+
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) this.response({
+                status: false,
+                statusCode: 401,
+                data: {
+                    type: "PasswordError",
+                    message: "Password is incorrect"
+                },
                 message: "Password is incorrect"
-            },
-            message: "Password is incorrect"
-        });
+            });
 
-        const accessToken = accessTokenGenerator(user.id as string, "1h");
-        const refreshToken = refreshTokenGenerator(user.id as string, "90d");
+            const accessToken = accessTokenGenerator(user.id as string, "1h");
+            const refreshToken = refreshTokenGenerator(user.id as string, "90d");
 
-        return this.response({
-            data: { accessToken, refreshToken },
-            message: `User logged in successfully`
-        });
+            return this.response({
+                data: { accessToken, refreshToken },
+                message: `User logged in successfully`
+            });
+
+        } catch (error: unknown) {
+            const serviceError = error as Error;
+            console.error(serviceError);
+            return this.serverErrorResponse(serviceError);
+        }
     }
 
     async register(req: Request) {
 
-        const { name, surname, email, password }: IRegisterParameters = req.body;
+        try {
 
-        const user: IUser = await User.findOne({ where: { email } });
-        if (user) return this.response({
-            status: false,
-            statusCode: 401,
-            data: {
-                type: "EmailError",
-                message: `User already exists`
-            }
-        });
+            const { name, surname, email, password }: IRegisterParameters = req.body;
 
-        const saltRound = 8;
-        const salt = await bcrypt.genSalt(saltRound);
-        const encryptedPassword = await bcrypt.hash(password, salt);
+            const user: IUser = await User.findOne({ where: { email } });
+            if (user) return this.response({
+                status: false,
+                statusCode: 401,
+                data: {
+                    type: "EmailError",
+                    message: `User already exists`
+                }
+            });
 
-        const newUser: IUser = await User.create({
-            name, surname, email,
-            username: name.toLowerCase() + "-" + v4().slice(0, 4),
-            password: encryptedPassword
-        });
+            const saltRound = 8;
+            const salt = await bcrypt.genSalt(saltRound);
+            const encryptedPassword = await bcrypt.hash(password, salt);
 
-        const accessToken = accessTokenGenerator(newUser.id as string, "1h");
-        const refreshToken = refreshTokenGenerator(newUser.id as string, "90d");
+            const newUser: IUser = await User.create({
+                name, surname, email,
+                username: name.toLowerCase() + "-" + v4().slice(0, 4),
+                password: encryptedPassword
+            });
 
-        return this.response({
-            data: { accessToken, refreshToken },
-            message: `User logged in successfully`
-        });
+            const accessToken = accessTokenGenerator(newUser.id as string, "1h");
+            const refreshToken = refreshTokenGenerator(newUser.id as string, "90d");
+
+            return this.response({
+                data: { accessToken, refreshToken },
+                message: `User logged in successfully`
+            });
+
+        } catch (error: unknown) {
+            const serviceError = error as Error;
+            console.error(serviceError);
+            return this.serverErrorResponse(serviceError);
+        }
     }
 
     async refreshToken(req: Request) {
@@ -94,7 +110,7 @@ export class AuthorizationService extends BaseService {
             return this.response({
                 data: { newAccessToken }
             });
-        } catch (error : unknown) {
+        } catch (error: unknown) {
             const JWTError = error as JsonWebTokenError;
             return this.response({
                 status: false,

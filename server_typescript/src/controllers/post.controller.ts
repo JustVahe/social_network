@@ -19,4 +19,13 @@ export class PostController {
         return res.status(response.statusCode).json(response);
     }
 
+    async updatePost(req: Request, res: Response) {
+        const response = await this.postService.updatePost(req);
+        return res.status(response.statusCode).json(response);
+    }
+
+    async deletePost(req: Request, res: Response) {
+        const response = await this.postService.deletePost(req);
+        return res.status(response.statusCode).json(response);
+    }
 }
