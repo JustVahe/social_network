@@ -12,13 +12,14 @@ export interface ModalResponse {
     message: string
 }
 
-export default function Image({ image, alt, containerStyles, imageStyles }:
-    {
-        image: IPhoto,
-        alt: string,
-        containerStyles?: string,
-        imageStyles?: string
-    }) {
+interface IProps {
+    image: IPhoto,
+    alt: string,
+    containerStyles?: string,
+    imageStyles?: string
+}
+
+export default function Image({ image, alt, containerStyles, imageStyles }: IProps) {
 
     const currentUser = useAppSelector(selectCurrentUser);
     const [modalType, setModalType] = useState<boolean | string>(false);
@@ -62,10 +63,10 @@ export default function Image({ image, alt, containerStyles, imageStyles }:
                 </div>
             </div>
             {
-                modalType && <ModalWindow 
-                    image={image} 
-                    type={modalType} 
-                    setModalType={setModalType} 
+                modalType && <ModalWindow
+                    image={image}
+                    type={modalType}
+                    setModalType={setModalType}
                     modalResponse={modalResponse}
                     setModalResponse={setModalResponse as React.Dispatch<React.SetStateAction<ModalResponse | undefined>>} />
             }

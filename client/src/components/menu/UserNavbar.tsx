@@ -28,9 +28,6 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
             if (!findRoom) {
                 const roomData = await (await fetch(`${url}/rooms`, {
                     method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
                     body: JSON.stringify({
                         user_a_id: currentUser?.id,
                         user_b_id: thisUser.id
@@ -61,9 +58,6 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
         fetch(`${url}/requests/` + currentUser?.id, {
             method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
             body: JSON.stringify({
                 target_id: thisUser.id
             })

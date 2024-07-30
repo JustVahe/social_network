@@ -33,9 +33,6 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
 
         const reactionCreatingResponse = await fetch(`${url}/reactions/?post_id=${post.id}&type=${toggle}`, {
             method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
             body: JSON.stringify({ user_id: post.user.id })
         });
         const reactionCreatingData = await reactionCreatingResponse.json();

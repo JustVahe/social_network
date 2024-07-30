@@ -1,49 +1,68 @@
 'use strict';
 
 import process from 'process';
-import { DataTypes, Model, Sequelize } from 'sequelize';
-import fs from "fs";
-import path from "path";
+import { Model, ModelStatic, Options, Sequelize } from 'sequelize';
+// @ts-ignore
+import config  from '../config/config.cjs';
+import User from './user.ts'
+import Post from './post.ts';
+import File from './file.ts';
+import Room from './room.ts';
+import Chat from './chat.ts';
+import Connection from './connection.ts';
+import { ConfigTypes, IEnvConfig } from '../src/utils/types/sequelizeTypes.ts';
+import Message from './messages.ts';
 
-type DbModelsType = typeof Model & {
-  associate?: (db: DbType) => void;
+interface IDatabase {
+  User: ModelStatic<Model>;
+  Post: ModelStatic<Model>;
+  File: ModelStatic<Model>;
+  Room: ModelStatic<Model>;
+  Chat: ModelStatic<Model>;
+  Connection: ModelStatic<Model>;
+  Message: ModelStatic<Model>;
+  [key: string]: any;
+  sequelize: Sequelize;
+  Sequelize: typeof Sequelize;
+}
+
+const env = process.env.NODE_ENV || 'development';
+const sequelizeConfig = config[env] as IEnvConfig;
+const sequelizeConfigString = JSON.stringify(config);
+
+const db: IDatabase = {
+  sequelize: {} as Sequelize,
+  Sequelize: Sequelize,
+  User: User,
+  Post: Post,
+  File: File,
+  Room: Room,
+  Chat: Chat,
+  Message: Message,
+  Connection: Connection,
 };
 
-interface DbModels<T> {
-  [key: string] : T
-}
-
-type DbType = DbModels<DbModelsType> & {
-  sequelize?: Sequelize;
-  Sequelize?: typeof Sequelize;
-}
-
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.js')[env];
-const db : DbType = {};
-
-let sequelize : Sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable] as string, config);
+let sequelize: Sequelize;
+if (sequelizeConfig.use_env_variable) {
+  sequelize = new Sequelize(process.env[sequelizeConfig.use_env_variable] as string, sequelizeConfigString);
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(sequelizeConfig.database, sequelizeConfig.username, sequelizeConfig.password as (string | undefined), sequelizeConfig as Options);
 }
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.ts' &&
-      file.indexOf('.test.js') === -1
-    );
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, DataTypes);
-    db[model.name] = model;
-  });
+User.initialize(sequelize);
+Post.initialize(sequelize);
+File.initialize(sequelize);
+Room.initialize(sequelize);
+Chat.initialize(sequelize);
+Connection.initialize(sequelize);
+
+db.User = User;
+db.Post = Post;
+db.File = File;
+db.Room = Room;
+db.Chat = Chat;
+db.Message = Message;
+db.Connection = Connection;
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
@@ -54,4 +73,6 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+export { User, Post, File };
+
+

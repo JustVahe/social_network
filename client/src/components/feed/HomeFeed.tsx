@@ -3,16 +3,15 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { addPosts, selectPost, setPost } from "../../redux/slices/postSlice";
 import PostLoading from "../post/PostLoading";
-import { url } from "../../utils/enviromentConfig";
 import Loading from "../shared/Loading";
-import { useCheck } from "../../utils/hooks/useCheck";
+import { url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function HomeFeed() {
 
     const posts = useAppSelector(selectPost);
     const dispatch = useAppDispatch();
     const [offset, setOffset] = useState(0);
-    const {checkAccessToken} = useCheck();
 
     const postObserver = new IntersectionObserver((entries) => {
         const loadingPost = entries[0];
@@ -25,33 +24,19 @@ export default function HomeFeed() {
     })
 
     const infiniteHandler = () => {
-
         const observableItem = document.querySelector("#loader_div");
         postObserver.observe(observableItem as Element);
-
     }
 
     useEffect(() => {
-
-        checkAccessToken();
-
-        fetch(`${url}/posts/?limit=${5}&offset=${0}`)
-            .then((res) => res.json())
-            .then(data => {
-                dispatch(setPost(data));
-            })
+        api.get(`${url}/post/?limit=${5}&offset=${0}`).then(response => dispatch(setPost(response.data.data)));
         //eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         if (offset !== 0) {
-            fetch(`${url}/posts/?limit=${5}&offset=${offset}`)
-                .then((res) => res.json())
-                .then(data => {
-                    dispatch(addPosts(data));
-                })
+            api.get(`${url}/post/?limit=${5}&offset=${offset}`).then(response => dispatch(addPosts(response.data.data)));
         }
-
         //eslint-disable-next-line
     }, [offset]);
 
@@ -62,9 +47,7 @@ export default function HomeFeed() {
 
     return (
         <div className="2xl:max-w-[600px] xl:xl:max-w-[480px] flex flex-col gap-[20px]">
-            {/* {posts && Array.isArray(posts) && posts.map(item => <Post postData={item} key={item.id} />)} */}
-            {
-                posts ? (
+            {posts ? (
                     posts.length !== 0 ? posts.map(item => <Post postData={item} key={item.id} />) : <div>
                         There are no posts yet
                     </div>
@@ -72,7 +55,6 @@ export default function HomeFeed() {
                     <Loading />
                 </div>
             }
-            
             <PostLoading />
         </div >
     )

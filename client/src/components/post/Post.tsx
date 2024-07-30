@@ -5,6 +5,7 @@ import Likes from "./Likes";
 import CommentBar from "./../forms/CommentBar";
 import { imageUrl, url } from "../../utils/enviromentConfig";
 import { useEffect, useState } from "react";
+import { api } from "../../axios/axios";
 
 export default function Post({ postData, user, status }: { postData: IPost, user?: IUser | null, status?: string }) {
 
@@ -12,16 +13,10 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 	const [dislikes, setDislikes] = useState<IReaction[] | undefined>();
 
 	useEffect(() => {
-
-		fetch(`${url}/reactions/?post_id=${postData.id}&type=like`)
-			.then(res => res.json())
-			.then(data => setLikes(data));
-
-		fetch(`${url}/reactions/?post_id=${postData.id}&type=dislike`)
-			.then(res => res.json())
-			.then(data => setDislikes(data));
-
-	}, [])
+		api.get(`${url}/reactions/?post_id=${postData.id}&type=like`).then(response => setLikes(response.data.data));
+		api.get(`${url}/reactions/?post_id=${postData.id}&type=dislike`).then(response => setLikes(response.data.data));
+	//eslint-disable-next-line
+	}, []);
 
 	return (
 		<div className="w-full flex flex-col gap-[15px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">
@@ -30,18 +25,14 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 				<>
 					<AvatarDisplay user={user ? user : postData.user} status={status} post={postData} />
 					{
-						postData.files.map(
-							item => {
-								if (item.type === "image") {
-									return <img key={item.id} src={imageUrl + item.path} alt="post"></img>
-								}
-							}
-						)
+						postData.files && postData.files.map(item => {
+							if (item.type === "image") return <img key={item.id} src={imageUrl + item.path} alt="post"></img>
+						})
 					}
 					<Likes
 						likes={likes as IReaction[]}
 						dislikes={dislikes as IReaction[]}
-						commentAmount={postData.comments.length}
+						commentAmount={postData.comments ? postData.comments.length : 0}
 						post={postData}
 						setLikes={setLikes}
 						setDislikes={setDislikes}

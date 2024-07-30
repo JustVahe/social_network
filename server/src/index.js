@@ -37,7 +37,6 @@ app.use("/chats", require("./routes/chats"));
 app.use("/connections", require("./routes/connections"));
 app.use("/reactions", require("./routes/reactions"));
 
-
 server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

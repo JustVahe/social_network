@@ -5,6 +5,7 @@ import { useCheck } from "../../utils/hooks/useCheck";
 import { notifyPromise } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
 import { addPhotoToCurrentUser } from "../../redux/slices/currentUsersPhotosSlice";
+import { api } from "../../axios/axios";
 
 export default function ImgSendingForm() {
 
@@ -17,47 +18,30 @@ export default function ImgSendingForm() {
 
     const photoUploadHandler = async () => {
 
-        await checkAccessToken();
+        if (currentUser && files) {
 
-        try {
-            if (currentUser && files) {
+            Array.from(files).forEach(file => {
+                formData.append("files", file);
+            });
 
-                Array.from(files).forEach(file => {
-                    formData.append("files", file);
-                });
+            const fileUploadResponse = await api.post(`${url}/files/${currentUser.id}`, formData);
+            const fileUploadData = await fileUploadResponse.data;
 
-                const fileUploadResponse = await fetch(`${url}/files/${currentUser.id}`, {
-                    method: "POST",
-                    body: formData
-                });
-                const fileUploadData = await fileUploadResponse.json();
+            dispatch(addPhotoToCurrentUser(fileUploadData.data));
+            setFiles(null);
+            await checkAccessToken();
 
-                dispatch(addPhotoToCurrentUser(fileUploadData));
-                setFiles(null);
-                await checkAccessToken();
-
-            } else if (!files) {
-                throw new Error("Please add your images")
-            }
+        } else if (!files) {
+            throw new Error("Please add your images")
         }
-        catch (error) {
-            console.log(error);
-            throw error;
-        }
-
     }
+    
     const photoUploadToggler = async () => {
-
-        try {
-            if (ok) {
-                setOk(false);
-                await photoUploadHandler();
-                setOk(true);
-            }
-        } catch (error) {
-            throw error;
+        if (ok) {
+            setOk(false);
+            await photoUploadHandler();
+            setOk(true);
         }
-
     }
 
     return (

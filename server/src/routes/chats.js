@@ -102,6 +102,8 @@ router.put("/avatar/:id", (request, response) => {
             const { id } = request.params;
             const chat = await Chat.findOne({ where: { id }, });
             const file = request.file;
+            
+
             const fileBase64 = decode(file.buffer.toString("base64"));
 
             chat.avatar = `/assets/chats/${id}/images/avatar/${request.file.originalname}`;

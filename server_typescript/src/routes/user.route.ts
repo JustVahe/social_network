@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { UserController } from "../controllers/user.controller";
-import { checkJWT } from "../middlewares/check.middleware";
+import { UserController } from "../controllers/user.controller.ts";
+import { checkJWT } from "../middlewares/check.middleware.ts";
 
 const userRouter = Router();
 const userController = new UserController();

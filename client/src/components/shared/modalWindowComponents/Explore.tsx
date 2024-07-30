@@ -29,8 +29,6 @@ export default function Explore({ setModalType }: { setModalType?: React.Dispatc
 
         const findRoom = await ((await fetch(`${url}/rooms/?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
 
-        console.log({ findRoom });
-
         if (setModalType) {
             if (!findRoom) {
 

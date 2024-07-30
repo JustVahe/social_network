@@ -6,14 +6,16 @@ import { url } from "../../../utils/enviromentConfig";
 import { notifyPromise } from "../../../utils/toastification";
 import { useAppDispatch } from "../../../redux/typedHooks";
 import { deletePhotoOfCurrentUser } from "../../../redux/slices/currentUsersPhotosSlice";
+import { api } from "../../../axios/axios";
 
-export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image }:
-    {
-        setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
-        modalResponse?: ModalResponse | undefined,
-        setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>,
-        image: IPhoto
-    }) {
+interface IProps {
+    setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
+    modalResponse?: ModalResponse | undefined,
+    setModalResponse: React.Dispatch<React.SetStateAction<ModalResponse | undefined>>,
+    image: IPhoto
+}
+
+export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image }: IProps) {
 
     const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
@@ -21,10 +23,9 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
     const deleteHandler = async () => {
 
         try {
-            await checkAccessToken();
 
-            const fileDeleteRequest = await fetch(`${url}/files/` + image.id, { method: "DELETE" });
-            const fileDeleteData = await fileDeleteRequest.json();
+            const fileDeleteRequest = await api.delete(`${url}/files/` + image.id);
+            const fileDeleteData = fileDeleteRequest.data;
 
             if (fileDeleteRequest.status !== 200) {
                 setModalResponse({
@@ -44,9 +45,7 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
         } catch (error) {
             console.log(error);
         }
-
     }
-
 
     return (
         <div className="

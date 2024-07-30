@@ -1,18 +1,18 @@
 export type ID = string | number;
 
 export interface IUser {
-    id: ID,
+    id?: ID,
     name: string,
     surname: string,
-    username: string,
+    username?: string,
     email: string,
-    avatar: string,
-    headerImg: string,
-    status: string,
+    avatar?: string,
+    headerImg?: string,
+    status?: string,
     password: string,
-    description: string,
+    description?: string,
     posts?: IPost[],
-    files?: IPhoto[],
+    files?: IFile[],
     friends?: IFriend[],
     requests?: IRequest[],
     createdAt?: string,
@@ -31,12 +31,13 @@ export interface IReply {
 }
 
 export interface IRoom {
-    id: ID,
-    type: "user" | "chat",
-    name: string,
-    avatar: string,
-    user_a: IUser,
-    user_b: IUser,
+    id?: ID,
+    name?: string,
+    avatar?: string,
+    user_a_id: string,
+    user_b_id: string,
+    user_a?: IUser,
+    user_b?: IUser,
     messages?: IMessage[],
     createdAt?: string,
     updatedAt?: string
@@ -46,8 +47,8 @@ export interface IConnection {
     id: ID,
     chat_id: ID,
     user_id: ID,
-    chat: IChat,
-    user: IUser,
+    chat?: IChat,
+    user?: IUser,
     createdAt?: string,
     updatedAt?: string
 }
@@ -85,9 +86,9 @@ export interface IReaction {
 }
 
 export interface IPost {
-    id: ID,
+    id?: ID,
     message: string,
-    files?: IPhoto[],
+    files?: IFile[],
     reactions?: IReaction[] | undefined,
     comments?: IComment[],
     user_id: ID,
@@ -95,10 +96,10 @@ export interface IPost {
     updatedAt?: string
 }
 
-export interface IPhoto {
-    id: ID,
+export interface IFile {
+    id?: ID,
     user_id: ID,
-    post_id: ID,
+    post_id?: ID,
     type: string,
     path: string,
     createdAt?: string,
@@ -107,19 +108,20 @@ export interface IPhoto {
 
 export interface IMessage {
     id: ID,
-    from: IUser,
-    from_id: ID
-    message: string,
-    date: string,
+    from?: IUser,
+    from_id: ID,
+    room_id: ID,
+    message?: string,
+    date?: string,
     createdAt?: string,
     updatedAt?: string
 }
 
 export interface IChat {
-    id: ID,
+    id?: ID,
     name: string,
-    avatar: string,
-    description: string,
+    avatar?: string,
+    description?: string,
     connections?: IConnection[],
     createdAt?: string,
     updatedAt?: string,

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthorizationController } from "../controllers/authorization.controller";
+import { AuthorizationController } from "../controllers/authorization.controller.ts";
 
 const authRouter = Router();
 const authController = new AuthorizationController();

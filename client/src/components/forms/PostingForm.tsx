@@ -2,16 +2,13 @@ import { FaImage } from "react-icons/fa"
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks"
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { useRef, useState } from "react";
-import { IPost } from "../../types";
 import { addPost } from "../../redux/slices/postSlice";
 import { notifyError, notifyPromise } from "../../utils/toastification";
-import { useHandlers } from "../../utils/hooks/handlers";
 import { imageUrl, url } from "../../utils/enviromentConfig";
 import { addPostToCurrentUsersPosts } from "../../redux/slices/currentUser'sPostsSlice";
+import { api } from "../../axios/axios";
 
 export default function PostingForm() {
-
-	const { sortHandler } = useHandlers();
 
 	const currentUser = useAppSelector(selectCurrentUser);
 	const [message, setMessage] = useState<string>();
@@ -25,19 +22,12 @@ export default function PostingForm() {
 
 		event.preventDefault();
 
-		if (!files && !message) {
-			return notifyError("Post must have at least one file, or one text");
-		}
+		if (!files && !message) return notifyError("Post must have at least one file, or one text");
 
 		const postBody = { message };
-		const postResponse = await fetch(`${url}/posts/` + currentUser?.id, {
-			method: "POST",
-			headers: {
-				"Content-type": "application/json"
-			},
-			body: JSON.stringify(postBody)
-		});
-		const data: IPost = await postResponse.json();
+
+		const postResponse = await api.post(`${url}/post/` + currentUser?.id, postBody);
+		const { data } = await postResponse.data;
 
 		if (data) {
 
@@ -48,30 +38,20 @@ export default function PostingForm() {
 				})
 				formData.append("post_id", data.id as string);
 
-				await fetch(`${url}/files/${currentUser?.id}/post`, {
-					method: "POST",
-					body: formData
-				});
+				await api.post(`${url}/files/${currentUser?.id}/post`, formData);
+				
+				const postResponse = await api.get(`${url}/post/` + data.id);
+				const { data: newPostData } = await postResponse.data;
 
-				const postRequest = await fetch(`${url}/posts/${data.id}`);
-				const post: IPost = await postRequest.json();
-
-				dispatch(addPostToCurrentUsersPosts(post));
-				dispatch(addPost(post));
+				dispatch(addPostToCurrentUsersPosts(newPostData));
+				dispatch(addPost(newPostData));
 				setMessage("");
 				setFiles(undefined);
-
-				await sortHandler();
 			} else {
-
-				const postRequest = await fetch(`${url}/posts/${data.id}`);
-				const post: IPost = await postRequest.json();
-
-				dispatch(addPostToCurrentUsersPosts(post));
-				dispatch(addPost(post));
+				dispatch(addPostToCurrentUsersPosts(data));
+				dispatch(addPost(data));
 				setMessage("");
 			}
-
 		}
 	}
 
@@ -128,7 +108,7 @@ export default function PostingForm() {
 							const files = eventTarget.files;
 							setFiles(files);
 						}} />
-					<button onClick={(event) => notifyPromise(postUploadingHandler(event),{
+					<button onClick={(event) => notifyPromise(postUploadingHandler(event), {
 						pendingText: "Loading...",
 						fulfilledText: "Post successfully uploaded"
 					})} className="px-[20px] py-[5px] leading-[13px] text-white rounded-md bg-sky-600 text-center text-sm-13 font-bold">Post</button>

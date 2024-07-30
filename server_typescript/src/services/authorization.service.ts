@@ -1,14 +1,12 @@
 import { Request } from "express";
-import { BaseService } from "./base.service";
-import { IJWTPayload, ILoginParameters, IRegisterParameters } from "../utils/types/authTypes";
-import { IUser } from "../utils/types/types";
+import { BaseService } from "./base.service.ts";
+import { IJWTPayload, ILoginParameters, IRegisterParameters } from "../utils/types/authTypes.ts";
 import bcrypt from "bcrypt"
-import { accessTokenGenerator, refreshTokenGenerator } from "../utils/functions/tokenGenerator";
+import { accessTokenGenerator, refreshTokenGenerator } from "../utils/functions/tokenGenerator.ts";
 import { v4 } from "uuid";
 import { JsonWebTokenError, Secret } from "jsonwebtoken";
 import jwt from "jsonwebtoken"
-
-const { User } = require("../../models/index");
+import { User } from "../../models/index.ts";
 
 export class AuthorizationService extends BaseService {
 
@@ -18,7 +16,8 @@ export class AuthorizationService extends BaseService {
 
             const { email, password }: ILoginParameters = req.body;
 
-            const user: IUser = await User.findOne({ where: { email } });
+            const user = await User.findOne({ where: { email } });
+
             if (!user) return this.response({
                 status: false,
                 statusCode: 401,
@@ -27,7 +26,7 @@ export class AuthorizationService extends BaseService {
                     message: `User with email of ${email} doesn't found`
                 }
             });
-
+            
             const validPassword = await bcrypt.compare(password, user.password);
             if (!validPassword) this.response({
                 status: false,
@@ -60,7 +59,7 @@ export class AuthorizationService extends BaseService {
 
             const { name, surname, email, password }: IRegisterParameters = req.body;
 
-            const user: IUser = await User.findOne({ where: { email } });
+            const user = await User.findOne({ where: { email } });
             if (user) return this.response({
                 status: false,
                 statusCode: 401,
@@ -74,7 +73,7 @@ export class AuthorizationService extends BaseService {
             const salt = await bcrypt.genSalt(saltRound);
             const encryptedPassword = await bcrypt.hash(password, salt);
 
-            const newUser: IUser = await User.create({
+            const newUser = await User.create({
                 name, surname, email,
                 username: name.toLowerCase() + "-" + v4().slice(0, 4),
                 password: encryptedPassword
@@ -101,12 +100,12 @@ export class AuthorizationService extends BaseService {
         if (!refreshToken) return this.response({
             status: false,
             statusCode: 403,
-            message: "Unauthorized: Refresh token is required"
+            message: "Unauthorized: Refresh token is required",
         });
 
         try {
             const payload = jwt.verify(refreshToken, process.env.refreshSecret as Secret) as IJWTPayload
-            const newAccessToken = accessTokenGenerator(payload.user_id, "30s");
+            const newAccessToken = accessTokenGenerator(payload.user_id, "1h");
             return this.response({
                 data: { newAccessToken }
             });

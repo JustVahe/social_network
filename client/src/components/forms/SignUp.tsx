@@ -7,6 +7,7 @@ import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
 import { notifyError } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function SignUp() {
     const [nameError, setNameError] = useState<ValidationError | undefined>();
@@ -48,27 +49,21 @@ export default function SignUp() {
                 setPasswordError(undefined);
                 setEmailError(undefined);
 
-                const response = await fetch(`${url}/auth/register`, {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify(validation)
-                });
+                const response = await api.post(`${url}/auth/register`, validation);
 
-                const data = await response.json();
+                const data = await response.data.data;
 
                 if (response.status !== 200) {
                     throw new Error(data.error.message);
                 }
-
-                localStorage.setItem("accessToken", data.accessToken);
+                
+                localStorage.setItem("authorization", data.accessToken);
                 localStorage.setItem("refreshToken", data.refreshToken);
 
                 dispatch(setIsAuth(true));
                 navigate("/");
                 setGeneralError(null);
-                
+
             }
 
         } catch (error: unknown) {
@@ -80,7 +75,7 @@ export default function SignUp() {
 
                 const validateManager = ({ name, message }: { name: string, message: string }) => {
                     setNameError(validationErrorInner.find((item: ValidationError) => item.type === name));
-                    notifyError(message);            
+                    notifyError(message);
                 }
 
                 const fields = [
@@ -90,7 +85,7 @@ export default function SignUp() {
                     },
                     {
                         name: 'surname',
-                        message: surnameError?.message  || ''
+                        message: surnameError?.message || ''
                     },
                     {
                         name: 'password',
@@ -98,14 +93,14 @@ export default function SignUp() {
                     },
                     {
                         name: 'email',
-                        message:emailError?.message || ''
+                        message: emailError?.message || ''
                     }
                 ]
 
                 fields.forEach(validateManager)
             } else {
                 setGeneralError(errors);
-                notifyError(generalError?.message  || '');
+                notifyError(generalError?.message || '');
             }
 
         }

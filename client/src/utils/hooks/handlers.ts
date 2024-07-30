@@ -10,7 +10,7 @@ export const useHandlers = () => {
     const dispatch = useAppDispatch();
 
     const sortHandler = async () => {
-        const sortResponse = await fetch(`${url}/posts/?user_id=` + currentUser?.id);
+        const sortResponse = await fetch(`${url}/post/?user_id=` + currentUser?.id);
         const sortData = await sortResponse.json();
         dispatch(setPostsOfCurrentUser(sortData));
     }

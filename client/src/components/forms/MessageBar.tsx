@@ -40,7 +40,6 @@ export default function MessageSendingBar({ setMessages }: {
 		});
 
 		socket.on("receive_message", (data) => {
-			console.log("received");
 			setMessages((messages) => [...messages, data]);
 		});
 
@@ -61,9 +60,6 @@ export default function MessageSendingBar({ setMessages }: {
 				const messageData = await (
 					await fetch(`${url}/messages/?room_id=` + approvedChat?.id, {
 						method: "POST",
-						headers: {
-							"Content-type": "application/json"
-						},
 						body: JSON.stringify(body)
 					})
 				).json();
@@ -81,9 +77,6 @@ export default function MessageSendingBar({ setMessages }: {
 				const messageData = await (
 					await fetch(`${url}/messages/?room_id=` + approvedRoom?.id, {
 						method: "POST",
-						headers: {
-							"Content-type": "application/json"
-						},
 						body: JSON.stringify(body)
 					})
 				).json();

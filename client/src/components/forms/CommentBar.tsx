@@ -22,64 +22,53 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
         event.preventDefault();
         await checkAccessToken();
 
-        try {
+        if (postData) {
 
-            if (postData) {
+            if (commentMessage && commentMessage?.length !== 0) {
 
-                if (commentMessage && commentMessage?.length !== 0) {
+                const body = {
+                    message: commentMessage,
+                    user_id: currentUser?.id,
+                    post_id: postData.id
+                }
+                const commentResponse = await fetch(`${url}/comments`, {
+                    method: "POST",
+                    headers: {
+                        'Content-type': "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
+                const data = await commentResponse.json();
+                addComment(data);
 
-                    const body = {
-                        message: commentMessage,
-                        user_id: currentUser?.id,
-                        post_id: postData.id
-                    }
-                    const commentResponse = await fetch(`${url}/comments`, {
-                        method: "POST",
-                        headers: {
-                            'Content-type': "application/json"
-                        },
-                        body: JSON.stringify(body)
-                    });
-                    const data = await commentResponse.json();
-                    addComment(data);
+                if (commentResponse.status === 200) {
 
-                    if (commentResponse.status === 200) {
+                    fetch(`${url}/post/` + postData.id)
+                        .then((res) => res.json())
+                        .then(data => {
+                            dispatch(updatePost(data));
+                        })
 
-                        fetch(`${url}/posts/` + postData.id)
-                            .then((res) => res.json())
-                            .then(data => {
-                                dispatch(updatePost(data));
-                            })
-
-                    }
-
-                    setCommentMessage("");
-
-                    await checkAccessToken();
-
-                } else {
-                    throw new Error("Please write the message")
                 }
 
+                setCommentMessage("");
+
+                await checkAccessToken();
+
+            } else {
+                throw new Error("Please write the message")
             }
 
-        } catch (error: unknown) {
-            throw error;
         }
+
     }
 
     const commentAddingToggler = async (event: FormEvent) => {
-
-        try {
-            if (ok) {
-                setOk(false);
-                await commentSendingHandler(event);
-                setOk(true);
-            }
-        } catch (error) {
-            throw error;
+        if (ok) {
+            setOk(false);
+            await commentSendingHandler(event);
+            setOk(true);
         }
-
     }
 
     return (

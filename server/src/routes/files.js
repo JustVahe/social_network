@@ -68,11 +68,7 @@ router.put("/:user_id/header/",
                 if (files.data.length >= 1) {
                     await supabase.storage.from('avatars').remove(['folder/avatar1.png']);
                     const { error } = await supabase.storage.from("assets")
-                        .upload(`${user_id}/images/headerImg/${request.file.originalname}`, fileBase64, {
-                            cacheControl: '300',
-                            upsert: true,
-                            contentType: request.file.mimetype
-                        });
+                        .upload(`${user_id}/images/headerImg/${request.file.originalname}`, fileBase64, {contentType: request.file.mimetype});
                     if (error) return response.status(400).json({ message: error.message });
                 } else {
                     const { error } = await supabase.storage.from("assets")

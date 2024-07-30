@@ -1,7 +1,7 @@
 interface BaseParams {
     status?: boolean,
     statusCode?: number,
-    data?: Object,
+    data?: Object | null,
     message?: string
 }
 
@@ -12,11 +12,11 @@ export class BaseService {
         statusCode = 200,
         data = {},
         message = ""
-    } : BaseParams) {
+    } : BaseParams) : BaseParams {
         return { status, statusCode, data, message };
     }
 
-    serverErrorResponse(error : Error) {
+    serverErrorResponse(error : Error) : BaseParams {
         return { 
             status : false, 
             statusCode : 500, 

@@ -12,6 +12,7 @@ import { deleteRoom, selectRooms } from "../../redux/slices/roomsSlice";
 import { IChat, IMessage } from "../../types";
 import ModalWindow from "../shared/ModalWindow";
 import { imageUrl, url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function MessageBox() {
 
@@ -34,16 +35,14 @@ export default function MessageBox() {
 
 			if (room.chat) {
 
-				fetch(`${url}/chats/` + room.chat_id)
-					.then(res => res.json())
-					.then(data => {
-						setChat(data);
+				api.get(`${url}/chats/` + room.chat_id)
+					.then(response => {
+						setChat(response.data.data);
 					});
 
-				fetch(`${url}/messages/?room_id=` + room.chat_id)
-					.then(res => res.json())
-					.then(data => {
-						setMessages(data.sort((a: IMessage, b: IMessage) => {
+				api.get(`${url}/messages/?room_id=` + room.chat_id)
+					.then(response => {
+						setMessages(response.data.data.sort((a: IMessage, b: IMessage) => {
 							const aDate = new Date(a.createdAt)[Symbol.toPrimitive]("number");
 							const bDate = new Date(b.createdAt)[Symbol.toPrimitive]("number");
 							return aDate - bDate;
@@ -67,10 +66,6 @@ export default function MessageBox() {
 
 		//eslint-disable-next-line
 	}, [room?.id]);
-
-
-	console.log(messages);
-	
 
 	useEffect(() => {
 

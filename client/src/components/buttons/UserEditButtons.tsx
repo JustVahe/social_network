@@ -1,12 +1,13 @@
 import { FaEdit, FaImage } from "react-icons/fa";
-import { ID, IUser } from "../../types";
+import { ID } from "../../types";
 import { useCheck } from "../../utils/hooks/useCheck";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setHeaderImg } from "../../redux/slices/currentUserSlice";
 import { notifyPromise } from "../../utils/toastification";
-import { url } from "../../utils/enviromentConfig";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function UserEditButtons({ id }: { id: ID }) {
 
@@ -25,20 +26,13 @@ export default function UserEditButtons({ id }: { id: ID }) {
 
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
-
-            const headerResponse = await fetch(`${url}/files/${id}/header`, {
-                method: "PUT",
-                body: formData
-            });
-            const headerData = await headerResponse.json();
+            const headerResponse = await api.put(`${url}/files/${id}/header`, formData);
 
             if (headerResponse.status !== 200) {
-                throw new Error(headerData);
+                throw new Error(headerResponse.data.message);
             }
 
-            const getResponse = await fetch(`${url}/users/${id}`);
-            const getData: IUser = await getResponse.json();
-            dispatch(setHeaderImg(getData.headerImg));
+            dispatch(setHeaderImg(headerResponse.data.data.headerImg));
 
         }
 

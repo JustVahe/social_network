@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { selectCurrrentUsersPosts, setCurrentUsersPosts } from "../../redux/slices/currentUser'sPostsSlice";
 import { url } from "../../utils/enviromentConfig";
 import Loading from "../shared/Loading";
+import { api } from "../../axios/axios";
 
 export default function ProtectedFeedComponent() {
 
@@ -13,13 +14,7 @@ export default function ProtectedFeedComponent() {
     const currentUsersPosts = useAppSelector(selectCurrrentUsersPosts);
 
     useEffect(() => {
-
-        fetch(`${url}/posts?user_id=${currentUser?.id}`)
-            .then(res => res.json())
-            .then(data => {
-                dispatch(setCurrentUsersPosts(data))
-            })
-
+        api.get(`${url}/post/?user_id=` + currentUser?.id).then((response) => dispatch(setCurrentUsersPosts(response.data.data)));
         // eslint-disable-next-line
     }, [])
 

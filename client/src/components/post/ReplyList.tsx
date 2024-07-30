@@ -57,18 +57,12 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
     }
 
     const replyAddingToggler = async (event: FormEvent) => {
-
-        try {
             
             if (ok) {
                 setOk(false);
                 await replyHandler(event);
                 setOk(true);
             }
-
-        } catch (error) {
-            throw error;
-        }
 
     }
 

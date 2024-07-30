@@ -1,5 +1,5 @@
 import Navbar from "../components/menu/Navbar";
-import UserFeed from "../components/user/UserFeed.tsx";
+import UserFeed from "../components/feed/UserFeed.tsx";
 import Footer from "../components/menu/Footer.tsx";
 import UserNavbar from "../components/menu/UserNavbar.tsx";
 import PhotoFeed from "../components/photoPageComponents/PhotoFeed";

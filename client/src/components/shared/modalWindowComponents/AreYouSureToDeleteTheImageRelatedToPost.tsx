@@ -1,12 +1,12 @@
 import { FaX } from "react-icons/fa6";
-import { useCheck } from "../../../utils/hooks/useCheck";
 import { IPhoto } from "../../../types";
 import { useAppDispatch } from "../../../redux/typedHooks";
 import { deletePost } from "../../../redux/slices/postSlice";
 import { ModalResponse } from "../Image";
-import { url } from "../../../utils/enviromentConfig";
+import {  url } from "../../../utils/enviromentConfig";
 import { deletePostFromCurrentUsersPosts } from "../../../redux/slices/currentUser'sPostsSlice";
 import { deletePhotoOfCurrentUser } from "../../../redux/slices/currentUsersPhotosSlice";
+import { api } from "../../../axios/axios";
 
 interface IProps {
     setModalType: React.Dispatch<React.SetStateAction<boolean | string>>,
@@ -15,46 +15,62 @@ interface IProps {
     image: IPhoto
 }
 
-export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, setModalResponse, image }:IProps) {
+export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, setModalResponse, image }: IProps) {
 
-    const { checkAccessToken } = useCheck();
+    console.log(image.post_id);
     const dispatch = useAppDispatch();
 
     const deleteHandler = async () => {
 
-        await checkAccessToken();
+        const getPost = await api.get(`${url}/post/` + image.post_id);
 
-        const postRequest = await fetch(`${url}/posts/` + image.post_id);
-        const post = await postRequest.json();
+        if (!getPost.data.data) {
+            const fileDeleteRequest = await api.delete(`${url}/files/` + image.id);
+            const fileDeleteData = fileDeleteRequest.data;
 
-        if (post && image) {
+            if (fileDeleteRequest.status !== 200) {
+                setModalResponse({
+                    type: "error",
+                    message: fileDeleteData
+                });
+            } else {
+                setModalResponse({
+                    type: "success",
+                    message: fileDeleteData
+                })
+                setModalType(false);
+                dispatch(deletePhotoOfCurrentUser(image));
+            }
 
-            const deleteRequest = await fetch(`${url}/posts/` + image.post_id, { method: "DELETE" });
-            const data = await deleteRequest.json();
+            return 1;
+        }
 
-            post.files.forEach(async (item: IPhoto) => {
+        const deleteResponse = await api.delete(`${url}/post/` + image.post_id);
+        const post = await deleteResponse.data;
 
-                const fileDeleteRequest = await fetch(`${url}/files/` + item.id, { method: "DELETE" });
-                const fileDeleteData = await fileDeleteRequest.json();
+        if (image) {
+
+            post.data.files.forEach(async (item: IPhoto) => {
+                const fileDeleteRequest = await api.delete(`${url}/files/` + item.id);
+                const fileDeleteData = await fileDeleteRequest.data;
 
                 if (fileDeleteRequest.status !== 200) {
                     setModalResponse({
                         type: "error",
-                        message: fileDeleteData
+                        message: fileDeleteData.data
                     });
                 }
-
             })
 
-            if (deleteRequest.status === 200) {
+            if (deleteResponse.status === 200) {
                 setModalResponse({
                     type: "success",
-                    message: data
+                    message: post.data
                 });
             } else {
                 setModalResponse({
                     type: "error",
-                    message: data
+                    message: post.data
                 });
             }
 
@@ -62,8 +78,6 @@ export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, 
             dispatch(deletePostFromCurrentUsersPosts(image.post_id));
             dispatch(deletePhotoOfCurrentUser(image));
             setModalType(false);
-
-            await checkAccessToken();
         }
     }
 

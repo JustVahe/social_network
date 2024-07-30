@@ -2,7 +2,7 @@ import Navbar from "../components/menu/Navbar";
 import Footer from "../components/menu/Footer.tsx";
 import FriendsFeed from "../components/friends/FriendsFeed";
 import MessagesFeed from "../components/messages/MessagesFeed";
-import UserEditButtons from "../components/user/UserEditButtons.tsx";
+import UserEditButtons from "../components/buttons/UserEditButtons.tsx";
 import { useAppSelector } from "../redux/typedHooks.ts";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice.ts";
 import ProtectedUserFeed from "../components/protectedUser/ProtectedUserFeed.tsx";
@@ -20,7 +20,6 @@ export default function ProtectedUser({ page }: { page: string }) {
 	useEffect(() => {
 
 		if (window.innerWidth <= 640) {
-			console.log("window.innerWidth");
 			console.log(isMobile);
 			setIsMobile(false)
 		} else {
