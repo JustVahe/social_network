@@ -1,6 +1,11 @@
 {
     "presets": [
-      ["@babel/preset-env", { "targets": { "node": "current" } }],
+      ["@babel/preset-env", { "modules": "cjs" }],
       ["@babel/preset-typescript", { "allowDeclareFields": true }]
+    ],
+    "plugins": [
+      ["module-resolver", {
+        "extensions": [".js", ".ts"]
+      }]
     ]
   }
