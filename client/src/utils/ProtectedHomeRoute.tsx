@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom"
+import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../redux/typedHooks";
 import { selectCurrentUser, setUser } from "../redux/slices/currentUserSlice";
 import "../animation.css";
@@ -12,11 +12,11 @@ const ProtectedHomeRoute = () => {
     const currentUser = useAppSelector(selectCurrentUser);
     const [ok, setOk] = useState(false);
     const dispatch = useAppDispatch();
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         api.get(`${url}/users/dashboard`).then(response => {
-            console.log(response.data);
+            if (response.status !== 200) return navigate("/signIn");
             dispatch(setUser(response.data));
             setOk(true)
         });
