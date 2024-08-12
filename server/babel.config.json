@@ -4,8 +4,12 @@
       ["@babel/preset-typescript", { "allowDeclareFields": true }]
     ],
     "plugins": [
-      ["module-resolver", {
-        "extensions": [".js", ".ts"]
-      }]
+        ["module-resolver", {
+            "root": ["./src"],
+            "extensions": [".js", ".ts", ".cjs"],
+            "alias": {
+              "@": "./src"
+            }
+          }]
     ]
   }
