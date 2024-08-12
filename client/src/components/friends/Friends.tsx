@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectThisUsersFriends, setThisUsersFriends } from "../../redux/slices/thisUsersFriends";
 import { url } from "../../utils/enviromentConfig";
 import Loading from "../shared/Loading";
+import { api } from "../../axios/axios";
 
 export default function Friends({ user }: { user: IUser }) {
 
@@ -13,10 +14,9 @@ export default function Friends({ user }: { user: IUser }) {
 
     useEffect(() => {
         if (user.id) {
-            fetch(`${url}/friends/` + user.id)
-                .then((response) => response.json())
-                .then((data) => {
-                    dispatch(setThisUsersFriends(data));
+            api.get(`${url}/friends/` + user.id)
+                .then((res) => {
+                    dispatch(setThisUsersFriends(res.data));
                 });
         }
 

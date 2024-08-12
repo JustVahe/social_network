@@ -51,7 +51,7 @@ export default function SignUp() {
 
                 const response = await api.post(`${url}/auth/register`, validation);
 
-                const data = await response.data.data;
+                const data = await response.data;
 
                 if (response.status !== 200) {
                     throw new Error(data.error.message);

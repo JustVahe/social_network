@@ -22,8 +22,9 @@ export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto
             formData.append("user_id", image.user_id as string);
             formData.append("file", file);
 
-            const fileResponse = await api.put(`${url}/files/${image.id}`, formData);
-
+            const fileResponse = await api.put(`${url}/files/${image.id}`, formData, {
+                headers: {"Content-Type" : "multipart/form-data"}
+            });
             const updateImageData = await fileResponse.data;
 
             if (fileResponse.status !== 200) {

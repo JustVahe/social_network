@@ -6,6 +6,7 @@ import { IFriend } from "../../../types";
 import { notifyError } from "../../../utils/toastification";
 import { addRoom } from "../../../redux/slices/roomsSlice";
 import { url } from "../../../utils/enviromentConfig";
+import { api } from "../../../axios/axios";
 
 export default function CreateGroup({ setModalType }: { setModalType?: React.Dispatch<React.SetStateAction<string | boolean>> }) {
 
@@ -17,14 +18,11 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
     const [name, setName] = useState("");
 
     useEffect(() => {
-
-        fetch(`${url}/friends/` + currentUser?.id)
-            .then(res => res.json())
-            .then(data => {
-                setFriends(data);
-                setSelectedList(new Array(data.length).fill(false));
+        api.get(`${url}/friends/` + currentUser?.id)
+            .then(res => {
+                setFriends(res.data);
+                setSelectedList(new Array(res.data.length).fill(false));
             });
-
     }, [currentUser?.id]);
 
     const groupCreationHandler = async () => {
@@ -35,51 +33,29 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
 
             if (name && name.trim().length !== 0) {
 
-                const chatData = await (await fetch(`${url}/chats/`, {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify({ name })
-                })).json();
+                const chatData = (await api.post(`${url}/chats/`, { name })).data;
 
                 selectedList.forEach(async (item, index) => {
                     if (item) {
-
-                        await (await fetch(`${url}/connections/`, {
-                            method: "POST",
-                            headers: {
-                                "Content-type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                chat_id: chatData.id,
-                                user_id: friends[index].user_b.id
-                            })
-                        })).json();
-
+                        await api.post(`${url}/connections/`, {
+                            chat_id: chatData.id,
+                            user_id: friends[index].user_b.id
+                        });
                     }
                 })
 
-                const connectionData = await (await fetch(`${url}/connections/`, {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatData.id,
-                        user_id: currentUser?.id
-                    })
-                })).json();
+                const connectionData = await (await api.post(`${url}/connections/`, {
+                    chat_id: chatData.id,
+                    user_id: currentUser?.id
+                })).data;
 
                 dispatch(addRoom(connectionData));
                 setModalType(false);
-
 
             } else {
                 return notifyError("Please write name of your chat");
             }
         }
-
     }
 
     return (
@@ -121,7 +97,6 @@ export default function CreateGroup({ setModalType }: { setModalType?: React.Dis
                                         className="block"
                                         type="checkbox"
                                         onChange={() => {
-
                                             setSelectedList(state => {
                                                 if (state) {
                                                     const toChange = !state[index];

@@ -15,9 +15,9 @@ const ProtectedHomeRoute = () => {
 
 
     useEffect(() => {
-        api.get(`${url}/user/dashboard`).then(response => {
-            console.log(response.data.data);
-            dispatch(setUser(response.data.data));
+        api.get(`${url}/users/dashboard`).then(response => {
+            console.log(response.data);
+            dispatch(setUser(response.data));
             setOk(true)
         });
         //eslint-disable-next-line

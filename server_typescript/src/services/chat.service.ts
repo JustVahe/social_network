@@ -12,7 +12,7 @@ export class ChatService extends BaseService {
         try {
 
             const { name } = req.body;
-            if (!name) return this.response({ status: false, statusCode: 400, message: "Name is Required" });
+            if (!name) return this.response({ status: false, statusCode: 400, data: "Name is Required" });
 
             const chat = await Chat.create({ name });
             const wholeChat = await Chat.findOne({
@@ -34,7 +34,7 @@ export class ChatService extends BaseService {
         try {
             const { id } = req.params;
             const chat = await Chat.findOne({ where: { id }, include: { all: true, nested: true } });
-            if (!chat) return this.response({ status: false, statusCode: 404, message: "Chat wasnt Found" });
+            if (!chat) return this.response({ status: false, statusCode: 404, data: "Chat wasnt Found" });
             return this.response({ data: chat });
         } catch (error) {
             const serverError = error as Error;
@@ -52,7 +52,7 @@ export class ChatService extends BaseService {
         try {
             const { id } = req.params;
             const chat = await Chat.findOne({ where: { id }, include: { all: true, nested: true } }) as ChatResult;
-            if (!chat) return this.response({ status: false, statusCode: 404, message: "Chat wasnt Found" });
+            if (!chat) return this.response({ status: false, statusCode: 404, data: "Chat wasnt Found" });
 
             for (const key in req.body) {
                 if (req.body[key]) {
@@ -77,8 +77,8 @@ export class ChatService extends BaseService {
             const chat = await Chat.findOne({ where: { id }, });
             const file = req.file;
 
-            if (!file) return this.response({ status: false, statusCode: 400, message: "File type is wrong: Please upload images (jpg,png,webp,avif ...)" });
-            if (!chat) return this.response({ status: false, statusCode: 404, message: "Chat wasnt Found" });
+            if (!file) return this.response({ status: false, statusCode: 400, data: "File type is wrong: Please upload images (jpg,png,webp,avif ...)" });
+            if (!chat) return this.response({ status: false, statusCode: 404, data: "Chat wasnt Found" });
 
             const fileBase64 = decode(file.buffer.toString("base64"));
 
@@ -92,9 +92,9 @@ export class ChatService extends BaseService {
                     contentType: file.mimetype
                 });
 
-            if (error) return this.response({ status: false, statusCode: 400, message: error.message });
+            if (error) return this.response({ status: false, statusCode: 400, data: error.message });
 
-            return this.response({ message: "Avatar upload is complete" });
+            return this.response({ data: "Avatar upload is complete" });
 
         } catch (error) {
             const serverError = error as Error;
@@ -111,12 +111,12 @@ export class ChatService extends BaseService {
             const chat = await Chat.findOne({ where: { id }, include: { all: true, nested: true } });
             const connections = await Connection.findAll({ where: { chat_id: id } });
 
-            if (!chat) return this.response({ status: false, statusCode: 404, message: "Chat wasnt Found" });
+            if (!chat) return this.response({ status: false, statusCode: 404, data: "Chat wasnt Found" });
 
             connections.forEach(item => item.destroy());
             chat.destroy();
 
-            return this.response({ message: "Chat successfully deleted" });
+            return this.response({ data: "Chat successfully deleted" });
 
         } catch (error) {
             const serverError = error as Error;

@@ -12,7 +12,7 @@ export default function NewsfeedComponent({ id }: { id?: ID }) {
 
 	useEffect(() => {
 		if (id) {
-			api.get(`${url}/post/?user_id=` + id).then((response) => setPosts(response.data.data));
+			api.get(`${url}/post/?user_id=` + id).then((response) => setPosts(response.data));
 		}
 	}, [id])
 

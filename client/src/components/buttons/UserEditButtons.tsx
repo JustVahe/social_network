@@ -26,13 +26,15 @@ export default function UserEditButtons({ id }: { id: ID }) {
 
             await checkAccessToken();
             formData.append('file', eventTarget.files[0]);
-            const headerResponse = await api.put(`${url}/files/${id}/header`, formData);
+            const headerResponse = await api.put(`${url}/files/${id}/header`, formData, {
+                headers: { "Content-Type" : "multipart/form-data"}
+            });
 
             if (headerResponse.status !== 200) {
                 throw new Error(headerResponse.data.message);
             }
 
-            dispatch(setHeaderImg(headerResponse.data.data.headerImg));
+            dispatch(setHeaderImg(headerResponse.data.headerImg));
 
         }
 

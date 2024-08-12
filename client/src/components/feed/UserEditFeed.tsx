@@ -5,6 +5,7 @@ import { useCheck } from '../../utils/hooks/useCheck';
 import { url } from '../../utils/enviromentConfig';
 import { useNavigate } from 'react-router-dom';
 import { notifyPromise } from '../../utils/toastification';
+import { api } from '../../axios/axios';
 
 export default function UserEditFeed() {
 
@@ -16,7 +17,7 @@ export default function UserEditFeed() {
     const [emailChange, setEmailChange] = useState(false);
     const [descriptionChange, setDescriptionChange] = useState(false);
     const [ok, setOk] = useState(true);
-    
+
     const navigate = useNavigate();
     const { checkAccessToken } = useCheck();
 
@@ -42,9 +43,8 @@ export default function UserEditFeed() {
 
         await checkAccessToken();
 
-        const updateResponse = await fetch(`${url}/users/` + currentUser?.id, {
-            method: "PUT",
-            body: formData
+        const updateResponse = await api.put(`${url}/users/` + currentUser?.id, formData, {
+            headers: { "Content-Type" : "multipart/form-data"}
         });
 
         if (updateResponse.status !== 200) {
@@ -57,16 +57,11 @@ export default function UserEditFeed() {
     }
 
     const formSubmitToggler = async (event: React.FormEvent<HTMLFormElement>) => {
-        try {
-            if (ok) {
-                setOk(false);
-                await formSubmitHandler(event);
-                setOk(true);
-            }
-        } catch (error) {
-            throw error;
+        if (ok) {
+            setOk(false);
+            await formSubmitHandler(event);
+            setOk(true);
         }
-
     }
 
     return (

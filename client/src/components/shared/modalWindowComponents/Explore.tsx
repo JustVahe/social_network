@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/typedHooks";
 import { selectCurrentUser } from "../../../redux/slices/currentUserSlice";
 import { setRoom } from "../../../redux/slices/roomSlice";
 import { addRoom } from "../../../redux/slices/roomsSlice";
+import { api } from "../../../axios/axios";
 
 export default function Explore({ setModalType }: { setModalType?: React.Dispatch<React.SetStateAction<string | boolean>> }) {
 
@@ -17,8 +18,8 @@ export default function Explore({ setModalType }: { setModalType?: React.Dispatc
     const changeHandler = async (event: ChangeEvent) => {
         const eventTarget = event.target as HTMLInputElement;
         if (eventTarget.value?.trim().length != 0) {
-            const searchResponse = await fetch(`${url}/users?filter=name&value=` + eventTarget.value.toLowerCase());
-            const searchData = await searchResponse.json();
+            const searchResponse = await api.get(`${url}/users?filter=name&value=` + eventTarget.value.toLowerCase());
+            const searchData = await searchResponse.data;
             setUsers(searchData);
         } else {
             setUsers(undefined);
@@ -27,28 +28,24 @@ export default function Explore({ setModalType }: { setModalType?: React.Dispatc
 
     const messageAdddingHandler = async (thisUser: IUser) => {
 
-        const findRoom = await ((await fetch(`${url}/rooms/?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
+        const findRoom = await ((await api.get(`${url}/rooms/?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).data;
+        console.log(setModalType);
+
+
+        if (!findRoom) {
+
+            const roomData = (await api.post(`${url}/rooms`, {
+                user_a_id: currentUser?.id,
+                user_b_id: thisUser.id
+            })).data;
+
+            dispatch(addRoom(roomData));
+            dispatch(setRoom(roomData));
+        } else {
+            dispatch(setRoom(findRoom));
+        }
 
         if (setModalType) {
-            if (!findRoom) {
-
-                const roomData = await (await fetch(`${url}/rooms`, {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        user_a_id: currentUser?.id,
-                        user_b_id: thisUser.id
-                    })
-                })).json();
-
-                dispatch(addRoom(roomData));
-                dispatch(setRoom(roomData));
-            } else {
-                dispatch(setRoom(findRoom));
-            }
-
             setModalType(false);
         }
 

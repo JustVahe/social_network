@@ -18,7 +18,7 @@ export default function ProtectedPhotoFeed() {
         setTimeout(() => {
             api.get(`${url}/files/` + currentUser?.id)
             .then(response => {
-                dispatch(setCurrentUsersPhotos(response.data.data));
+                dispatch(setCurrentUsersPhotos(response.data));
             });
         }, 500);
     //eslint-disable-next-line

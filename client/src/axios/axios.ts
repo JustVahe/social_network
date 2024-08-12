@@ -10,10 +10,6 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(request => {
-    const fullUrl = axios.getUri(request);
-    if (fullUrl.endsWith("login") || fullUrl.endsWith("register"))
-        throw new Error("Unnessesary Interception");
-
     const authToken = localStorage.getItem("authorization");
     if (authToken) request.headers.Authorization = `Bearer ${authToken}`;
     return request;
@@ -25,16 +21,26 @@ api.interceptors.request.use(request => {
 api.interceptors.response.use(
     response => response,
     async error => {
-        const status = error.response ? error.response.status : null;
-        const prevRequest = error.config;
-        if (status === 401 && !prevRequest?.sent) {
-            prevRequest.sent = true;
-            const response = await axios.post(`${url}/auth/refresh`, {
-                refreshToken: localStorage.refreshToken
-            });
-            localStorage.setItem("authorization", response.data.data.newAccessToken);
-            prevRequest.headers["Authorization"] = `Bearer ${response.data.data.newAccessToken}`;
-            return api(prevRequest);
+        try {
+            const status = error.response ? error.response.status : null;
+            const prevRequest = error.config;
+            if (status === 401 && !prevRequest?.sent) {
+
+                prevRequest.sent = true;
+                if (!localStorage.refreshToken) throw new Error("No Refresh Token");
+
+                const response = await axios.post(`${url}/auth/refresh`, {
+                    refreshToken: localStorage.refreshToken
+                });
+                if (response.status !== 200) throw new Error("Invalid Refresh Token");
+
+                localStorage.setItem("authorization", response.data.newAccessToken);
+                prevRequest.headers["Authorization"] = `Bearer ${response.data.newAccessToken}`;
+                return api(prevRequest);
+            }
+        } catch (error) {
+            window.location.href = "/signIn";
         }
+
     }
 )

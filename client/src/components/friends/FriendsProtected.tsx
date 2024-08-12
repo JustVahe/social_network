@@ -5,6 +5,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { selectUsersFriends, setUsersFriends } from "../../redux/slices/usersFriends";
 import { url } from "../../utils/enviromentConfig";
 import Loading from "../shared/Loading";
+import { api } from "../../axios/axios";
 
 export default function FriendsProtected() {
     const usersFriends = useAppSelector(selectUsersFriends);
@@ -13,12 +14,10 @@ export default function FriendsProtected() {
 
     useEffect(() => {
         if (currentUser?.id) {
-            fetch(`${url}/friends/` + currentUser?.id)
-                .then((response) => response.json())
-                .then((data) => {
-                    dispatch(setUsersFriends(data));
-                }
-                );
+            api.get(`${url}/friends/` + currentUser?.id)
+                .then((res) => {
+                    dispatch(setUsersFriends(res.data));
+                });
         }
 
     }, [currentUser?.id, dispatch]);

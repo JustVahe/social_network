@@ -14,6 +14,7 @@ import { addRoom } from '../../redux/slices/roomsSlice';
 import { imageUrl, url } from '../../utils/enviromentConfig';
 import { deleteFriendOfCurrrentUser } from '../../redux/slices/usersFriends';
 import { deleteFriendOfThisUser } from '../../redux/slices/thisUsersFriends';
+import { api } from '../../axios/axios';
 
 export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
@@ -22,17 +23,14 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
     const messageAdddingHandler = async () => {
 
-        const findRoom = await ((await fetch(`${url}/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).json();
+        const findRoom = ((await api.get(`${url}/rooms?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).data;
 
         if (thisUser.id) {
             if (!findRoom) {
-                const roomData = await (await fetch(`${url}/rooms`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        user_a_id: currentUser?.id,
-                        user_b_id: thisUser.id
-                    })
-                })).json();
+                const roomData = await (await api.post(`${url}/rooms`, {
+                    user_a_id: currentUser?.id,
+                    user_b_id: thisUser.id
+                })).data;
 
                 dispatch(addRoom(roomData));
                 dispatch(setRoom(roomData));
@@ -56,24 +54,19 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
     useEffect(() => {
 
-        fetch(`${url}/requests/` + currentUser?.id, {
-            method: "POST",
-            body: JSON.stringify({
-                target_id: thisUser.id
-            })
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setRequest(data);
+        api.get(`${url}/requests/` + currentUser?.id)
+            .then((res) => {
+                setRequest(res.data);
             });
 
-        fetch(`${url}/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
-            .then(response => response.json())
-            .then(data => {
-                setFriend(data);
+        api.get(`${url}/friends?user_id=${currentUser?.id}&target_id=${thisUser.id}`)
+            .then(res => {
+                setFriend(res.data);
             })
 
     }, [thisUser.id, currentUser?.id]);
+
+    console.log(request);
 
     return (
         <div className='relative'>
@@ -101,7 +94,7 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
                         </NavLink>
                     </div>
                     {
-                        request?.status === "approved" ? <Unfriend setFriend={setFriend} friend={friend as IFriend} /> :
+                        friend ? <Unfriend setFriend={setFriend} friend={friend as IFriend} /> :
                             request?.status === "pending" ? <PendingFriend />
                                 : <AddFriend from={currentUser as IUser} to={thisUser} setRequest={setRequest} />
                     }

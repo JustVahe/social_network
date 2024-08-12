@@ -24,7 +24,9 @@ export default function ImgSendingForm() {
                 formData.append("files", file);
             });
 
-            const fileUploadResponse = await api.post(`${url}/files/${currentUser.id}`, formData);
+            const fileUploadResponse = await api.post(`${url}/files/${currentUser.id}`, formData, {
+                headers: {"Content-Type" : "multipart/form-data"}
+            });
             const fileUploadData = await fileUploadResponse.data;
 
             dispatch(addPhotoToCurrentUser(fileUploadData.data));

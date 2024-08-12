@@ -4,9 +4,10 @@ import { DataTypes, Sequelize } from "sequelize";
 import { ID, IPost, IRoom, IUser } from "../src/utils/types/types.ts";
 import { Model } from "sequelize";
 import User from "./user.ts";
+import Message from "./message.ts";
 
 export default class Room extends Model<IRoom> implements IRoom {
-  
+
   declare id: ID;
   declare user_a_id: string;
   declare user_b_id: string;
@@ -17,8 +18,9 @@ export default class Room extends Model<IRoom> implements IRoom {
   };
 
   static associate() {
-    this.belongsTo(User, {foreignKey: "user_a_id", as: "user_a"});
-    this.belongsTo(User, {foreignKey: "user_b_id", as: "user_b"});
+    this.belongsTo(User, { foreignKey: "user_a_id", as: "user_a" });
+    this.belongsTo(User, { foreignKey: "user_b_id", as: "user_b" });
+    this.hasMany(Message, { foreignKey: "room_id", as: "messages" });
   }
 
   public static initialize(sequelize: Sequelize) {

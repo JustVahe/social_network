@@ -72,7 +72,7 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 		if (post) {
 
 			const updateResponse = await api.put(`${url}/post/` + post.id, { message: newMessage });
-			const updateData = updateResponse.data.data;
+			const updateData = updateResponse.data;
 
 			dispatch(updatePost(updateData));
 			dispatch(updatePostFromCurrentUsersPosts(updateData));

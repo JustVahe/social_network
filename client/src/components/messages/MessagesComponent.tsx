@@ -24,12 +24,12 @@ export default function MessagesComponent() {
 		dispatch(undefineRooms());
 		api.get(`${url}/rooms?user_id=` + currentUser?.id)
 			.then(response => {
-				if (!room || room.user_a.id !== currentUser?.id) {
-					dispatch(setRoom(response.data.data[0]));
+				if (!room || room.user_a_id !== currentUser?.id) {
+					dispatch(setRoom(response.data[0]));
 				}
-				dispatch(setRooms(response.data.data));
+				dispatch(setRooms(response.data));
 			})
-		//elint-disble-next-line
+		//eslint-disable-next-line
 	}, [currentUser?.id, dispatch]);
 
 	return (

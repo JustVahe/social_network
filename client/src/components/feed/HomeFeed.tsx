@@ -29,13 +29,13 @@ export default function HomeFeed() {
     }
 
     useEffect(() => {
-        api.get(`${url}/post/?limit=${5}&offset=${0}`).then(response => dispatch(setPost(response.data.data)));
+        api.get(`${url}/post/?limit=${5}&offset=${0}`).then(response => dispatch(setPost(response.data)));
         //eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         if (offset !== 0) {
-            api.get(`${url}/post/?limit=${5}&offset=${offset}`).then(response => dispatch(addPosts(response.data.data)));
+            api.get(`${url}/post/?limit=${5}&offset=${offset}`).then(response => dispatch(addPosts(response.data)));
         }
         //eslint-disable-next-line
     }, [offset]);

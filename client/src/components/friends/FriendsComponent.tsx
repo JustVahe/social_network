@@ -7,6 +7,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import RequestRow from "./RequestRow";
 import { url } from "../../utils/enviromentConfig";
 import Loading from "../shared/Loading";
+import { api } from "../../axios/axios";
 
 export default function FriendsComponent({ user }: { user: IUser }) {
 	const [friends, setFriends] = useState<IFriend[] | undefined>();
@@ -24,24 +25,19 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 
 		checkAccessToken();
 
-		fetch(`${url}/friends/` + user.id)
-			.then((res) => {
-				return res.json()
-			})
-			.then(data => {
-				setFriends(data);
+		api.get(`${url}/friends/` + user.id)
+			.then(res => {
+				setFriends(res.data);
 			})
 
-		fetch(`${url}/requests/` + user.id + "?toggle=from_me&status=pending")
-			.then((res) => res.json())
-			.then(data => {
-				setRequestsFromMe(data);
+		api.get(`${url}/requests/?user_id=` + user.id + "&toggle=from_me&status=pending")
+			.then(res => {
+				setRequestsFromMe(res.data);
 			})
 
-		fetch(`${url}/requests/` + user.id + "?toggle=to_me&status=pending")
-			.then((res) => res.json())
-			.then(data => {
-				setRequestsToMe(data)
+		api.get(`${url}/requests/?user_id=` + user.id + "&toggle=to_me&status=pending")
+			.then(res => {
+				setRequestsToMe(res.data)
 			})
 
 		//eslint-disable-next-line

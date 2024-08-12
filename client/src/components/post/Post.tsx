@@ -13,10 +13,12 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 	const [dislikes, setDislikes] = useState<IReaction[] | undefined>();
 
 	useEffect(() => {
-		api.get(`${url}/reactions/?post_id=${postData.id}&type=like`).then(response => setLikes(response.data.data));
-		api.get(`${url}/reactions/?post_id=${postData.id}&type=dislike`).then(response => setLikes(response.data.data));
+		api.get(`${url}/reactions/?post_id=${postData.id}&type=like`).then(response => setLikes(response.data));
+		api.get(`${url}/reactions/?post_id=${postData.id}&type=dislike`).then(response => setDislikes(response.data));
 	//eslint-disable-next-line
 	}, []);
+
+	console.log(likes, dislikes);
 
 	return (
 		<div className="w-full flex flex-col gap-[15px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">

@@ -131,9 +131,7 @@ router.put("/:id", async (request, response) => {
         response.status(500).json(error);
     }
 
-})
-
-module.exports = router;
+});
 
 router.delete("/:id", async (request, response) => {
 

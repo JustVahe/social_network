@@ -89,7 +89,7 @@ router.put("/:id", async (request, response) => {
             if (errors) {
                 Object.keys(errors).forEach(item => {
                     if (errors) {
-                        return response.status(500).json(errors);
+                        return response.status(500).json(item);
                     }
                 });
             }
@@ -109,29 +109,6 @@ router.put("/:id", async (request, response) => {
         });
 
         return response.status(200).json(newUser);
-
-    } catch (error) {
-
-        console.log(error);
-        return response.status(500).json("Internal Server Error - " + error.message);
-
-    }
-
-});
-
-router.delete("/:id", async (request, response) => {
-
-    try {
-
-        const { id } = request.params;
-
-        const user = await User.findOne({
-            where: { id }
-        });
-
-        user.destroy();
-
-        return response.status(200).json(`${user.name} is deleted`);
 
     } catch (error) {
 

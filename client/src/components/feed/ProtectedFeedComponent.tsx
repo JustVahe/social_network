@@ -14,7 +14,7 @@ export default function ProtectedFeedComponent() {
     const currentUsersPosts = useAppSelector(selectCurrrentUsersPosts);
 
     useEffect(() => {
-        api.get(`${url}/post/?user_id=` + currentUser?.id).then((response) => dispatch(setCurrentUsersPosts(response.data.data)));
+        api.get(`${url}/post/?user_id=` + currentUser?.id).then((response) => dispatch(setCurrentUsersPosts(response.data)));
         // eslint-disable-next-line
     }, [])
 

@@ -46,10 +46,9 @@ export class RoomService extends BaseService {
                 } else {
                     return this.response({ data: room });
                 }
-
             } else if (user_id) {
 
-                if (!user_id) return this.response({ status: false, statusCode: 400, message: "User ID is required" })
+                if (!user_id) return this.response({ status: false, statusCode: 400, data: "User ID is required" })
 
                 const rooms = await Room.findAll({
                     include: {
@@ -82,7 +81,7 @@ export class RoomService extends BaseService {
 
                 return this.response({ data: modifiedRooms });
             } else {
-                return this.response({ status: false, statusCode: 400, message: "At least one user id is required" })
+                return this.response({ status: false, statusCode: 400, data: "At least one user id is required" })
             }
         } catch (error) {
             const serverError = error as Error;
@@ -114,7 +113,7 @@ export class RoomService extends BaseService {
 
             if (room) return this.response({ data: room });
             if (connection) return this.response({ data: connection });
-            return this.response({ status: false, statusCode: 404, message: "Room wasn't found" });
+            return this.response({ status: false, statusCode: 404, data: "Room wasn't found" });
 
         } catch (error) {
             const serverError = error as Error;
@@ -130,8 +129,8 @@ export class RoomService extends BaseService {
             const { user_a_id, user_b_id } = req.body;
             const room = await Room.create({ user_a_id, user_b_id });
 
-            const newRoom = await Room.findOne({ where: { id: room.id }, include: { all: true } });
-            return this.response({ data: room });
+            const newRoom = await Room.findOne({ where: { id: room.id }, include: { all: true, nested: true } });
+            return this.response({ data: newRoom });
 
         } catch (error) {
             const serverError = error as Error;
@@ -148,10 +147,10 @@ export class RoomService extends BaseService {
                 where: { id }
             });
 
-            if (!room) return this.response({ status: false, statusCode: 404, message: "Room wasn't found" });
+            if (!room) return this.response({ status: false, statusCode: 404, data: "Room wasn't found" });
 
             room.destroy();
-            return this.response({ message: `Chat successfully deleted` });
+            return this.response({ data: `Chat successfully deleted` });
         } catch (error) {
             const serverError = error as Error;
             console.log({ error: error });

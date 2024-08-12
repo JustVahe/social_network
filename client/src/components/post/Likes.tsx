@@ -3,6 +3,7 @@ import { IPost, IReaction } from "../../types";
 import { useEffect, useState } from "react";
 import { url } from "../../utils/enviromentConfig";
 import { FaThumbsUp } from "react-icons/fa6";
+import { api } from "../../axios/axios";
 
 interface IProps {
     likes: IReaction[],
@@ -21,24 +22,19 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
 
     useEffect(() => {
 
-        fetch(`${url}/reactions/?post_id=${post.id}&user_id=${post.user?.id}`)
-            .then(res => res.json())
-            .then(data => {
-                setCurrentReaction(data);
+        api.get(`${url}/reactions/?post_id=${post.id}&user_id=${post.user?.id}`)
+            .then(res => {
+                setCurrentReaction(res.data);
             });
 
     }, [])
 
     const createReaction = async (toggle: "like" | "dislike") => {
 
-        const reactionCreatingResponse = await fetch(`${url}/reactions/?post_id=${post.id}&type=${toggle}`, {
-            method: "POST",
-            body: JSON.stringify({ user_id: post.user.id })
-        });
-        const reactionCreatingData = await reactionCreatingResponse.json();
+        const reactionCreatingResponse = await api.post(`${url}/reactions/?post_id=${post.id}&type=${toggle}`, { user_id: post.user.id });
+        const reactionCreatingData = await reactionCreatingResponse.data;
 
         if (reactionCreatingResponse.status !== 200) throw reactionCreatingData;
-
         return reactionCreatingData;
 
     }
@@ -48,6 +44,7 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
         if (!currentReaction) {
 
             const reactionCreatingData = await createReaction(toggle);
+            console.log(reactionCreatingData);
 
             if (toggle === "like") setLikes(prev => { if (prev) return [...prev, reactionCreatingData] })
             else if (toggle === "dislike") setDislikes(prev => { if (prev) return [...prev, reactionCreatingData] })
@@ -57,8 +54,7 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
 
         } else if (currentReaction.type !== toggle) {
 
-            await fetch(`${url}/reactions/${currentReaction.id}`, { method: "DELETE" });
-
+            await api.delete(`${url}/reactions/${currentReaction.id}`, { method: "DELETE" });
             const reactionCreatingData = await createReaction(toggle);
 
             if (toggle === "like") {
@@ -108,7 +104,7 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
                 onClick={() => reactingToggler("like")}
                 className="relative text-md-16 text-emerald-700">
                 <span className="absolute top-[-3px] text-sm-11 left-[18px]">
-                    {likes && ((likes.length / 1000) > 1 ? `.${likes.length / 1000}k` : likes.length)}
+                    {likes ? ((likes.length / 1000) > 1 ? `.${likes.length / 1000}k` : likes.length) : 0}
                 </span>
                 {(reactionToggle === "like" || currentReaction?.type === "like") ? <FaThumbsUp /> : <FaRegThumbsUp />}
             </button>
@@ -116,7 +112,7 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
                 onClick={() => reactingToggler("dislike")}
                 className="relative text-md-16 text-red-600">
                 <span className="absolute top-[-3px] text-sm-11 left-[18px]">
-                    {dislikes && ((dislikes.length / 1000) > 1 ? `.${dislikes.length / 1000}k` : dislikes.length)}
+                    {dislikes ? ((dislikes.length / 1000) > 1 ? `.${dislikes.length / 1000}k` : dislikes.length) : 0}
                 </span>
                 {(reactionToggle === "dislike" || currentReaction?.type === "dislike") ? <FaThumbsDown /> : <FaRegThumbsDown />}
             </button>

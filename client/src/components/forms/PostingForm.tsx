@@ -27,21 +27,24 @@ export default function PostingForm() {
 		const postBody = { message };
 
 		const postResponse = await api.post(`${url}/post/` + currentUser?.id, postBody);
-		const { data } = await postResponse.data;
+		const data = await postResponse.data;
 
 		if (data) {
 
 			if (files) {
 
+				console.log(files);
 				Array.from(files).forEach(file => {
 					formData.append("files", file);
 				})
 				formData.append("post_id", data.id as string);
 
-				await api.post(`${url}/files/${currentUser?.id}/post`, formData);
+				await api.post(`${url}/files/${currentUser?.id}/post`, formData, {
+					headers: {"Content-Type" : "multipart/form-data"}
+				});
 				
 				const postResponse = await api.get(`${url}/post/` + data.id);
-				const { data: newPostData } = await postResponse.data;
+				const newPostData = postResponse.data;
 
 				dispatch(addPostToCurrentUsersPosts(newPostData));
 				dispatch(addPost(newPostData));

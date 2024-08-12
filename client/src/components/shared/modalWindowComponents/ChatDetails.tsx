@@ -4,6 +4,7 @@ import { useAppSelector } from "../../../redux/typedHooks"
 import { useEffect, useState } from "react";
 import { IChat } from "../../../types";
 import { imageUrl, url } from "../../../utils/enviromentConfig";
+import { api } from "../../../axios/axios";
 
 export default function ChatDetails({ setModalType }: {
     setModalType?: React.Dispatch<React.SetStateAction<string | boolean>>
@@ -14,9 +15,8 @@ export default function ChatDetails({ setModalType }: {
 
     useEffect(() => {
 
-        fetch(`${url}/chats/` + room?.chat_id)
-            .then(res => res.json())
-            .then(data => setChat(data));
+        api.get(`${url}/chats/` + room?.chat_id)
+            .then(res => setChat(res.data));
 
     }, [room?.chat_id]);
 

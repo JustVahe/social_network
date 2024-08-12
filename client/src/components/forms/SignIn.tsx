@@ -44,8 +44,8 @@ export default function SignIn() {
                 if (response.status !== 200) {
                     throw new Error(response.data.message);
                 } else {
-                    localStorage.setItem("authorization", response.data.data.accessToken);
-                    localStorage.setItem("refreshToken", response.data.data.refreshToken);
+                    localStorage.setItem("authorization", response.data.accessToken);
+                    localStorage.setItem("refreshToken", response.data.refreshToken);
                     dispatch(setIsAuth(true));
                     navigate("/");
                     setGeneralError(undefined);

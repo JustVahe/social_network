@@ -46,7 +46,7 @@ export class PostService extends BaseService {
             return this.response({
                 status: false,
                 statusCode: 400,
-                message: "Bad Request : No parameters provided"
+                data: "Bad Request : No parameters provided"
             });
 
         } catch (error: unknown) {
@@ -96,7 +96,7 @@ export class PostService extends BaseService {
                     nested: true
                 }
             });
-            if (!newPost) return this.response({ status: false, statusCode: 500, message: "Post wasn't created" })
+            if (!newPost) return this.response({ status: false, statusCode: 500, data: "Post wasn't created" })
             return this.response({ data: newPost });
 
         } catch (error: unknown) {
@@ -111,9 +111,9 @@ export class PostService extends BaseService {
         try {
             const { id } = req.params;
             const post = await Post.findByPk(id);
-            if (!post) return this.response({ status: false, statusCode: 404, message: "Post wasn't found" })
+            if (!post) return this.response({ status: false, statusCode: 404, data: "Post wasn't found" })
             await post.destroy();
-            return this.response({ message: "Post successfully deleted" });
+            return this.response({ data: "Post successfully deleted" });
         } catch (error: unknown) {
             const serviceError = error as Error;
             console.error(serviceError);
@@ -129,7 +129,7 @@ export class PostService extends BaseService {
             const { message } = req.body;
 
             const post = await Post.findByPk(id);
-            if (!post) return this.response({ status: false, statusCode: 404, message: "Post wasn't found" });
+            if (!post) return this.response({ status: false, statusCode: 404, data: "Post wasn't found" });
 
             post.message = message;
             await post.save();
@@ -140,7 +140,7 @@ export class PostService extends BaseService {
                     nested: true
                 }
             });
-            if (!newPost) return this.response({ status: false, statusCode: 500, message: "Post wasn't found" });
+            if (!newPost) return this.response({ status: false, statusCode: 500, data: "Post wasn't found" });
 
             return this.response({ data: newPost });
 

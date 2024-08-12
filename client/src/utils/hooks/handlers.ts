@@ -3,6 +3,7 @@ import { selectCurrentUser, setPostsOfCurrentUser } from '../../redux/slices/cur
 import { ID } from "../../types";
 import { notifySuccess } from "../toastification";
 import { url } from "../enviromentConfig";
+import { api } from '../../axios/axios';
 
 export const useHandlers = () => {
 
@@ -10,37 +11,30 @@ export const useHandlers = () => {
     const dispatch = useAppDispatch();
 
     const sortHandler = async () => {
-        const sortResponse = await fetch(`${url}/post/?user_id=` + currentUser?.id);
-        const sortData = await sortResponse.json();
+        const sortResponse = await api.get(`${url}/post/?user_id=` + currentUser?.id);
+        const sortData = await sortResponse.data;
         dispatch(setPostsOfCurrentUser(sortData));
     }
 
     const friendRequestAddingHandler = async (from_id: ID, to_id: ID) => {
 
-        const requestResponse = await fetch(`${url}/requests/`, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-                from_id, to_id
-            })
+        const requestResponse = await api.post(`${url}/requests/`, {
+            from_id, to_id
         });
 
-        return await requestResponse.json();
+        return await requestResponse.data;
 
     }
 
     const friendAddingHandler = async (request_id: string) => {
 
-        const friendResponse = await fetch(`${url}/friends/` + request_id, {
-            method: "POST",
+        const friendResponse = await api.post(`${url}/friends/` + request_id, {
             headers: {
                 "Content-type": "application/json"
             }
         });
 
-        const friend = await friendResponse.json();
+        const friend = await friendResponse.data;
 
         return friend;
 
@@ -48,24 +42,20 @@ export const useHandlers = () => {
 
     const unfriendHandler = async (friend_id: string) => {
 
-        const deleteResponse = await fetch(`${url}/friends/` + friend_id, { method: "DELETE" });
-        const deleteData = await deleteResponse.json();
+        const deleteResponse = await api.delete(`${url}/friends/` + friend_id, { method: "DELETE" });
+        const deleteData = await deleteResponse.data;
         notifySuccess(deleteData as string);
 
     }
 
     const requestDeclineHandler = async (request_id: ID) => {
 
-        const declineResponse = await fetch(`${url}/requests/` + request_id , {
+        const declineResponse = await api.put(`${url}/requests/` + request_id , {
             method : "PUT"
         });
-        const declineData = await declineResponse.json();
+        const declineData = await declineResponse.data;
 
         return declineData;
-
-    }
-
-    const resetAllStates = () => {
 
     }
 
@@ -74,8 +64,7 @@ export const useHandlers = () => {
         friendAddingHandler, 
         friendRequestAddingHandler, 
         unfriendHandler, 
-        requestDeclineHandler,
-        resetAllStates
+        requestDeclineHandler
     };
 
 }

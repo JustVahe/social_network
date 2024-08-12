@@ -13,28 +13,24 @@ export const connectSocket = (server: HttpServer) => {
     });
 
     io.on("connection", (socket) => {
+        
         console.log("User is connected: " + socket.id);
 
         socket.on("join_room", (data) => {
-            socket.join(data.id); 
-            console.log("Joined : " + data.user_a.username);
-            socket.emit("receive_approved_room", data);
+            socket.join(data);
         });
 
         socket.on("join_chat", (data) => {
-            socket.join(data.id); 
-            console.log("User Joined");
-            socket.emit("receive_approved_chat", data);
+            socket.join(data);
         });
 
-        socket.on("send_message", async(data) => {  
+        socket.on("send_message", (data) => {  
             socket.to(data.room_id).emit("receive_message", data);  
         });
 
-        socket.on("send_message_to_chat", async(data) => {  
+        socket.on("send_message_to_chat", (data) => {
+            console.log("sent")
             socket.to(data.room_id).emit("receive_message", data);  
         });
-        
     });
-
 }

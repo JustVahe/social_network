@@ -29,14 +29,16 @@ export default function ProtectedUserNavbar() {
                 await checkAccessToken();
                 formData.append('file', eventTarget.files[0]);
 
-                const updateResponse = await api.put(`${url}/files/${currentUser?.id}/avatar`, formData);
+                const updateResponse = await api.put(`${url}/files/${currentUser?.id}/avatar`, formData, {
+                    headers: { "Content-Type" : "multipart/form-data"}
+                });
 
                 if (updateResponse.status !== 200) {
                     setAvatarError(updateResponse.data.message);
                     throw new Error(updateResponse.data);
                 }
 
-                dispatch(setAvatar(updateResponse.data.data.avatar));
+                dispatch(setAvatar(updateResponse.data.avatar));
 
             }
         } catch (error) {

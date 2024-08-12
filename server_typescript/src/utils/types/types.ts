@@ -20,12 +20,12 @@ export interface IUser {
 }
 
 export interface IReply {
-    id: ID,
+    id?: ID,
     user_id: ID,
     comment_id: ID,
     message: string,
-    user: IUser,
-    comment: IComment,
+    user?: IUser,
+    comment?: IComment,
     createdAt?: string,
     updatedAt?: string
 }
@@ -44,7 +44,7 @@ export interface IRoom {
 }
 
 export interface IConnection {
-    id: ID,
+    id?: ID,
     chat_id: ID,
     user_id: ID,
     chat?: IChat,
@@ -54,30 +54,29 @@ export interface IConnection {
 }
 
 export interface IFriend {
-    id: ID,
+    id?: ID,
     user_a_id: ID,
     user_b_id: ID,
-    user_a: IUser,
-    user_b: IUser,
-    status: string,
+    user_a?: IUser,
+    user_b?: IUser,
     createdAt?: string,
     updatedAt?: string
 }
 
 export interface IComment {
-    id: ID,
+    id?: ID,
     user_id: ID,
     post_id: ID,
     message: string,
-    user: IUser,
-    post: IPost,
+    user?: IUser,
+    post?: IPost,
     replies?: IReply[],
     createdAt?: string,
     updatedAt?: string
 }
 
 export interface IReaction {
-    id: ID,
+    id?: ID,
     type: "like" | "dislike",
     post_id: ID,
     user_id: ID,
@@ -107,7 +106,7 @@ export interface IFile {
 }
 
 export interface IMessage {
-    id: ID,
+    id?: ID,
     from?: IUser,
     from_id: ID,
     room_id: ID,
@@ -134,12 +133,12 @@ export interface ITokenBody {
 }
 
 export interface IRequest {
-    id: ID,
+    id?: ID,
     from_id: ID,
     to_id: ID,
-    status: "approved" | "pending" | "rejected",
+    status?: "approved" | "pending" | "rejected",
     createdAt?: string,
     updatedAt?: string,
-    from: IUser,
-    to: IUser
+    from?: IUser,
+    to?: IUser
 }

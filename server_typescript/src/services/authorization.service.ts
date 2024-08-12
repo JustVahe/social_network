@@ -6,7 +6,7 @@ import { accessTokenGenerator, refreshTokenGenerator } from "../utils/functions/
 import { v4 } from "uuid";
 import { JsonWebTokenError, Secret } from "jsonwebtoken";
 import jwt from "jsonwebtoken"
-import { User } from "../../models/index.ts";
+import User from "../../models/user.ts";
 
 export class AuthorizationService extends BaseService {
 
@@ -34,16 +34,14 @@ export class AuthorizationService extends BaseService {
                 data: {
                     type: "PasswordError",
                     message: "Password is incorrect"
-                },
-                message: "Password is incorrect"
+                }
             });
 
             const accessToken = accessTokenGenerator(user.id as string, "1h");
             const refreshToken = refreshTokenGenerator(user.id as string, "90d");
 
             return this.response({
-                data: { accessToken, refreshToken },
-                message: `User logged in successfully`
+                data: { accessToken, refreshToken }
             });
 
         } catch (error: unknown) {
@@ -83,8 +81,7 @@ export class AuthorizationService extends BaseService {
             const refreshToken = refreshTokenGenerator(newUser.id as string, "90d");
 
             return this.response({
-                data: { accessToken, refreshToken },
-                message: `User logged in successfully`
+                data: { accessToken, refreshToken }
             });
 
         } catch (error: unknown) {
@@ -100,7 +97,7 @@ export class AuthorizationService extends BaseService {
         if (!refreshToken) return this.response({
             status: false,
             statusCode: 403,
-            message: "Unauthorized: Refresh token is required",
+            data: "Unauthorized: Refresh token is required",
         });
 
         try {
@@ -114,7 +111,7 @@ export class AuthorizationService extends BaseService {
             return this.response({
                 status: false,
                 statusCode: 403,
-                message: `Unauthorized: ${JWTError.message}`
+                data: `Unauthorized: ${JWTError.message}`
             });
         }
     }

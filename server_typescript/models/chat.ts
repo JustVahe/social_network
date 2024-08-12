@@ -4,9 +4,10 @@ import { DataTypes, Sequelize } from "sequelize";
 import { ID, IPost, IChat, IUser } from "../src/utils/types/types.ts";
 import { Model } from "sequelize";
 import Connection from "./connection.ts";
+import Message from "./message.ts";
 
 export default class Chat extends Model<IChat> implements IChat {
-  
+
   declare id: ID;
   declare name: string;
   declare avatar: string;
@@ -17,7 +18,8 @@ export default class Chat extends Model<IChat> implements IChat {
   };
 
   static associate() {
-    this.hasMany(Connection, {foreignKey: "chat_id", as: "connections"});
+    this.hasMany(Message, { foreignKey: "room_id", as: "messages" });
+    this.hasMany(Connection, { foreignKey: "chat_id", as: "connections" });
   }
 
   public static initialize(sequelize: Sequelize) {

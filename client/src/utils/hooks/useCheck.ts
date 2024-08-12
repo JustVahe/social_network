@@ -18,7 +18,7 @@ export const useCheck = () => {
                 refreshToken: localStorage.refreshToken
             });
             if (response.status !== 200) throw new Error("Unauthorized");
-            localStorage.setItem("authorization", response.data.data.newAccessToken);
+            localStorage.setItem("authorization", response.data.newAccessToken);
             checkAccessToken();
 
         } catch (error) {
@@ -33,9 +33,9 @@ export const useCheck = () => {
     const checkAccessToken = async () => {
 
         try {
-            const response = await api.get(`${url}/user/dashboard`);
+            const response = await api.get(`${url}/users/dashboard`);
             if (response.status !== 200) throw new Error("Unauthorized");
-            dispatch(setUser(response.data.data));
+            dispatch(setUser(response.data));
         } catch (error) {
             await tokenRefreshHandler();
         }
