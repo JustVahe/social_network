@@ -1,51 +1,53 @@
 import { FaPaperPlane } from "react-icons/fa";
-import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
+import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { selectRoom } from "../../redux/slices/roomSlice";
 import { useEffect, useState } from "react";
 import { notifyError } from "../../utils/toastification";
-import { IChat, IMessage, IRoom } from "../../types";
-import { getSocket } from "../../utils/hooks/socket.mts";
+import { IMessage } from "../../types";
 import { url } from "../../utils/enviromentConfig";
-
-const socket = getSocket();
+import { api } from "../../axios/axios";
+import { io, Socket } from "socket.io-client";
 
 export default function MessageSendingBar({ setMessages }: {
 	setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>
 }) {
 
 	const [message, setMessage] = useState<string>("");
-	const [approvedRoom, setApprovedRoom] = useState<IRoom | undefined>();
-	const [approvedChat, setApprovedChat] = useState<IChat | undefined>();
-
-	const dispatch = useAppDispatch();
+	const [ok, setOk] = useState(true);
+	const [socket, setSocket] = useState<Socket | null>(null);
 
 	const currentUser = useAppSelector(selectCurrentUser);
 	const room = useAppSelector(selectRoom);
-	
+
+	const socketReceiveHandler = (data: IMessage) => {
+		setMessages((messages) => [...messages, data]);
+	}
+
 	useEffect(() => {
 
-		if (room?.chat) {
-			socket.emit("join_chat", room.chat);
-		} else {
-			socket.emit("join_room", room);
+		if (socket) {
+			if (room?.chat) {
+				socket.emit("join_chat", room.chat_id);
+			} else {
+				socket.emit("join_room", room?.id);
+			}
 		}
 
-		socket.on("receive_approved_room", (data: IRoom) => {
-			setApprovedRoom(data);
-		});
+	}, [socket, room?.chat, room?.id, room?.chat_id]);
 
-		socket.on("receive_approved_chat", (data: IChat) => {
-			setApprovedChat(data);
-		});
+	useEffect(() => {
 
-		socket.on("receive_message", (data) => {
-			console.log("received");
-			setMessages((messages) => [...messages, data]);
-		});
+		const newSocket = io(url);
+		setSocket(newSocket);
 
-		//eslint-disable-next-line
-	}, [socket, dispatch]);
+		newSocket.on("receive_message", socketReceiveHandler);
+
+		return () => {
+			if (newSocket) newSocket.disconnect();
+		}
+
+	}, []);
 
 	const messageSendingHandler = async () => {
 
@@ -56,45 +58,30 @@ export default function MessageSendingBar({ setMessages }: {
 				message
 			}
 
-			if (approvedChat) {
+			console.log(room);
 
-				const messageData = await (
-					await fetch(`${url}/messages/?room_id=` + approvedChat?.id, {
-						method: "POST",
-						headers: {
-							"Content-type": "application/json"
-						},
-						body: JSON.stringify(body)
-					})
-				).json();
-
-				const wholeMessageData = await (await fetch(`${url}/messages/` + messageData.id)).json();
-
+			if (room?.chat) {
+				const messageData = (await api.post(`${url}/messages/?room_id=` + room?.chat?.id, body)).data;
 				setMessages((messages) => {
-					return [...messages, wholeMessageData];
+					return [...messages, messageData];
 				});
+				if (socket && ok) {
+					setOk(false);
+					socket.emit("send_message_to_chat", messageData);
+					setOk(true);
+				}
 
-				socket.emit("send_message_to_chat", wholeMessageData);
-				setMessage("");			
-
-			} else {
-				const messageData = await (
-					await fetch(`${url}/messages/?room_id=` + approvedRoom?.id, {
-						method: "POST",
-						headers: {
-							"Content-type": "application/json"
-						},
-						body: JSON.stringify(body)
-					})
-				).json();
-
-				const wholeMessageData = await (await fetch(`${url}/messages/` + messageData.id)).json();
-
+				setMessage("");
+			} else if (room) {
+				const messageData = (await api.post(`${url}/messages/?room_id=` + room?.id, body)).data;
 				setMessages((messages) => {
-					return [...messages, wholeMessageData];
+					return [...messages, messageData];
 				});
-
-				socket.emit("send_message", wholeMessageData);
+				if (socket && ok) {
+					setOk(false);
+					socket.emit("send_message", messageData);
+					setOk(true);
+				}
 				setMessage("");
 			}
 

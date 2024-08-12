@@ -1,3 +1,4 @@
+import { api } from "../../axios/axios";
 import { addFriendToCurrentUser, setUsersFriends } from "../../redux/slices/usersFriends";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { IFriend, IRequest, IUser } from "../../types";
@@ -31,13 +32,10 @@ export default function FriendsRow({ item, type, setFriends, setRequests }: IPar
                     <button
                         onClick={async () => {
                                 await requestDeclineHandler(item.id);
-                                fetch(`${url}/requests/` + item.id + "?toggle=to_me&status=pending")
-                                    .then((res) => {
-                                        return res.json()
-                                    })
-                                    .then(data => {
-                                        setRequests(data);
-                                        dispatch(setUsersFriends(data));
+                                api.get(`${url}/requests/` + item.id + "?toggle=to_me&status=pending")
+                                    .then(res => {
+                                        setRequests(res.data);
+                                        dispatch(setUsersFriends(res.data));
                                     })
                         }}
                         className="bg-zinc-500 p-[5px] text-white text-sm-13 rounded-md">

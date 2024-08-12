@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { imageUrl, url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function Comment({ comment }: { comment: IComment }) {
 
@@ -16,10 +17,9 @@ export default function Comment({ comment }: { comment: IComment }) {
 
     useEffect(() => {
 
-        fetch(`${url}/comments/` + comment.id)
-            .then(response => response.json())
-            .then(data => {
-                setThisComment(data)
+        api.get(`${url}/comments/` + comment.id)
+            .then(res => {
+                setThisComment(res.data)
             });
 
     }, [comment.id]);

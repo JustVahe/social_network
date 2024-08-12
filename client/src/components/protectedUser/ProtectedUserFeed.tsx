@@ -1,21 +1,13 @@
 import PostingForm from "../forms/PostingForm";
-import { useEffect } from "react";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import ProtectedFeedComponent from "../feed/ProtectedFeedComponent";
 import ProtectedShortcuts from "../menu/ProtectedShortcuts";
-import { useHandlers } from "../../utils/hooks/handlers";
 import FriendsProtected from "../friends/FriendsProtected";
 
 export default function ProtectedUserFeed() {
 
     const currentUser = useAppSelector(selectCurrentUser);
-    const { sortHandler } = useHandlers();
-
-    useEffect(() => {
-        sortHandler();
-        //eslint-disable-next-line
-    }, []);
 
     return (
         currentUser &&

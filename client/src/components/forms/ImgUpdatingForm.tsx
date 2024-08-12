@@ -1,60 +1,48 @@
 import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { IPhoto } from "../../types";
 import { notifyPromise } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
 import { updatePhotoOfCurrentUser } from "../../redux/slices/currentUsersPhotosSlice";
+import { api } from "../../axios/axios";
 
-export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto, setModalType: React.Dispatch<React.SetStateAction<boolean | string>>}) {
+export default function ImgUpdatingForm({ image, setModalType }: { image: IPhoto, setModalType: React.Dispatch<React.SetStateAction<boolean | string>> }) {
 
     const [file, setFile] = useState<File | null>();
     const currentUser = useAppSelector(selectCurrentUser);
-    const { checkAccessToken } = useCheck();
     const formData = new FormData();
     const [ok, setOk] = useState(true);
     const dispatch = useAppDispatch();
 
     const photoUploadHandler = async () => {
 
-        await checkAccessToken();
-
         if (currentUser && file) {
 
             formData.append("user_id", image.user_id as string);
             formData.append("file", file);
 
-            const fileResponse = await fetch(`${url}/files/${image.id}`, {
-                method: "PUT",
-                body: formData
+            const fileResponse = await api.put(`${url}/files/${image.id}`, formData, {
+                headers: {"Content-Type" : "multipart/form-data"}
             });
-
-            const updateImageData = await fileResponse.json();
-
-            console.log(updateImageData);
+            const updateImageData = await fileResponse.data;
 
             if (fileResponse.status !== 200) {
-                throw new Error(updateImageData);
+                throw new Error(updateImageData.message);
             }
 
             setModalType(false);
             setFile(null);
-            dispatch(updatePhotoOfCurrentUser(updateImageData));
+            dispatch(updatePhotoOfCurrentUser(updateImageData.data));
 
         }
-
     }
 
     const photoUpdateToggler = async () => {
-        try {
-            if (ok) {
-                setOk(false);
-                await photoUploadHandler();
-                setOk(true);
-            }
-        } catch (error) {
-            throw error;
+        if (ok) {
+            setOk(false);
+            await photoUploadHandler();
+            setOk(true);
         }
     }
 

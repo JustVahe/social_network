@@ -35,6 +35,8 @@ export interface IRoom {
     type: "user" | "chat",
     name: string,
     avatar: string,
+    user_a_id: ID,
+    user_b_id: ID,
     user_a: IUser,
     user_b: IUser,
     messages: IMessage[],

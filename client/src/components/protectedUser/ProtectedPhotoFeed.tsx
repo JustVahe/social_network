@@ -6,6 +6,7 @@ import FriendsProtected from "../friends/FriendsProtected";
 import { useEffect } from "react";
 import { url } from "../../utils/enviromentConfig";
 import { setCurrentUsersPhotos } from "../../redux/slices/currentUsersPhotosSlice";
+import { api } from "../../axios/axios";
 
 export default function ProtectedPhotoFeed() {
 
@@ -15,13 +16,12 @@ export default function ProtectedPhotoFeed() {
     useEffect(() => {
 
         setTimeout(() => {
-            fetch(`${url}/files/` + currentUser?.id)
-                .then((res) => res.json())
-                .then(data => {
-                    dispatch(setCurrentUsersPhotos(data));
-                });
-        }, 500)
-
+            api.get(`${url}/files/` + currentUser?.id)
+            .then(response => {
+                dispatch(setCurrentUsersPhotos(response.data));
+            });
+        }, 500);
+    //eslint-disable-next-line
     }, [])
 
     return (

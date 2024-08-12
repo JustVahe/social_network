@@ -7,6 +7,7 @@ import { updateComment } from '../../redux/slices/commentSlice'
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice'
 import { url } from '../../utils/enviromentConfig'
 import { notifyPromise } from '../../utils/toastification'
+import { api } from '../../axios/axios'
 
 export default function ReplyList({ thisComment, replyToggle, setReplyToggle, setThisComment }:
     {
@@ -35,15 +36,9 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
                 message
             }
 
-            await fetch(`${url}/replies/`, {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(body)
-            });
+            await api.post(`${url}/replies/`, body);
 
-            const repliesData: IComment = await (await fetch(`${url}/comments/` + thisComment.id)).json();
+            const repliesData: IComment = await (await api.get(`${url}/comments/` + thisComment.id)).data
 
             dispatch(updateComment(repliesData));
             setThisComment(repliesData);
@@ -57,18 +52,12 @@ export default function ReplyList({ thisComment, replyToggle, setReplyToggle, se
     }
 
     const replyAddingToggler = async (event: FormEvent) => {
-
-        try {
             
             if (ok) {
                 setOk(false);
                 await replyHandler(event);
                 setOk(true);
             }
-
-        } catch (error) {
-            throw error;
-        }
 
     }
 

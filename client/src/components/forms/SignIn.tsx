@@ -7,6 +7,7 @@ import { setIsAuth } from "../../redux/slices/isAuthSlice";
 import { setUser } from "../../redux/slices/currentUserSlice";
 import { notifyError } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function SignIn() {
 
@@ -28,47 +29,30 @@ export default function SignIn() {
     const signInHandler = async (event: FormEvent) => {
 
         event.preventDefault();
-
-        const formBody = {
-            email, password
-        }
+        const formBody = { email, password }
 
         try {
 
-            const validation = await signInScheme.validate(formBody, {
-                abortEarly: false
-            });
+            const validation = await signInScheme.validate(formBody, { abortEarly: false });
 
             if (validation) {
-
                 setEmailError(undefined);
                 setPasswordError(undefined);
 
-                const response = await fetch(`${url}/auth/login`, {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify(validation)
-                });
-
-                const data = await response.json();
+                const response = await api.post(`${url}/auth/login`, validation);
 
                 if (response.status !== 200) {
-                    throw new Error(data.message);
+                    throw new Error(response.data.message);
                 } else {
-                    localStorage.setItem("authorization", data.accessToken);
-                    localStorage.setItem("refreshToken", data.refreshToken);
-
+                    localStorage.setItem("authorization", response.data.accessToken);
+                    localStorage.setItem("refreshToken", response.data.refreshToken);
                     dispatch(setIsAuth(true));
                     navigate("/");
                     setGeneralError(undefined);
                 }
-
             }
 
         } catch (error) {
-
             const errors = error as ValidationError;
             const validationErrorInner: ValidationError[] = errors.inner;
 

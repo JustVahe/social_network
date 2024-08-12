@@ -12,6 +12,7 @@ import { deleteRoom, selectRooms } from "../../redux/slices/roomsSlice";
 import { IChat, IMessage } from "../../types";
 import ModalWindow from "../shared/ModalWindow";
 import { imageUrl, url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function MessageBox() {
 
@@ -34,16 +35,14 @@ export default function MessageBox() {
 
 			if (room.chat) {
 
-				fetch(`${url}/chats/` + room.chat_id)
-					.then(res => res.json())
-					.then(data => {
-						setChat(data);
+				api.get(`${url}/chats/` + room.chat_id)
+					.then(response => {
+						setChat(response.data);
 					});
 
-				fetch(`${url}/messages/?room_id=` + room.chat_id)
-					.then(res => res.json())
-					.then(data => {
-						setMessages(data.sort((a: IMessage, b: IMessage) => {
+				api.get(`${url}/messages/?room_id=` + room.chat_id)
+					.then(response => {
+						setMessages(response.data.sort((a: IMessage, b: IMessage) => {
 							const aDate = new Date(a.createdAt)[Symbol.toPrimitive]("number");
 							const bDate = new Date(b.createdAt)[Symbol.toPrimitive]("number");
 							return aDate - bDate;
@@ -52,10 +51,9 @@ export default function MessageBox() {
 
 			} else if (!room.chat_id && room?.id) {
 
-				fetch(`${url}/messages/?room_id=` + room?.id)
-					.then(res => res.json())
-					.then(data => {
-						setMessages(data.sort((a: IMessage, b: IMessage) => {
+				api.get(`${url}/messages/?room_id=` + room?.id)
+					.then(response => {
+						setMessages(response.data.sort((a: IMessage, b: IMessage) => {
 							const aDate = new Date(a.createdAt)[Symbol.toPrimitive]("number");
 							const bDate = new Date(b.createdAt)[Symbol.toPrimitive]("number");
 							return aDate - bDate;
@@ -65,12 +63,10 @@ export default function MessageBox() {
 			}
 		}
 
+		
+
 		//eslint-disable-next-line
 	}, [room?.id]);
-
-
-	console.log(messages);
-	
 
 	useEffect(() => {
 
@@ -90,15 +86,15 @@ export default function MessageBox() {
 
 		if (room && rooms) {
 			if (room.chat && chat) {
-				const chatDeleteData = await (await fetch(`${url}/connections/` + room.id, { method: "DELETE" })).json();
+				const chatDeleteData = await (await api.delete(`${url}/connections/` + room.id, { method: "DELETE" })).data;
 				if (chat.connections.length <= 3 ) {
-					await fetch(`${url}/chats/`+chat.id , {method: "DELETE"});
+					await api.delete(`${url}/chats/`+chat.id , {method: "DELETE"});
 				}
 				notifySuccess(chatDeleteData);
 				dispatch(deleteRoom(room));
 				dispatch(setRoom(rooms[0]));
 			} else {
-				const roomDeleteData = await (await fetch(`${url}/rooms/` + room.id, { method: "DELETE" })).json();
+				const roomDeleteData = await (await api.delete(`${url}/rooms/` + room.id, { method: "DELETE" })).data;
 				notifySuccess(roomDeleteData);
 				dispatch(deleteRoom(room));
 				dispatch(setRoom(rooms[0]));

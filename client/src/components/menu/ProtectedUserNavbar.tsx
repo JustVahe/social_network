@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { selectCurrentUser, setAvatar } from '../../redux/slices/currentUserSlice';
 import 'react-toastify/dist/ReactToastify.css';
 import { useCheck } from '../../utils/hooks/useCheck';
-import { IUser } from '../../types';
 import { notifyPromise } from '../../utils/toastification';
 import { imageUrl, url } from '../../utils/enviromentConfig';
+import { api } from '../../axios/axios';
 
 export default function ProtectedUserNavbar() {
 
@@ -29,24 +29,20 @@ export default function ProtectedUserNavbar() {
                 await checkAccessToken();
                 formData.append('file', eventTarget.files[0]);
 
-                const updateResponse = await fetch(`${url}/files/${currentUser?.id}/avatar`, {
-                    method: "PUT",
-                    body: formData
+                const updateResponse = await api.put(`${url}/files/${currentUser?.id}/avatar`, formData, {
+                    headers: { "Content-Type" : "multipart/form-data"}
                 });
-                const updateData = await updateResponse.json();
 
                 if (updateResponse.status !== 200) {
-                    setAvatarError(updateData);
-                    throw new Error(updateData);
+                    setAvatarError(updateResponse.data.message);
+                    throw new Error(updateResponse.data);
                 }
 
-                const getResponse = await fetch(`${url}/users/${currentUser?.id}`);
-                const getData: IUser = await getResponse.json();
-                dispatch(setAvatar(getData.avatar));
+                dispatch(setAvatar(updateResponse.data.avatar));
 
             }
         } catch (error) {
-            throw new Error("400");
+            throw new Error("401");
         }
 
 

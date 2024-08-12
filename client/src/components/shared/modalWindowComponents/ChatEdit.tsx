@@ -6,6 +6,7 @@ import { IChat } from "../../../types";
 import { notifyError, notifySuccess } from "../../../utils/toastification";
 import { FaImage } from "react-icons/fa";
 import { imageUrl, url } from "../../../utils/enviromentConfig";
+import { api } from "../../../axios/axios";
 
 export default function ChatEdit({ setModalType }: { setModalType?: React.Dispatch<React.SetStateAction<string | boolean>> }) {
 
@@ -17,50 +18,31 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
     const [avatarButtonToggle, setAvatarButtonToggle] = useState<boolean>(false);
 
     const avatar = new FormData();
+
     useEffect(() => {
-
-        fetch(`${url}/chats/` + room?.chat_id)
-            .then(res => res.json())
-            .then(data => setChat(data));
-
+        api.get(`${url}/chats/` + room?.chat_id)
+            .then(res => setChat(res.data));
     }, [room?.chat_id]);
 
     const chatUpdateHandler = async () => {
-
         if (chat && setModalType) {
-
-            const chatUpdateResponse = await fetch(`${url}/chats/` + chat?.id, {
-                method: "PUT",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify({
-                    name, description
-                })
-            });
-
+            const chatUpdateResponse = await api.put(`${url}/chats/` + chat?.id, {name, description});
             if (chatUpdateResponse.status === 200) {
                 notifySuccess("Chat is successfully updated");
                 setModalType(false);
             } else {
                 notifyError("Something went wrong");
             }
-
         }
-
     }
 
     const avatarUpdateHandler = async (eventTarget: HTMLInputElement) => {
-
         if (chat && eventTarget.files) {
-
             avatar.append('file', eventTarget.files[0]);
-
-            const updateResponse = await fetch(`${url}/chats/avatar/` + chat.id, {
-                method: "PUT",
-                body: avatar
+            const updateResponse = await api.put(`${url}/chats/avatar/` + chat.id, avatar, {
+                headers: { "Content-Type" : "multipart/form-data"}
             });
-            const updateData = await updateResponse.json();
+            const updateData = updateResponse.data;
 
             if (updateResponse.status !== 200) {
                 notifyError(updateData);
@@ -68,11 +50,9 @@ export default function ChatEdit({ setModalType }: { setModalType?: React.Dispat
                 notifySuccess(updateData);
             }
 
-            const chatData = await fetch(`${url}/chats/` + room?.chat_id).then(res => res.json());
+            const chatData = (await api.get(`${url}/chats/` + room?.chat_id)).data;
             setChat(chatData);
-
         }
-
     }
 
     return (

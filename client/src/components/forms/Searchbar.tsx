@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react"
 import FriendLabel from "../feed/FriendLabel";
 import { IUser } from "../../types";
 import { url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function Searchbar({ searchToggle, setSearchToggle }: { searchToggle: boolean, setSearchToggle?:React.Dispatch<React.SetStateAction<boolean>> }) {
 
@@ -10,8 +11,8 @@ export default function Searchbar({ searchToggle, setSearchToggle }: { searchTog
 	const searchHandler = async (event : ChangeEvent ) => {
 		const eventTarget = event.target as HTMLInputElement;
 		if (eventTarget.value?.trim().length != 0) {
-			const searchResponse = await fetch(`${url}/users?filter=name&value=`+eventTarget.value.toLowerCase());
-			const searchData = await searchResponse.json();
+			const searchResponse = await api.get(`${url}/users?filter=name&value=`+eventTarget.value.toLowerCase());
+			const searchData = await searchResponse.data;
 			setUsers(searchData);
 		} else {
 			setUsers(undefined);

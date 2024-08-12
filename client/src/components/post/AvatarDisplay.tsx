@@ -8,6 +8,7 @@ import { deletePost, updatePost } from "../../redux/slices/postSlice";
 import { notifyError, notifyPromise } from "../../utils/toastification";
 import { imageUrl, url } from "../../utils/enviromentConfig";
 import { deletePostFromCurrentUsersPosts, updatePostFromCurrentUsersPosts } from "../../redux/slices/currentUser'sPostsSlice";
+import { api } from "../../axios/axios";
 
 export default function AvatarDisplay({ user, status, post }: { user: IUser, status?: string, post?: IPost }) {
 
@@ -41,31 +42,27 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 	const deleteHandler = async () => {
 
-		await checkAccessToken();
-
 		if (post) {
 
-			await fetch(`${url}/posts/` + post.id, { method: "DELETE" });
+			await api.delete(`${url}/post/` + post.id);
+
+			dispatch(deletePost(post.id));
+			dispatch(deletePostFromCurrentUsersPosts(post.id));
+			setOptionsToggle(false);
+
+			if (!post.files) return 1;
 
 			post.files.forEach(async (item) => {
 
-				const fileDeleteRequest = await fetch(`${url}/files/${item.id}?user_id=${user.id}`, { method: "DELETE" });
-				const fileDeleteData = await fileDeleteRequest.json();
+				const fileDeleteRequest = await api.delete(`${url}/files/${item.id}?user_id=${user.id}`);
+				const fileDeleteData = fileDeleteRequest.data;
 
 				if (fileDeleteRequest.status !== 200) {
 					notifyError(fileDeleteData);
 				}
 
 			})
-
-			dispatch(deletePost(post.id));
-			dispatch(deletePostFromCurrentUsersPosts(post.id));
-			setOptionsToggle(false);
-
-			await checkAccessToken();
-
 		}
-
 	}
 
 	const updateHandler = async () => {
@@ -74,30 +71,16 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 
 		if (post) {
 
-			const updateResponse = await fetch(`${url}/posts/` + post.id,
-				{
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						message: newMessage
-					})
-				});
+			const updateResponse = await api.put(`${url}/post/` + post.id, { message: newMessage });
+			const updateData = updateResponse.data;
 
-			const updateData = await updateResponse.json();
-
-			const newPost = await (await fetch(`${url}/posts/${updateData.id}`)).json();
-			dispatch(updatePost(newPost));
-			dispatch(updatePostFromCurrentUsersPosts(newPost));
+			dispatch(updatePost(updateData));
+			dispatch(updatePostFromCurrentUsersPosts(updateData));
 
 			setOptionsToggle(false);
 			setUpdateToggle(false);
 
-			await checkAccessToken();
-
 		}
-
 	}
 
 	return (
@@ -131,9 +114,9 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 							<FaEdit /> Edit Post
 						</button>
 						<button
-							onClick={() => notifyPromise(deleteHandler(),{
+							onClick={() => notifyPromise(deleteHandler(), {
 								pendingText: "Loading...",
-								fulfilledText: "Post successfully deleted"							
+								fulfilledText: "Post successfully deleted"
 							})}
 							className="w-full p-2.5 flex gap-[5px] items-center transition hover:bg-sky-600 hover:text-white">
 							<FaTrash /> Delete Post
@@ -151,9 +134,9 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 							defaultValue={post?.message}
 							className="w-[70%] h-[150px] resize-none border border-zinc-400 outline-none" />
 						<button
-							onClick={() => notifyPromise(updateHandler(),{
+							onClick={() => notifyPromise(updateHandler(), {
 								pendingText: "Loading...",
-								fulfilledText: "Post successfully updated"							
+								fulfilledText: "Post successfully updated"
 							})}
 							className="w-[28%] bg-sky-600 rounded-md text-white">
 							Update

@@ -1,5 +1,5 @@
 import Navbar from "../components/menu/Navbar";
-import UserFeed from "../components/user/UserFeed.tsx";
+import UserFeed from "../components/feed/UserFeed.tsx";
 import Footer from "../components/menu/Footer.tsx";
 import UserNavbar from "../components/menu/UserNavbar.tsx";
 import PhotoFeed from "../components/photoPageComponents/PhotoFeed";
@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
 import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
 import { useCheck } from "../utils/hooks/useCheck.ts";
 import { imageUrl, url } from "../utils/enviromentConfig.ts";
+import { api } from "../axios/axios.ts";
 
 export default function User({ page }: { page: string }) {
 
@@ -23,10 +24,9 @@ export default function User({ page }: { page: string }) {
 	useEffect(() => {
 		checkAccessToken();
 
-		fetch(`${url}/users/?username=` + username)
-			.then((res) => res.json())
-			.then((data) => {
-				dispatch(setThisUser(data));
+		api.get(`${url}/users/?username=` + username)
+			.then((res) => {
+				dispatch(setThisUser(res.data));
 			});
 
 	// eslint-disable-next-line

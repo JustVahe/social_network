@@ -1,25 +1,31 @@
-import { ReactElement, useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom"
-import { useAppSelector } from "../redux/typedHooks";
-import { selectIsAuth } from "../redux/slices/isAuthSlice";
-import { useCheck } from "./hooks/useCheck";
+import { ReactElement, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../redux/typedHooks";
+import { api } from "../axios/axios";
+import { selectCurrentUser, setUser } from "../redux/slices/currentUserSlice";
+import { url } from "./enviromentConfig";
 
 const ProtectedRoute = ({ children }: { children: ReactElement }) => {
 
-    const location = useLocation();
-    const isAuth = useAppSelector(selectIsAuth);
+    const currentUser = useAppSelector(selectCurrentUser);
+    const [ok, setOk] = useState(false);
+    const dispatch = useAppDispatch();
 
-    const { checkAccessToken } = useCheck();
 
     useEffect(() => {
-        checkAccessToken();
-    // eslint-disable-next-line
+        api.get(`${url}/users/dashboard`).then(response => {
+            dispatch(setUser(response.data));
+            setOk(true)
+        });
+        //eslint-disable-next-line
     }, []);
 
-    if (!isAuth) {
-        return <Navigate to="/signIn" state={{ from: location }} replace />
-    }
-    return children;
+    if (!currentUser || !ok) {
+        return <div className="fixed w-full h-screen bg-sky-600 grid place-items-center">
+            <div className="loader"></div>
+        </div>
+    } 
+
+    if (ok) return children;
 
 };
 

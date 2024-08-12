@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { imageUrl, url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function Reply({ reply }: { reply: IReply }) {
 
@@ -13,10 +14,9 @@ export default function Reply({ reply }: { reply: IReply }) {
 
     useEffect(() => {
 
-        fetch(`${url}/replies/` + reply.id)
-            .then(response => response.json())
-            .then(data => {
-                setThisComment(data)
+        api.get(`${url}/replies/` + reply.id)
+            .then(res => {
+                setThisComment(res.data)
             });
 
     }, [reply.id])

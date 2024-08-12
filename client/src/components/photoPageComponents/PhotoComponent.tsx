@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ID, IPhoto } from "../../types";
 import Image from "../shared/Image";
 import { url } from "../../utils/enviromentConfig";
+import { api } from "../../axios/axios";
 
 export default function PhotoComponent({ id }: { id: ID}) {
 
@@ -9,10 +10,9 @@ export default function PhotoComponent({ id }: { id: ID}) {
 
     useEffect(() => {
 
-        fetch(`${url}/files/` + id)
-            .then((res) => res.json())
-            .then(data => {
-                setPhotos(data);
+        api.get(`${url}/files/` + id)
+            .then(res => {
+                setPhotos(res.data);
             });
 
     }, [id]);
