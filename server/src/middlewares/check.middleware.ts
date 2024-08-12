@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JsonWebTokenError, Secret } from "jsonwebtoken";
 import { config as dotenvConfig } from "dotenv";
-import { IJWTPayload, IJWTRequest } from "../utils/types/authTypes";
+import { IJWTPayload, IJWTRequest } from "../utils/types/authTypes.ts";
 
 dotenvConfig();
 
