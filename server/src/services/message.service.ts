@@ -5,7 +5,7 @@ import { ID, IMessage } from "../utils/types/types.ts";
 
 export class MessageService extends BaseService {
 
-    async getMessages(req: Request) {
+    async getMessages(req: Request): Promise<any>{
         try {
 
             const room_id = req.query.room_id as ID;
@@ -38,7 +38,7 @@ export class MessageService extends BaseService {
         }
     }
 
-    async getMessage(req: Request) {
+    async getMessage(req: Request): Promise<any>{
         try {
 
             const { id } = req.params;
@@ -58,7 +58,7 @@ export class MessageService extends BaseService {
         }
     }
 
-    async postMessage(req: Request) {
+    async postMessage(req: Request): Promise<any>{
         try {
 
             const { room_id } = req.query as {room_id: string};

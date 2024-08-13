@@ -7,7 +7,7 @@ import Connection from "../../models/connection.ts";
 
 export class ChatService extends BaseService {
 
-    async createChat(req: Request) {
+    async createChat(req: Request): Promise<any>{
 
         try {
 
@@ -29,7 +29,7 @@ export class ChatService extends BaseService {
         }
     }
 
-    async getChat(req: Request) {
+    async getChat(req: Request): Promise<any>{
 
         try {
             const { id } = req.params;
@@ -43,7 +43,7 @@ export class ChatService extends BaseService {
         }
     }
 
-    async updateChat(req: Request) {
+    async updateChat(req: Request): Promise<any>{
 
         interface ChatResult extends Chat {
             [key: string]: any
@@ -69,7 +69,7 @@ export class ChatService extends BaseService {
         }
     }
 
-    async updateChatAvatar(req: Request) {
+    async updateChatAvatar(req: Request): Promise<any>{
 
         try {
 
@@ -103,7 +103,7 @@ export class ChatService extends BaseService {
         }
     }
 
-    async deleteChat(req: Request) {
+    async deleteChat(req: Request): Promise<any>{
 
         try {
 

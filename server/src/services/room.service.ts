@@ -11,7 +11,7 @@ interface IRequestQuery {
 
 export class RoomService extends BaseService {
 
-    async getRooms(req: Request) {
+    async getRooms(req: Request): Promise<any> {
 
         try {
 
@@ -52,7 +52,8 @@ export class RoomService extends BaseService {
 
                 const rooms = await Room.findAll({
                     include: {
-                        all: true
+                        all: true,
+                        nested: true
                     },
                     where: {
                         [Op.or]: [{ user_a_id: user_id }, { user_b_id: user_id }]
@@ -90,7 +91,7 @@ export class RoomService extends BaseService {
         }
     }
 
-    async getRoom(req: Request) {
+    async getRoom(req: Request): Promise<any> {
 
         try {
 
@@ -122,7 +123,7 @@ export class RoomService extends BaseService {
         }
     }
 
-    async createRoom(req: Request) {
+    async createRoom(req: Request): Promise<any> {
 
         try {
 
@@ -139,7 +140,7 @@ export class RoomService extends BaseService {
         }
     }
 
-    async deleteRoom(req: Request) {
+    async deleteRoom(req: Request): Promise<any> {
 
         try {
             const { id } = req.params;

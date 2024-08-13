@@ -10,23 +10,10 @@ import ProtectedUserNavbar from "../components/menu/ProtectedUserNavbar.tsx";
 import ProtectedPhotoFeed from "../components/protectedUser/ProtectedPhotoFeed.tsx";
 import UserEditFeed from "../components/feed/UserEditFeed.tsx";
 import { imageUrl } from "../utils/enviromentConfig.ts";
-import { useEffect, useState } from "react";
 
 export default function ProtectedUser({ page }: { page: string }) {
 
 	const currentUser = useAppSelector(selectCurrentUser);
-	const [isMobile, setIsMobile] = useState(false);
-
-	useEffect(() => {
-
-		if (window.innerWidth <= 640) {
-			console.log(isMobile);
-			setIsMobile(false)
-		} else {
-			setIsMobile(true)
-		}
-
-	}, [window.innerWidth]);
 
 	return currentUser && (
 		<>

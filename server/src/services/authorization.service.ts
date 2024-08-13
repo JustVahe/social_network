@@ -10,7 +10,7 @@ import User from "../../models/user.ts";
 
 export class AuthorizationService extends BaseService {
 
-    async login(req: Request) {
+    async login(req: Request): Promise<any>{
 
         try {
 
@@ -51,7 +51,7 @@ export class AuthorizationService extends BaseService {
         }
     }
 
-    async register(req: Request) {
+    async register(req: Request): Promise<any>{
 
         try {
 
@@ -91,7 +91,7 @@ export class AuthorizationService extends BaseService {
         }
     }
 
-    async refreshToken(req: Request) {
+    async refreshToken(req: Request): Promise<any>{
 
         const { refreshToken } = req.body;
         if (!refreshToken) return this.response({

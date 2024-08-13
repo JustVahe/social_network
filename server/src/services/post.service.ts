@@ -4,7 +4,7 @@ import { Post } from "../../models/index.ts";
 
 export class PostService extends BaseService {
 
-    async getPosts(req: Request) {
+    async getPosts(req: Request): Promise<any>{
 
         interface QueryParameters {
             user_id: string,
@@ -57,7 +57,7 @@ export class PostService extends BaseService {
 
     }
 
-    async getPostById(req: Request) {
+    async getPostById(req: Request): Promise<any>{
 
         try {
 
@@ -82,7 +82,7 @@ export class PostService extends BaseService {
 
     }
 
-    async createPost(req: Request) {
+    async createPost(req: Request): Promise<any>{
 
         try {
 
@@ -106,7 +106,7 @@ export class PostService extends BaseService {
         }
     }
 
-    async deletePost(req: Request) {
+    async deletePost(req: Request): Promise<any>{
 
         try {
             const { id } = req.params;
@@ -121,7 +121,7 @@ export class PostService extends BaseService {
         }
     }
 
-    async updatePost(req: Request) {
+    async updatePost(req: Request): Promise<any>{
 
         try {
 

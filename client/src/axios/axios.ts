@@ -14,7 +14,6 @@ api.interceptors.request.use(request => {
     if (authToken) request.headers.Authorization = `Bearer ${authToken}`;
     return request;
 }, error => {
-    console.log(error);
     Promise.reject(error);
 });
 

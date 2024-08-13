@@ -44,7 +44,6 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
         if (!currentReaction) {
 
             const reactionCreatingData = await createReaction(toggle);
-            console.log(reactionCreatingData);
 
             if (toggle === "like") setLikes(prev => { if (prev) return [...prev, reactionCreatingData] })
             else if (toggle === "dislike") setDislikes(prev => { if (prev) return [...prev, reactionCreatingData] })

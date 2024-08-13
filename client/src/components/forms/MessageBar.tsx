@@ -58,8 +58,6 @@ export default function MessageSendingBar({ setMessages }: {
 				message
 			}
 
-			console.log(room);
-
 			if (room?.chat) {
 				const messageData = (await api.post(`${url}/messages/?room_id=` + room?.chat?.id, body)).data;
 				setMessages((messages) => {
