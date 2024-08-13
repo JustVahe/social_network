@@ -1,4 +1,4 @@
-import FriendLabel from "../feed/FriendLabel"
+import FriendLabel from "./FriendLabel"
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";

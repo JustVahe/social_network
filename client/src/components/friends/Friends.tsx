@@ -1,4 +1,4 @@
-import FriendLabel from "../feed/FriendLabel"
+import FriendLabel from "./FriendLabel"
 import { IUser } from "../../types";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
