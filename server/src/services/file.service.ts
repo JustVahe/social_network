@@ -4,10 +4,14 @@ import { decode } from "base64-arraybuffer";
 import { supabase } from "../utils/supabase/supabaseClientConfig.ts";
 import File from "../../models/file.ts";
 import User from "../../models/user.ts";
+import { config as dotenvConfig } from "dotenv";
+import { v4 } from "uuid";
+
+dotenvConfig();
 
 export class FileService extends BaseService {
 
-    async getFile(req: Request): Promise<any>{
+    async getFile(req: Request): Promise<any> {
         try {
             const { user_id } = req.params;
             const files = await File.findAll({
@@ -23,7 +27,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadHeaderImage(req: Request): Promise<any>{
+    async uploadHeaderImage(req: Request): Promise<any> {
 
         try {
 
@@ -36,20 +40,29 @@ export class FileService extends BaseService {
                 return this.response({ status: false, statusCode: 400, data: "File type is wrong: Please upload images (jpg,png,webp,avif ...)" });
 
             const fileBase64 = decode(req.file.buffer.toString("base64"));
-            const files = await supabase.storage.from("assets").list(`${user_id}/images/headerImg/`);
+            const files = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).list(`${user_id}/images/headerImg/`);
+            const filename = `${user_id}-headerImg.${req.file.mimetype.split("/")[1]}`;
 
             if (files.data && files.data.length >= 1) {
-                await supabase.storage.from("assets").remove([`${user_id}/images/headerImg/`]);
-                const { error } = await supabase.storage.from("assets")
-                    .upload(`${user_id}/images/headerImg/${req.file.originalname}`, fileBase64, { contentType: req.file.mimetype });
+                await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([`${user_id}/images/headerImg/`]);
+                const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                    .upload(`${user_id}/images/headerImg/${filename}`, fileBase64, {
+                        cacheControl: '300',
+                        upsert: true,
+                        contentType: req.file.mimetype
+                    });
                 if (error) return this.response({
                     status: false,
                     statusCode: 400,
                     data: error.message
                 });
             } else {
-                const { error } = await supabase.storage.from("assets")
-                    .upload(`${user_id}/images/headerImg/${req.file.originalname}`, fileBase64, { contentType: req.file.mimetype });
+                const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                    .upload(`${user_id}/images/headerImg/${filename}`, fileBase64, {
+                        cacheControl: '300',
+                        upsert: true,
+                        contentType: req.file.mimetype
+                    });
                 if (error) return this.response({
                     status: false,
                     statusCode: 400,
@@ -59,7 +72,7 @@ export class FileService extends BaseService {
 
             if (!user) return this.response({ status: false, statusCode: 404, data: "User not Found" });
 
-            user.headerImg = `/assets/${user_id}/images/headerImg/${req.file.originalname}`;
+            user.headerImg = `/${process.env.SUPABASE_BUCKET}/${user_id}/images/headerImg/${filename}`;
             user.save();
             return this.response({ data: user });
 
@@ -70,7 +83,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadAvatar(req: Request): Promise<any>{
+    async uploadAvatar(req: Request): Promise<any> {
 
         try {
 
@@ -81,20 +94,21 @@ export class FileService extends BaseService {
                 return this.response({ status: false, statusCode: 400, data: "File type is wrong: Please upload images (jpg,png,webp,avif ...)" });
 
             const fileBase64 = decode(req.file.buffer.toString("base64"));
-            const files = await supabase.storage.from("assets").list(`${user_id}/images/avatar/`);
+            const files = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).list(`${user_id}/images/avatar/`);
+            const filename = `${user_id}-avatar.${req.file.mimetype.split("/")[1]}`;
 
             if (files.data && files.data.length >= 1) {
-                await supabase.storage.from('assets').remove([`${user_id}/images/avatar/`]);
-                const { error } = await supabase.storage.from("assets")
-                    .upload(`${user_id}/images/avatar/${req.file.originalname}`, fileBase64, {
+                await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([`${user_id}/images/avatar/`]);
+                const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                    .upload(`${user_id}/images/avatar/${filename}`, fileBase64, {
                         cacheControl: '300',
                         upsert: true,
                         contentType: req.file.mimetype
                     });
                 if (error) return this.response({ status: false, statusCode: 400, data: error.message });
             } else {
-                const { error } = await supabase.storage.from("assets")
-                    .upload(`${user_id}/images/avatar/${req.file.originalname}`, fileBase64, {
+                const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                    .upload(`${user_id}/images/avatar/${filename}`, fileBase64, {
                         cacheControl: '300',
                         upsert: true,
                         contentType: req.file.mimetype
@@ -104,7 +118,7 @@ export class FileService extends BaseService {
 
             if (!user) return this.response({ status: false, statusCode: 404, data: "User not Found" });
 
-            user.avatar = `/assets/${user_id}/images/avatar/${req.file.originalname}`;
+            user.avatar = `/${process.env.SUPABASE_BUCKET}/${user_id}/images/avatar/${filename}`;
             user.save();
             return this.response({ data: user });
 
@@ -115,7 +129,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadImagesForPost(req: Request): Promise<any>{
+    async uploadImagesForPost(req: Request): Promise<any> {
 
         try {
 
@@ -128,15 +142,15 @@ export class FileService extends BaseService {
 
             for (const file of files as Express.Multer.File[]) {
 
-                const path = `/assets/${user_id}/images/posts/${file.originalname}`;
-                const [type] = file.mimetype.split("/");
-
+                const [type, concreteType] = file.mimetype.split("/");
+                const filename = `${post_id}-post_image.${concreteType}`;
+                const path = `/${process.env.SUPABASE_BUCKET}/${user_id}/images/posts/${filename}`;
                 const fileBase64 = decode(file.buffer.toString("base64"));
 
                 await File.create({ user_id, post_id, path, type });
 
-                const { error } = await supabase.storage.from("assets")
-                    .upload(`${user_id}/images/posts/${file.originalname}`, fileBase64, {
+                const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                    .upload(`${user_id}/images/posts/${filename}`, fileBase64, {
                         cacheControl: '300',
                         upsert: true,
                         contentType: file.mimetype
@@ -159,7 +173,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadPhoto(req: Request): Promise<any>{
+    async uploadPhoto(req: Request): Promise<any> {
 
         try {
 
@@ -171,21 +185,22 @@ export class FileService extends BaseService {
                 return this.response({ status: false, statusCode: 400, data: "File type is wrong: Please upload images (jpg,png,webp,avif ...)" });
 
             const file = await File.findOne({ where: { id } });
-
             if (!file) return this.response({ status: false, statusCode: 404, data: "No File" });
+
+            const filename = `${id}-photo.${requestFile.mimetype.split("/")[1]}`;
 
             const [, , ...rest] = file.path.split("/");
             const path = rest.join("/");
-            const newPath = `/assets/${user_id}/images/${requestFile.originalname}`;
+            const newPath = `/${process.env.SUPABASE_BUCKET}/${user_id}/images/${filename}`;
 
-            const { error: removeError } = await supabase.storage.from("assets").remove([path]);
+            const { error: removeError } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([path]);
             if (removeError) return this.response({ status: false, statusCode: 400, data: "File is not deleted : " + removeError.message });
             file.path = newPath;
             file.save();
 
             const fileBase64 = decode(requestFile.buffer.toString("base64"));
-            const { error } = await supabase.storage.from("assets")
-                .upload(`${user_id}/images/${requestFile.originalname}`, fileBase64, {
+            const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                .upload(`${user_id}/images/${filename}`, fileBase64, {
                     cacheControl: '300',
                     upsert: true,
                     contentType: requestFile.mimetype
@@ -202,7 +217,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadPhotos(req: Request): Promise<any>{
+    async uploadPhotos(req: Request): Promise<any> {
 
         try {
 
@@ -214,19 +229,21 @@ export class FileService extends BaseService {
                 return this.response({ status: false, statusCode: 400, data: "File type is wrong: Please upload images (jpg,png,webp,avif ...)" });
 
             for (const file of files as Express.Multer.File[]) {
-                const path = `/assets/${user_id}/images/${file.originalname}`;
+
+                const filename = `${v4()}-photo.${file.mimetype.split("/")[1]}`;
+                const path = `/${process.env.SUPABASE_BUCKET}/${user_id}/images/${filename}`;
                 const type = file.mimetype.split("/")[0];
 
                 const fileBase64 = decode(file.buffer.toString("base64"));
 
-                const { data, error } = await supabase.storage.from("assets")
-                    .upload(`${user_id}/images/${file.originalname}`, fileBase64, {
+                const { data, error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                    .upload(`${user_id}/images/${filename}`, fileBase64, {
                         cacheControl: '300',
                         upsert: true,
                         contentType: file.mimetype
                     });
 
-                if (error) return this.response({ status: false, statusCode: 400, data: "File is not deleted : " + error.message });
+                if (error) return this.response({ status: false, statusCode: 400, data: "File is not uploaded : " + error.message });
 
                 const newFile = await File.create({
                     user_id,
@@ -245,7 +262,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async delete(req: Request): Promise<any>{
+    async delete(req: Request): Promise<any> {
 
         try {
 
@@ -254,13 +271,13 @@ export class FileService extends BaseService {
                 where: { id }
             });
 
-            if (!file) return this.response({ status: false, statusCode: 404, data: "Filw not found" })
+            if (!file) return this.response({ status: false, statusCode: 404, data: "File not found" });
             file.destroy();
 
             const [, , ...rest] = file.path.split("/");
             const path = rest.join("/");
 
-            const { error } = await supabase.storage.from("assets").remove([path]);
+            const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([path]);
             if (error) return this.response({ status: false, statusCode: 400, data: "File is not deleted : " + error.message });
 
             return this.response({ data: "Image successfully deleted" });

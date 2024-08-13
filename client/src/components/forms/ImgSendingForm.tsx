@@ -27,9 +27,8 @@ export default function ImgSendingForm() {
             const fileUploadResponse = await api.post(`${url}/files/${currentUser.id}`, formData, {
                 headers: {"Content-Type" : "multipart/form-data"}
             });
-            const fileUploadData = await fileUploadResponse.data;
 
-            dispatch(addPhotoToCurrentUser(fileUploadData.data));
+            dispatch(addPhotoToCurrentUser(fileUploadResponse.data));
             setFiles(null);
             await checkAccessToken();
 
@@ -39,11 +38,16 @@ export default function ImgSendingForm() {
     }
     
     const photoUploadToggler = async () => {
-        if (ok) {
+        try {
+            if (ok) {
             setOk(false);
             await photoUploadHandler();
             setOk(true);
         }
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 
     return (
