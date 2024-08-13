@@ -30,6 +30,8 @@ export default function UserEditButtons({ id }: { id: ID }) {
                 headers: { "Content-Type" : "multipart/form-data"}
             });
 
+            console.log(headerResponse);
+
             if (headerResponse.status !== 200) {
                 throw new Error(headerResponse.data.message);
             }

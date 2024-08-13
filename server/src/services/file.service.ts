@@ -41,13 +41,17 @@ export class FileService extends BaseService {
 
             const fileBase64 = decode(req.file.buffer.toString("base64"));
             const files = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).list(`${user_id}/images/headerImg/`);
-            const filename = `${user_id}-headerImg.${req.file.mimetype.split("/")[1]}`;
+            const filename = `${user_id}-headerImg-${v4()}.${req.file.mimetype.split("/")[1]}`;
 
             if (files.data && files.data.length >= 1) {
-                await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([`${user_id}/images/headerImg/`]);
+
+                for (const file of files.data) {
+                    const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([`${user_id}/images/headerImg/${file.name}`]);
+                    if (error) throw error;
+                }
+
                 const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
                     .upload(`${user_id}/images/headerImg/${filename}`, fileBase64, {
-                        cacheControl: '300',
                         upsert: true,
                         contentType: req.file.mimetype
                     });
@@ -59,7 +63,6 @@ export class FileService extends BaseService {
             } else {
                 const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
                     .upload(`${user_id}/images/headerImg/${filename}`, fileBase64, {
-                        cacheControl: '300',
                         upsert: true,
                         contentType: req.file.mimetype
                     });
@@ -87,6 +90,8 @@ export class FileService extends BaseService {
 
         try {
 
+            console.log(process.env.SUPABASE_BUCKET);
+
             const { user_id } = req.params;
             const user = await User.findOne({ where: { id: user_id }, });
 
@@ -95,21 +100,25 @@ export class FileService extends BaseService {
 
             const fileBase64 = decode(req.file.buffer.toString("base64"));
             const files = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).list(`${user_id}/images/avatar/`);
-            const filename = `${user_id}-avatar.${req.file.mimetype.split("/")[1]}`;
+            const filename = `${user_id}-avatar-${v4()}.${req.file.mimetype.split("/")[1]}`;
 
             if (files.data && files.data.length >= 1) {
-                await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([`${user_id}/images/avatar/`]);
+
+                for (const file of files.data) {
+                    const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string).remove([`${user_id}/images/avatar/${file.name}`]);
+                    if (error) throw error;
+                }
+
                 const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
                     .upload(`${user_id}/images/avatar/${filename}`, fileBase64, {
-                        cacheControl: '300',
                         upsert: true,
                         contentType: req.file.mimetype
                     });
                 if (error) return this.response({ status: false, statusCode: 400, data: error.message });
+
             } else {
                 const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
                     .upload(`${user_id}/images/avatar/${filename}`, fileBase64, {
-                        cacheControl: '300',
                         upsert: true,
                         contentType: req.file.mimetype
                     });
@@ -143,7 +152,7 @@ export class FileService extends BaseService {
             for (const file of files as Express.Multer.File[]) {
 
                 const [type, concreteType] = file.mimetype.split("/");
-                const filename = `${post_id}-post_image.${concreteType}`;
+                const filename = `${post_id}-post_image-${v4()}.${concreteType}`;
                 const path = `/${process.env.SUPABASE_BUCKET}/${user_id}/images/posts/${filename}`;
                 const fileBase64 = decode(file.buffer.toString("base64"));
 
@@ -151,7 +160,6 @@ export class FileService extends BaseService {
 
                 const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
                     .upload(`${user_id}/images/posts/${filename}`, fileBase64, {
-                        cacheControl: '300',
                         upsert: true,
                         contentType: file.mimetype
                     });
@@ -187,7 +195,7 @@ export class FileService extends BaseService {
             const file = await File.findOne({ where: { id } });
             if (!file) return this.response({ status: false, statusCode: 404, data: "No File" });
 
-            const filename = `${id}-photo.${requestFile.mimetype.split("/")[1]}`;
+            const filename = `${id}-photo-${v4()}.${requestFile.mimetype.split("/")[1]}`;
 
             const [, , ...rest] = file.path.split("/");
             const path = rest.join("/");
@@ -230,7 +238,7 @@ export class FileService extends BaseService {
 
             for (const file of files as Express.Multer.File[]) {
 
-                const filename = `${v4()}-photo.${file.mimetype.split("/")[1]}`;
+                const filename = `${v4()}-photo-${v4()}.${file.mimetype.split("/")[1]}`;
                 const path = `/${process.env.SUPABASE_BUCKET}/${user_id}/images/${filename}`;
                 const type = file.mimetype.split("/")[0];
 
@@ -238,7 +246,6 @@ export class FileService extends BaseService {
 
                 const { data, error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
                     .upload(`${user_id}/images/${filename}`, fileBase64, {
-                        cacheControl: '300',
                         upsert: true,
                         contentType: file.mimetype
                     });
