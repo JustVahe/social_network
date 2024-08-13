@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react"
-import FriendLabel from "../feed/FriendLabel";
+import FriendLabel from "../friends/FriendLabel";
 import { IUser } from "../../types";
 import { url } from "../../utils/enviromentConfig";
 import { api } from "../../axios/axios";

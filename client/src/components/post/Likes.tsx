@@ -26,7 +26,7 @@ export default function Likes({ likes, dislikes, commentAmount, post, setLikes, 
             .then(res => {
                 setCurrentReaction(res.data);
             });
-
+        //eslint-disable-next-line
     }, [])
 
     const createReaction = async (toggle: "like" | "dislike") => {
