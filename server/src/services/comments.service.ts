@@ -4,7 +4,7 @@ import Comment from "../../models/comment.ts";
 
 export class CommentService extends BaseService {
 
-    async getCommentById(req: Request) {
+    async getCommentById(req: Request): Promise<any>{
 
         try {
 
@@ -23,7 +23,7 @@ export class CommentService extends BaseService {
         }
     }
 
-    async postComment(req: Request) {
+    async postComment(req: Request): Promise<any>{
 
         try {
 
@@ -41,7 +41,7 @@ export class CommentService extends BaseService {
         }
     }
 
-    async updateComment(req: Request) {
+    async updateComment(req: Request): Promise<any>{
 
         try {
 
@@ -64,7 +64,7 @@ export class CommentService extends BaseService {
         }
     }
 
-    async deleteComment(req: Request) {
+    async deleteComment(req: Request): Promise<any>{
 
         try {
 

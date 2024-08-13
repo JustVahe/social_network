@@ -6,7 +6,7 @@ import { Op } from "sequelize";
 export class RequestService extends BaseService {
 
 
-    async getRequests(req: Request) {
+    async getRequests(req: Request): Promise<any> {
 
         try {
 
@@ -46,7 +46,7 @@ export class RequestService extends BaseService {
         } 
     }
 
-    async getRequestsById(req: Request) {
+    async getRequestsById(req: Request): Promise<any> {
 
         try {
 
@@ -78,7 +78,7 @@ export class RequestService extends BaseService {
         }
     }
 
-    async createFriendReguest(req: Request) {
+    async createFriendReguest(req: Request): Promise<any> {
 
         try {
 
@@ -95,7 +95,7 @@ export class RequestService extends BaseService {
         }
     }
 
-    async updateFriendReguest(req: Request) {
+    async updateFriendReguest(req: Request): Promise<any> {
 
         try {
 
@@ -116,7 +116,7 @@ export class RequestService extends BaseService {
         }
     }
 
-    async deleteFriendReguest(req: Request) {
+    async deleteFriendReguest(req: Request): Promise<any> {
 
         try {
 

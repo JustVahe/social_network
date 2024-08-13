@@ -43,7 +43,7 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
             }
 
         } catch (error) {
-            console.log(error);
+            Promise.reject(error);
         }
     }
 

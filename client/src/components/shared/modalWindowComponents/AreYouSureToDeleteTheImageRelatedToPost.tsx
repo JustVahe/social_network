@@ -16,8 +16,6 @@ interface IProps {
 }
 
 export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, setModalResponse, image }: IProps) {
-
-    console.log(image.post_id);
     const dispatch = useAppDispatch();
 
     const deleteHandler = async () => {

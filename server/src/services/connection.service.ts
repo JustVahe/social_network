@@ -4,7 +4,7 @@ import { Connection } from "../../models/index.ts";
 
 export class ConnectionService extends BaseService {
 
-    async createConnections(req: Request) {
+    async createConnections(req: Request): Promise<any>{
 
         try {
 
@@ -28,7 +28,7 @@ export class ConnectionService extends BaseService {
         }
     }
 
-    async deleteConnections(req: Request) {
+    async deleteConnections(req: Request): Promise<any>{
 
         try {
 

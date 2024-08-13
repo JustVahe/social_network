@@ -4,7 +4,7 @@ import { BaseService } from "./base.service.ts";
 
 export class ReplyService extends BaseService {
 
-    async getReplyById(req: Request) {
+    async getReplyById(req: Request): Promise<any> {
 
         try {
 
@@ -24,7 +24,7 @@ export class ReplyService extends BaseService {
         }
     }
 
-    async postReply(req: Request) {
+    async postReply(req: Request): Promise<any> {
 
         try {
 
@@ -42,7 +42,7 @@ export class ReplyService extends BaseService {
         }
     }
 
-    async updateReply(req: Request) {
+    async updateReply(req: Request): Promise<any> {
 
         try {
 
@@ -65,7 +65,7 @@ export class ReplyService extends BaseService {
         }
     }
 
-    async deleteReply(req: Request) {
+    async deleteReply(req: Request): Promise<any> {
 
         try {
 

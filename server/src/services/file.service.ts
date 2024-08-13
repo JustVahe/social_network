@@ -7,7 +7,7 @@ import User from "../../models/user.ts";
 
 export class FileService extends BaseService {
 
-    async getFile(req: Request) {
+    async getFile(req: Request): Promise<any>{
         try {
             const { user_id } = req.params;
             const files = await File.findAll({
@@ -23,7 +23,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadHeaderImage(req: Request) {
+    async uploadHeaderImage(req: Request): Promise<any>{
 
         try {
 
@@ -70,7 +70,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadAvatar(req: Request) {
+    async uploadAvatar(req: Request): Promise<any>{
 
         try {
 
@@ -115,7 +115,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadImagesForPost(req: Request) {
+    async uploadImagesForPost(req: Request): Promise<any>{
 
         try {
 
@@ -159,7 +159,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadPhoto(req: Request) {
+    async uploadPhoto(req: Request): Promise<any>{
 
         try {
 
@@ -202,7 +202,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async uploadPhotos(req: Request) {
+    async uploadPhotos(req: Request): Promise<any>{
 
         try {
 
@@ -245,7 +245,7 @@ export class FileService extends BaseService {
         }
     }
 
-    async delete(req: Request) {
+    async delete(req: Request): Promise<any>{
 
         try {
 

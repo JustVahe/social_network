@@ -5,7 +5,7 @@ import { ID } from "../utils/types/types.ts";
 
 export class ReactionService extends BaseService {
 
-    async getReactions(req: Request) {
+    async getReactions(req: Request): Promise<any> {
 
         try {
 
@@ -32,7 +32,7 @@ export class ReactionService extends BaseService {
         }
     }
 
-    async getReactionById(req: Request) {
+    async getReactionById(req: Request): Promise<any> {
 
         try {
 
@@ -54,7 +54,7 @@ export class ReactionService extends BaseService {
         }
     }
 
-    async createReaction(req: Request) {
+    async createReaction(req: Request): Promise<any> {
 
         try {
 
@@ -75,7 +75,7 @@ export class ReactionService extends BaseService {
         }
     }
 
-    async deleteReaction(req: Request) {
+    async deleteReaction(req: Request): Promise<any> {
 
         try {
 

@@ -18,8 +18,6 @@ export default function Post({ postData, user, status }: { postData: IPost, user
 	//eslint-disable-next-line
 	}, []);
 
-	console.log(likes, dislikes);
-
 	return (
 		<div className="w-full flex flex-col gap-[15px] bg-[#fdfdfd] shadow-sm shadow-zinc-300 p-[25px] rounded-md">
 			{

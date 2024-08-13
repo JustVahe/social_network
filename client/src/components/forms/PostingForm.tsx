@@ -33,7 +33,6 @@ export default function PostingForm() {
 
 			if (files) {
 
-				console.log(files);
 				Array.from(files).forEach(file => {
 					formData.append("files", file);
 				})

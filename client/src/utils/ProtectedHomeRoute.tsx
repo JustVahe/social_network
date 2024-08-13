@@ -16,7 +16,7 @@ const ProtectedHomeRoute = () => {
 
     useEffect(() => {
         api.get(`${url}/users/dashboard`).then(response => {
-            if (response.status !== 200) return navigate("/signIn");
+            if (response.status !== 200 || !response.data) return navigate("/signIn");
             dispatch(setUser(response.data));
             setOk(true)
         });

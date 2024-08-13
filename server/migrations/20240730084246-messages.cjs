@@ -5,18 +5,22 @@ module.exports = {
   async up(queryInterface, DataTypes) {
     await queryInterface.createTable('messages', {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
         primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4()
+      },
+      from_id: {
+        type: DataTypes.UUID,
         allowNull: false
       },
-      user_a_id: {
+      room_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: false
       },
-      user_b_id: {
-        type: DataTypes.UUID,
-        allowNull: false,
+      message: {
+        type: DataTypes.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

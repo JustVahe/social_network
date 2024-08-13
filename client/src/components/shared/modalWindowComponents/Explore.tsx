@@ -29,8 +29,6 @@ export default function Explore({ setModalType }: { setModalType?: React.Dispatc
     const messageAdddingHandler = async (thisUser: IUser) => {
 
         const findRoom = await ((await api.get(`${url}/rooms/?user_id=${currentUser?.id}&target_id=${thisUser.id}`))).data;
-        console.log(setModalType);
-
 
         if (!findRoom) {
 

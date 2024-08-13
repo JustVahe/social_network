@@ -6,7 +6,7 @@ import multiparty from "multiparty"
 
 export class UserService extends BaseService {
 
-    async dashboard(req: Request) {
+    async dashboard(req: Request): Promise<any> {
 
         try {
 
@@ -33,7 +33,7 @@ export class UserService extends BaseService {
         }
     }
 
-    async getUserByQueries(req: Request) {
+    async getUserByQueries(req: Request): Promise<any> {
 
         try {
 
@@ -71,7 +71,7 @@ export class UserService extends BaseService {
         }
     }
 
-    async getUserById(req: Request) {
+    async getUserById(req: Request): Promise<any> {
 
         try {
 
@@ -94,7 +94,7 @@ export class UserService extends BaseService {
         }
     }
 
-    async updateUser(req: Request) {
+    async updateUser(req: Request): Promise<any> {
 
         try {
 

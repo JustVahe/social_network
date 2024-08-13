@@ -66,8 +66,6 @@ export default function UserNavbar({ thisUser }: { thisUser: IUser }) {
 
     }, [thisUser.id, currentUser?.id]);
 
-    console.log(request);
-
     return (
         <div className='relative'>
             <div className="w-full bg-white p-5 flex gap-[50px] items-center">

@@ -7,7 +7,7 @@ import { IFriend } from "../utils/types/types.ts";
 
 export class FriendsService extends BaseService {
 
-    async getFriends(req: Request) {
+    async getFriends(req: Request): Promise<any>{
 
         try {
 
@@ -51,7 +51,7 @@ export class FriendsService extends BaseService {
         }
     }
 
-    async getFriendsByUserId(req: Request) {
+    async getFriendsByUserId(req: Request): Promise<any>{
 
         try {
 
@@ -82,7 +82,7 @@ export class FriendsService extends BaseService {
         }
     }
 
-    async createFriendship(req: Request) {
+    async createFriendship(req: Request): Promise<any>{
 
         try {
 
@@ -116,7 +116,7 @@ export class FriendsService extends BaseService {
         }
     }
 
-    async unfriend(req: Request) {
+    async unfriend(req: Request): Promise<any>{
 
         try {
 
