@@ -19,7 +19,8 @@ export const photoSlice = createSlice({
 		},
 		addPhotoToCurrentUser: (state, action: PayloadAction<IPhoto[]>) => {
 			if (state.value) {
-				state.value = [...action.payload, ...state.value];
+				const payload = action.payload;
+				state.value = [...payload, ...state.value];
 			}
 		},
 		updatePhotoOfCurrentUser: (state, action: PayloadAction<IPhoto>) => {

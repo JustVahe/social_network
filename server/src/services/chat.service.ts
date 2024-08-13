@@ -4,6 +4,9 @@ import Chat from "../../models/chat.ts";
 import { decode } from "base64-arraybuffer";
 import { supabase } from "../utils/supabase/supabaseClientConfig.ts";
 import Connection from "../../models/connection.ts";
+import { config as dotenvConfig } from "dotenv";
+
+dotenvConfig();
 
 export class ChatService extends BaseService {
 
@@ -81,12 +84,13 @@ export class ChatService extends BaseService {
             if (!chat) return this.response({ status: false, statusCode: 404, data: "Chat wasnt Found" });
 
             const fileBase64 = decode(file.buffer.toString("base64"));
+            const filename = `${id}-chat_avatar.${file.mimetype.split("/")[1]}`;
 
-            chat.avatar = `/assets/chats/${id}/images/avatar/${file.originalname}`;
+            chat.avatar = `/${process.env.SUPABASE_BUCKET}/chats/${id}/images/avatar/${filename}`;
             chat.save();
 
-            const { error } = await supabase.storage.from("assets")
-                .upload(`/chats/${id}/images/avatar/${file.originalname}`, fileBase64, {
+            const { error } = await supabase.storage.from(process.env.SUPABASE_BUCKET as string)
+                .upload(`/chats/${id}/images/avatar/${filename}`, fileBase64, {
                     cacheControl: '300',
                     upsert: true,
                     contentType: file.mimetype

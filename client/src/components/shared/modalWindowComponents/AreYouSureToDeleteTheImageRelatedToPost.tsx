@@ -44,11 +44,11 @@ export default function AreYouSureToDeleteTheImageRelatedToPost({ setModalType, 
         }
 
         const deleteResponse = await api.delete(`${url}/post/` + image.post_id);
-        const post = await deleteResponse.data;
+        const post = deleteResponse.data;
 
         if (image) {
 
-            post.data.files.forEach(async (item: IPhoto) => {
+            post.files.forEach(async (item: IPhoto) => {
                 const fileDeleteRequest = await api.delete(`${url}/files/` + item.id);
                 const fileDeleteData = await fileDeleteRequest.data;
 
