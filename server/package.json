@@ -34,6 +34,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.3.0",
+    "sharp": "^0.33.4",
     "socket.io": "^4.7.5",
     "supabase": "^1.183.5",
     "uuid": "^10.0.0"
