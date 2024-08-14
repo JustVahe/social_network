@@ -46,7 +46,7 @@ export default function MessageSendingBar({ setMessages }: {
 		return () => {
 			if (newSocket) newSocket.disconnect();
 		}
-
+		//eslint-disable-next-line
 	}, []);
 
 	const messageSendingHandler = async () => {
