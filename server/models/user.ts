@@ -79,11 +79,11 @@ export default class User extends Model<IUser> implements IUser {
       },
       avatar: {
         type: DataTypes.STRING,
-        defaultValue: "/assets/defaultAvatar.jpg"
+        defaultValue: "/assets/defaultAvatar.webp"
       },
       headerImg: {
         type: DataTypes.STRING,
-        defaultValue: "/assets/defaultHeader.jpg"
+        defaultValue: "/assets/defaultHeader.webp"
       },
       status: {
         type: DataTypes.ENUM("offline", "online"),
