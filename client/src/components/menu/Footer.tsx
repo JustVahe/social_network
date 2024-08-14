@@ -122,7 +122,7 @@ export default function Footer() {
         <div className="w-full bg-zinc-50 p-[20px]">
             <div className="container my-0 flex justify-between">
                 <p className="text-sm-12 text-zinc-500">© Winku 2018. All rights reserved.</p>
-                <img src="/credit-cards.png" alt="Visa, Mastercard"  />
+                <img src="/credit-cards.webp" alt="Visa, Mastercard"  />
             </div>
         </div>
     </footer>
