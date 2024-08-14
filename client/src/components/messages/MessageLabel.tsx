@@ -1,17 +1,17 @@
+import { io, Socket } from "socket.io-client";
 import { api } from "../../axios/axios";
 import { setMessagesOfTheRoom, setRoom } from "../../redux/slices/roomSlice";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { IRoom, IConnection } from "../../types";
 import { imageUrl, url } from "../../utils/enviromentConfig";
-import { getSocket } from "../../utils/hooks/socket.mts";
 import FriendButton from "../buttons/FriendButton";
 import Loading from "../shared/Loading";
-
-const socket = getSocket();
+import { useState } from "react";
 
 export default function MessageLabel({ room }: { room: IRoom & IConnection }) {
 
 	const dispatch = useAppDispatch();
+	const [socket, setSocket] = useState<Socket | null>(null);
 
 	const clickHandler = () => {
 		api.get(`${url}/messages/?room_id=` + room?.id)
@@ -20,11 +20,14 @@ export default function MessageLabel({ room }: { room: IRoom & IConnection }) {
 			});
 
 		dispatch(setRoom(room));
+		setSocket(io(url));
 
-		if (room?.chat) {
-			socket.emit("join_chat", room.chat_id);
-		} else {
-			socket.emit("join_room", room.id);
+		if (socket) {
+			if (room?.chat) {
+				socket.emit("join_chat", room.chat_id);
+			} else {
+				socket.emit("join_room", room.id);
+			}
 		}
 	}
 
