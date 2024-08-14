@@ -8,8 +8,8 @@ export default {
 	],
 	theme: {
 		animation: {
-			aimloader : "aimloader 1s infinite ease-in-out",
-			rotation : "rotation 1s linear infinite"
+			aimloader: "aimloader 1s infinite ease-in-out",
+			rotation: "rotation 1s linear infinite"
 		},
 		fontSize: {
 			"sm-11": "11px",
@@ -34,7 +34,7 @@ export default {
 		keyframes: {
 			rotation: {
 				"0%": {
-					transform:" rotate(0deg)"
+					transform: " rotate(0deg)"
 				},
 				"100%": {
 					transform: "rotate(360deg)"
@@ -43,7 +43,7 @@ export default {
 			aimloader: {
 				"50%": {
 					transform: "scale(1) translate(-50%, -50%)"
-			  	}
+				}
 			}
 		}
 	},
