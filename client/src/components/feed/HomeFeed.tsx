@@ -12,6 +12,7 @@ export default function HomeFeed() {
     const posts = useAppSelector(selectPost);
     const dispatch = useAppDispatch();
     const [offset, setOffset] = useState(0);
+    const [showIntersector, setShowIntersector] = useState(true);
 
     const postObserver = new IntersectionObserver((entries) => {
         const loadingPost = entries[0];
@@ -25,7 +26,7 @@ export default function HomeFeed() {
 
     const infiniteHandler = () => {
         const observableItem = document.querySelector("#loader_div");
-        postObserver.observe(observableItem as Element);
+        if (observableItem) postObserver.observe(observableItem as Element);
     }
 
     useEffect(() => {
@@ -35,7 +36,13 @@ export default function HomeFeed() {
 
     useEffect(() => {
         if (offset !== 0) {
-            api.get(`${url}/post/?limit=${5}&offset=${offset}`).then(response => dispatch(addPosts(response.data)));
+            api.get(`${url}/post/?limit=${5}&offset=${offset}`).then(response => {
+                if (!response.data || response.data.length === 0) {
+                    setShowIntersector(false);
+                    return
+                }
+                dispatch(addPosts(response.data))
+            });
         }
         //eslint-disable-next-line
     }, [offset]);
@@ -55,7 +62,7 @@ export default function HomeFeed() {
                     <Loading />
                 </div>
             }
-            <PostLoading />
+            {showIntersector && <PostLoading />}
         </div >
     )
 }

@@ -5,7 +5,7 @@ import { IUser } from "../src/utils/types/types.ts";
 import { Model } from "sequelize";
 import File from "./file.ts";
 import Post from "./post.ts";
-
+import { config as dotenvConfig } from "dotenv"; dotenvConfig();
 
 export default class User extends Model<IUser> implements IUser {
   declare id: string;
@@ -79,11 +79,11 @@ export default class User extends Model<IUser> implements IUser {
       },
       avatar: {
         type: DataTypes.STRING,
-        defaultValue: "/assets/defaultAvatar.webp"
+        defaultValue: `/${process.env.SUPABASE_BUCKET}/defaultAvatar.webp`
       },
       headerImg: {
         type: DataTypes.STRING,
-        defaultValue: "/assets/defaultHeader.webp"
+        defaultValue: `/${process.env.SUPABASE_BUCKET}/defaultHeader.webp`
       },
       status: {
         type: DataTypes.ENUM("offline", "online"),

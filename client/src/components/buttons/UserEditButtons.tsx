@@ -1,6 +1,5 @@
 import { FaEdit, FaImage } from "react-icons/fa";
 import { ID } from "../../types";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { setHeaderImg } from "../../redux/slices/currentUserSlice";
 import { notifyPromise } from "../../utils/toastification";
@@ -11,7 +10,6 @@ import { api } from "../../axios/axios";
 
 export default function UserEditButtons({ id }: { id: ID }) {
 
-    const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
     const formData = new FormData();
     const navigate = useNavigate();
@@ -24,7 +22,7 @@ export default function UserEditButtons({ id }: { id: ID }) {
 
         if (eventTarget.files) {
 
-            await checkAccessToken();
+            
             formData.append('file', eventTarget.files[0]);
             const headerResponse = await api.put(`${url}/files/${id}/header`, formData, {
                 headers: { "Content-Type" : "multipart/form-data"}

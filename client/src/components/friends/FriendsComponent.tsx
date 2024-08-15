@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import FriendsRow from "./FriendsRow";
 import { IFriend, IRequest, IUser } from "../../types";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import RequestRow from "./RequestRow";
 import { url } from "../../utils/enviromentConfig";
@@ -19,12 +18,7 @@ export default function FriendsComponent({ user }: { user: IUser }) {
 	const [friendsToggle, setFriendsToggle] = useState("friends");
 	const [requestToggle, setRequestToggle] = useState<"from_me" | "to_me">("from_me");
 
-	const { checkAccessToken } = useCheck();
-
 	useEffect(() => {
-
-		checkAccessToken();
-
 		api.get(`${url}/friends/` + user.id)
 			.then(res => {
 				setFriends(res.data);

@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { notifyPromise } from "../../utils/toastification";
 import { url } from "../../utils/enviromentConfig";
 import { addPhotoToCurrentUser } from "../../redux/slices/currentUsersPhotosSlice";
@@ -11,7 +10,6 @@ export default function ImgSendingForm() {
 
     const [files, setFiles] = useState<FileList | null>();
     const currentUser = useAppSelector(selectCurrentUser);
-    const { checkAccessToken } = useCheck();
     const formData = new FormData;
     const [ok, setOk] = useState(true);
     const dispatch = useAppDispatch();
@@ -30,7 +28,7 @@ export default function ImgSendingForm() {
 
             dispatch(addPhotoToCurrentUser(fileUploadResponse.data));
             setFiles(null);
-            await checkAccessToken();
+            
 
         } else if (!files) {
             throw new Error("Please add your images")

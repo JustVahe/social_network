@@ -1,7 +1,6 @@
 import { FaX } from "react-icons/fa6";
 import { ModalResponse } from "../Image";
 import { IPhoto } from "../../../types";
-import { useCheck } from "../../../utils/hooks/useCheck";
 import { url } from "../../../utils/enviromentConfig";
 import { notifyPromise } from "../../../utils/toastification";
 import { useAppDispatch } from "../../../redux/typedHooks";
@@ -17,7 +16,6 @@ interface IProps {
 
 export default function AreYouSureToDeleteThisImage({ setModalType, setModalResponse, image }: IProps) {
 
-    const { checkAccessToken } = useCheck();
     const dispatch = useAppDispatch();
 
     const deleteHandler = async () => {
@@ -39,7 +37,7 @@ export default function AreYouSureToDeleteThisImage({ setModalType, setModalResp
                 })
                 setModalType(false);
                 dispatch(deletePhotoOfCurrentUser(image));
-                await checkAccessToken();
+                
             }
 
         } catch (error) {

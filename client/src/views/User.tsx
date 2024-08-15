@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/typedHooks.ts";
 import { selectThisUser, setThisUser } from "../redux/slices/thisUserSlice.ts";
-import { useCheck } from "../utils/hooks/useCheck.ts";
 import { imageUrl, url } from "../utils/enviromentConfig.ts";
 import { api } from "../axios/axios.ts";
 
@@ -19,11 +18,7 @@ export default function User({ page }: { page: string }) {
 	const thisUser = useAppSelector(selectThisUser);
 	const dispatch = useAppDispatch();
 
-	const { checkAccessToken } = useCheck();
-
 	useEffect(() => {
-		checkAccessToken();
-
 		api.get(`${url}/users/?username=` + username)
 			.then((res) => {
 				dispatch(setThisUser(res.data));
