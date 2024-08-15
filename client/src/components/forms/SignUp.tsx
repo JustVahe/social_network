@@ -110,7 +110,7 @@ export default function SignUp() {
     return (
         <div className='w-[400px] min-h-[600px] rounded-md relative z-10 mx-auto bg-white flex flex-col flex-grow justify-between'>
             <div className='w-full h-1.5 bg-sky-600 rounded-t-md'></div>
-            <img src="/logo.png" alt="logo" className='mx-auto mt-[35px]' />
+            <img src="/logo.webp" alt="logo" className='mx-auto mt-[35px]' />
             <div className='p-[15px] px-[30px] h-full'>
                 <h1 className='text-3xl text-zinc-800 font-bold mt-[50px] tracking-tight mb-[5px] leading-[40px]'> Join Us</h1>
                 <p className='text-md text-zinc-500 mt-0 leading-[20px]'>Discover new and amazing expirience</p>

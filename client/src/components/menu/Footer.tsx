@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className='w-full bg-white relative mt-[40px]before:w-full before:h-[5px] before:block before:bg-gradient-to-r before:from-transparent before:via-sky-600 before:to-transparent before:top-0'>
         <div className="container sm:grid sm:grid-cols-4 lg:flex lg:justify-between lg:gap-[30px] pt-[70px] pb-[100px] mb-0 ">
             <div className="p-[30px] sm:w-full mb-[50px] sm:col-span-4 sm:p-0 lg:mb-0 lg:w-[300px] flex flex-col gap-[30px]">
-                <img className="w-[100px]" src="/logo.png" alt="logo"/>
+                <img className="w-[100px]" src="/logo.webp" alt="logo"/>
                 <p className="text-zinc-500 text-sm-13">
                     The trio took this simple idea and built it into the world’s leading carpooling platform.
                 </p>
