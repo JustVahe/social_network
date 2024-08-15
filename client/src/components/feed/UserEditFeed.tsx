@@ -1,7 +1,6 @@
 import { useAppSelector } from '../../redux/typedHooks';
 import { selectCurrentUser } from '../../redux/slices/currentUserSlice';
 import { ChangeEvent, useState } from 'react';
-import { useCheck } from '../../utils/hooks/useCheck';
 import { url } from '../../utils/enviromentConfig';
 import { useNavigate } from 'react-router-dom';
 import { notifyPromise } from '../../utils/toastification';
@@ -19,7 +18,6 @@ export default function UserEditFeed() {
     const [ok, setOk] = useState(true);
 
     const navigate = useNavigate();
-    const { checkAccessToken } = useCheck();
 
     const changeEffectHandler = (event: ChangeEvent) => {
 
@@ -41,7 +39,7 @@ export default function UserEditFeed() {
         const eventTarget = event.target as HTMLFormElement;
         const formData = new FormData(eventTarget);
 
-        await checkAccessToken();
+        
 
         const updateResponse = await api.put(`${url}/users/` + currentUser?.id, formData, {
             headers: { "Content-Type" : "multipart/form-data"}
@@ -50,7 +48,7 @@ export default function UserEditFeed() {
         if (updateResponse.status !== 200) {
             throw new Error("Something went wrong");
         } else {
-            await checkAccessToken();
+            
             navigate("/dashboard");
         }
 

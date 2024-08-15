@@ -2,21 +2,13 @@ import Friends from "../friends/Friends";
 import Shortcuts from "../menu/Shortcuts";
 import PhotoComponent from "./PhotoComponent";
 import { IUser } from "../../types";
-import { useCheck } from "../../utils/hooks/useCheck";
-import { useEffect } from "react";
 import { useAppSelector } from "../../redux/typedHooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import ProtectedShortcuts from "../menu/ProtectedShortcuts";
 
 export default function PhotoFeed({ user, status }: { user: IUser, status: string }) {
 
-    const { checkAccessToken } = useCheck();
     const currentUser = useAppSelector(selectCurrentUser);
-
-    useEffect(() => {
-        checkAccessToken();
-        //eslint-disable-next-line
-    }, []);
 
     return (
         currentUser &&

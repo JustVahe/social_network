@@ -3,7 +3,6 @@ import { IPost, IUser } from "../../types";
 import { useAppDispatch } from "../../redux/typedHooks";
 import { useEffect, useState } from "react";
 import { FaX } from "react-icons/fa6";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { deletePost, updatePost } from "../../redux/slices/postSlice";
 import { notifyError, notifyPromise } from "../../utils/toastification";
 import { imageUrl, url } from "../../utils/enviromentConfig";
@@ -19,7 +18,6 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	const [createdAtDate, setCreatedAtDate] = useState<Date | null>();
 	const [updatedAtDate, setUpdatedAtDate] = useState<Date | null>();
 	const dispatch = useAppDispatch();
-	const { checkAccessToken } = useCheck();
 
 	useEffect(() => {
 
@@ -66,8 +64,6 @@ export default function AvatarDisplay({ user, status, post }: { user: IUser, sta
 	}
 
 	const updateHandler = async () => {
-
-		await checkAccessToken();
 
 		if (post) {
 

@@ -4,7 +4,6 @@ import { TfiMenu } from 'react-icons/tfi';
 import { useState } from 'react';
 import { selectCurrentUser, setAvatar } from '../../redux/slices/currentUserSlice';
 import 'react-toastify/dist/ReactToastify.css';
-import { useCheck } from '../../utils/hooks/useCheck';
 import { notifyPromise } from '../../utils/toastification';
 import { imageUrl, url } from '../../utils/enviromentConfig';
 import { api } from '../../axios/axios';
@@ -12,8 +11,6 @@ import { api } from '../../axios/axios';
 export default function ProtectedUserNavbar() {
 
     const [dropdownToggle, setDropdownToggle] = useState(false);
-
-    const { checkAccessToken } = useCheck();
     const [avatarToggle, setAvatarToggle] = useState<boolean>(false);
     const [avatarError, setAvatarError] = useState<string | undefined>();
     const currentUser = useAppSelector(selectCurrentUser);
@@ -26,7 +23,7 @@ export default function ProtectedUserNavbar() {
         try {
             if (eventTarget.files) {
 
-                await checkAccessToken();
+                
                 formData.append('file', eventTarget.files[0]);
 
                 const updateResponse = await api.put(`${url}/files/${currentUser?.id}/avatar`, formData, {

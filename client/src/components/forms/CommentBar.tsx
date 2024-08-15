@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { FaMessage } from "react-icons/fa6";
 import { IPost } from "../../types";
-import { useCheck } from "../../utils/hooks/useCheck";
 import { addComment } from "../../redux/slices/commentSlice";
 import { useAppSelector } from "../../redux/typedHooks";
 // import { updatePost } from "../../redux/slices/postSlice";
@@ -13,7 +12,6 @@ import { api } from "../../axios/axios";
 export default function CommentBar({ postData }: { postData?: IPost }) {
 
     const [commentMessage, setCommentMessage] = useState<string>();
-    const { checkAccessToken } = useCheck();
     // const dispatch = useAppDispatch();
     const currentUser = useAppSelector(selectCurrentUser);
     const [ok, setOk] = useState(true);
@@ -21,7 +19,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
     const commentSendingHandler = async (event: FormEvent) => {
 
         event.preventDefault();
-        await checkAccessToken();
+        
 
         if (postData) {
 
@@ -45,7 +43,7 @@ export default function CommentBar({ postData }: { postData?: IPost }) {
                 // }
 
                 setCommentMessage("");
-                await checkAccessToken();
+                
 
             } else {
                 throw new Error("Please write the message")
